@@ -1,6 +1,4 @@
 # Projet Node - Flacon Millenium 
-## Réflexion et synopsis projet 
-## Equipe Java le Hutt
 
 ## Synopsis du Projet :
 
