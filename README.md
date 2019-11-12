@@ -26,24 +26,24 @@ Avec 8 semaines avant la présentation du projet, voici la planification des tac
 
 ### Semaine 1 et 2 :
 
-Etienne : création de la représentation de la cave
-Gaëtan : création d’une fiche produit pour la bouteille
-Kevin : l’authentification avec stockage sécurisé des mots de passe
-Guillaume : création des modèles et structures des bouteilles, cépage, vin, producteurs …
+- Etienne : création de la représentation de la cave
+- Gaëtan : création d’une fiche produit pour la bouteille
+- Kevin : l’authentification avec stockage sécurisé des mots de passe
+- Guillaume : création des modèles et structures des bouteilles, cépage, vin, producteurs …
 
 ### Semaine 3 et 4 :
 
-Etienne : gestion du stockage des vins
-Gaëtan :  liaison avec la base de données pour créer les listes de consultation (bouteilles, vins, producteurs …)
-Kevin : Création des modèles et structure pour un forum de discussion
-Guillaume : mise en place de la page de créations des cépage, vin, producteur …
+- Etienne : gestion du stockage des vins
+- Gaëtan :  liaison avec la base de données pour créer les listes de consultation (bouteilles, vins, producteurs …)
+- Kevin : Création des modèles et structure pour un forum de discussion
+- Guillaume : mise en place de la page de créations des cépage, vin, producteur …
 
 ### Semaine 5 et 6 :
 
-Etienne : gestion des localisations des bouteilles
-Gaëtan : système de recherche dans les listes
-Kevin : mise en opération du forum
-Guillaume : mise en place de la page d’ajout de bouteille
+- Etienne : gestion des localisations des bouteilles
+- Gaëtan : système de recherche dans les listes
+- Kevin : mise en opération du forum
+- Guillaume : mise en place de la page d’ajout de bouteille
 
 Les semaine 7 et 8 seront pour revoir le projet et vérifier qu’il est complet et fonctionnel avec la possibilité d’améliorer les fonctionnalités.
 
