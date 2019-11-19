@@ -7,6 +7,7 @@ var app = express()
 
 app.use(bodyParser.urlencoded({ extended: false })) // for simple form posts
 app.use(bodyParser.json()) // for API requests
+app.use(express.static(__dirname + '/public')) // for css
 
 app.use(session({
   secret: 'mydirtylittlesecret',
