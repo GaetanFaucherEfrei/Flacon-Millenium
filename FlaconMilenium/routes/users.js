@@ -2,8 +2,6 @@ const express = require('express')
 const bcrypt = require('bcrypt')
 const saltRounds = 10
 
-const mongoose = require('mongoose')
-
 // chargement du modèle User
 const User = require('../models/user.model.js')
 
