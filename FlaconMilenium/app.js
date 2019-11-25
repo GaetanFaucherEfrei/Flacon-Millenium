@@ -1,6 +1,7 @@
 const express = require('express')
 const session = require('express-session')
 const users = require('./routes/users.js')
+const forum = require('./routes/forum.js')
 const bodyParser = require('body-parser') // pour parser les requêtes POST
 
 var app = express()
@@ -15,6 +16,7 @@ app.use(session({
 }))
 
 app.use('/user', users)
+app.use('/forum', forum)
 
 const path = require('path')
 app.set('views', path.join(__dirname, 'views'))
