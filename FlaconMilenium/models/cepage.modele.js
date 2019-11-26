@@ -8,7 +8,7 @@ var cepageSchema = new Schema({
   region: { type: String, required: true },
   pays: { type: String, required: true },
   climat: { type: String, required: true },
-  description: { type: String, required: true }
+  description: { type: String, required: false }
 })
 
 const Cepage = mongoose.model('Cepage', cepageSchema)

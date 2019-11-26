@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 var dosageSucreSchema = new Schema({
   nom: { type: String, required: true },
   dosage: { type: Number, required: true },
-  description: { type: String, required: true }
+  description: { type: String, required: false }
 })
 
 const DosageSucre = mongoose.model('DosageSucre', dosageSucreSchema)

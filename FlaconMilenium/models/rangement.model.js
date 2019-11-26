@@ -5,10 +5,10 @@ const Schema = mongoose.Schema
 var rangementSchema = new Schema({
   localisation: { type: String, required: true },
   nom: { type: String, required: true },
-  etage: { type: Number, required: true },
-  colone: { type: Number, required: true },
-  place: { type: Number, required: true },
-  description: { type: String, required: true }
+  nbEtage: { type: Number, required: true },
+  nbColone: { type: Number, required: true },
+  nbPlace: { type: Number, required: true },
+  description: { type: String, required: false }
 })
 
 const Rangement = mongoose.model('Rangement', rangementSchema)

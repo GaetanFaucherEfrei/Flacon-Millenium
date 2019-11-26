@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 var tailleSchema = new Schema({
   nom: { type: String, required: true },
   taille: { type: Number, required: true },
-  description: { type: String, required: true }
+  description: { type: String, required: false }
 })
 
 const Taille = mongoose.model('Taille', tailleSchema)
