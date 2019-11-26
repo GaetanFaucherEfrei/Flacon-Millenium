@@ -12,16 +12,16 @@ var bouteilleSchema = new Schema({
   dateOutput: { type: Date, required: true }, // DATE DE DEGUSTATION
   reasonOutput: { type: String, required: true }, // CIRCONSTANCE DE DEGUSTATION
   observation: { type: String, required: true }, // AVIS SUR LA BOUTEILLE
-  recomandation: { type: String, required: true } // RECOMANDATIONS SUR LA BOUTEILLE
-  // ID VIN
-  // ID STATUTS
-  // ID TAILLE
-  // ID LOCALISATION
-  // ID PROPRIETAIRE
-  // ID DONNEUR
-  // ID RECEVEUR
-  // ID DOSAGE SUCRE
-  // ID SERVIT AVEC
+  recomandation: { type: String, required: true }, // RECOMANDATIONS SUR LA BOUTEILLE
+  IDvin: { type: String, required: true }, // ID VIN
+  IDstatus: { type: String, required: true }, // ID STATUTS
+  IDtaille: { type: String, required: true }, // ID TAILLE
+  IDlocalisation: { type: String, required: true }, // ID LOCALISATION
+  IDproprietaire: { type: String, required: true }, // ID PROPRIETAIRE
+  IDdonneur: { type: String, required: true }, // ID DONNEUR
+  IDreceveur: { type: String, required: true }, // ID RECEVEUR
+  IDdosage: { type: String, required: true }, // ID DOSAGE SUCRE
+  IDservitavec: { type: String, required: true }// ID SERVIT AVEC
 })
 
 // DEFINITION DU MODELE "VIN"
