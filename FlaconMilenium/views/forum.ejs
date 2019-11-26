@@ -23,14 +23,8 @@
         <table>
             <% for(var i=0; i < data.length; i++) { %>
                <tr>
-                  <%
-                  
-                  /*
-
-                  */
-                  %>
                  <td><%= data[i].content %></td>
-                 <td><small>Posté par: <%= data[i].auteur %>  <%= data[i].date.getDate() %>  <%= data[i].date.getMonth() %> <%= data[i].date.getYear() %></small></td>
+                 <td><small>Posté par: <%= data[i].auteur %>  <%= data[i].date.getDate() %>-<%= data[i].date.getMonth() %>-<%= data[i].date.getYear() %></small></td>
                  <script>
                    console.log('test');
                  </script>
@@ -43,10 +37,24 @@
     <!-- Zone de poste des messages-->
     <div id="commentaire">
       <form action="http://localhost:3000/forum/comment" method="POST">
+
         <label>Commentaire: </label>
         <input name="content" type="text" placeholder="Commentaire" required='required'/><br/><br/>
         
-        <input type="submit" value="Poster" />
+        <% 
+        if(user == null)
+            {
+        %>
+            <small style="color: red"> Veuillez vous connecter pour poster vos messages</small>
+        <%
+            }
+            else{
+          %>
+            <input type="submit" value="Poster"/>
+          <%  
+            }
+          %>
+        
       </form>
     </div>
   </body>

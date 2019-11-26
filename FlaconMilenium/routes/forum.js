@@ -16,8 +16,8 @@ router.post('/comment', async (req, res) => {
   // console.log('req.body.content', req.body.content)
   // console.log('req.body.auteur', req.body.auteur)
 
-  Commentaire.save()
-
+  await Commentaire.save()
+  console.log('global results', global.results)
   res.render('forum', { data: global.results })
 })
 
