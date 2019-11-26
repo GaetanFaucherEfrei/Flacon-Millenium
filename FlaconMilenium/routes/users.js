@@ -1,6 +1,6 @@
 const express = require('express')
-
-const mongoose = require('mongoose')
+const bcrypt = require('bcrypt')
+const saltRounds = 10
 
 // chargement du modèle User
 const User = require('../models/user.model.js')
@@ -25,21 +25,25 @@ router.post('/login', async (req, res) => {
   if (person == null) {
     res.send('Error, no such user')
   } else {
-    if (req.body.password === person.password) {
-      if (req.body.username === req.session.username) {
-        req.session.username = person.username
-        req.session.userId = person._id
-        router.use(tokenToUserMiddleware)
-        res.send('Bon retour parmi nous ' + req.body.username + ' !')
+    bcrypt.compare(req.body.password, person.password, function (err, result) {
+      if (err) throw err
+
+      if (result) {
+        if (req.body.username === req.session.username) {
+          req.session.username = person.username
+          req.session.userId = person._id
+          router.use(tokenToUserMiddleware)
+          res.send('Bon retour parmi nous ' + req.body.username + ' !')
+        } else {
+          req.session.username = person.username
+          req.session.userId = person._id
+          router.use(tokenToUserMiddleware)
+          res.send('Bienvenue ' + req.body.username)
+        }
       } else {
-        req.session.username = person.username
-        req.session.userId = person._id
-        router.use(tokenToUserMiddleware)
-        res.send('Bienvenue ' + req.body.username)
+        res.send('Error, wrong password')
       }
-    } else {
-      res.send('Error, wrong password')
-    }
+    })
   }
 })
 
@@ -51,13 +55,16 @@ router.post('/register', async (req, res) => {
   const person = await User.findOne({ username: req.body.username })
   console.log(person)
   if (person == null) {
-    const newUser = new User({
-      username: req.body.username,
-      password: req.body.password
-    })
+    bcrypt.hash(req.body.password, saltRounds, function (err, passwordhash) {
+      if (err) throw err
 
-    await newUser.save()
-    res.send('ok, user registered')
+      const newUser = new User({
+        username: req.body.username,
+        password: passwordhash
+      })
+      newUser.save()
+      res.send('ok, user registered')
+    })
   } else {
     res.send('erreur 403, Username already taken')
   }

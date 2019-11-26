@@ -2,14 +2,17 @@
 <html>
   <head>
     <title>Login/Register</title>
+    <link href="/css/login-register.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
     <h1>Register</h1>
-    <form action="http://localhost:3000/user/register" method="POST">
-      <input name="username" type="text" placeholder="Identifiant" />
-      <input name="password" type="password" placeholder="Mot de passe" />
-      <input type="submit" value="Register" />
-    </form>
+    <div>
+      <form action="http://localhost:3000/user/register" method="POST">
+        <input name="username" type="text" placeholder="Identifiant" />
+        <input name="password" type="password" placeholder="Mot de passe" />
+        <input type="submit" value="Register" />
+      </form>
+    </div>
   </body>
 </html>
