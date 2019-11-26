@@ -13,8 +13,24 @@ var bouteilleSchema = new Schema({
   reasonOutput: { type: String, required: true }, // CIRCONSTANCE DE DEGUSTATION
   observation: { type: String, required: true }, // AVIS SUR LA BOUTEILLE
   recomandation: { type: String, required: true } // RECOMANDATIONS SUR LA BOUTEILLE
+  // ID VIN
+  // ID STATUTS
+  // ID TAILLE
+  // ID LOCALISATION
+  // ID PROPRIETAIRE
+  // ID DONNEUR
+  // ID RECEVEUR
+  // ID DOSAGE SUCRE
+  // ID SERVIT AVEC
+})
+
+// DEFINITION DU MODELE "VIN"
+var vinSchema = new Schema({
+
 })
 
 const Bouteille = mongoose.model('Bouteille', bouteilleSchema)
+const Vin = mongoose.model('Vin', vinSchema)
 
 module.exports = Bouteille
+module.exports = Vin
