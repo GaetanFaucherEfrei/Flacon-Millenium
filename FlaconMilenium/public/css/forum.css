@@ -20,6 +20,7 @@ td {
   vertical-align: middle;
   font-size: 0.95em;
   line-height: 1.4;
+  border-bottom: 1px solid #ddd;
   /*text-align: left;*/
 }
 
@@ -40,12 +41,25 @@ td {
 }
 
 #commentaire{
+  padding: 2%;
+  background-color: gray;
   text-align: center;
   display: flex;
   flex-flow: column;
+  border-style: double;
 }
 .historique{
   display: flex;
-  margin: 5%;
-  justify-content: space-evenly
+  justify-content: space-evenly;
 }
+
+hr {
+  border: none;
+  border-top: 3px double #333;
+  color: #333;
+  overflow: visible;
+  text-align: center;
+  height: 5px;
+}
+
+for
