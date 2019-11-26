@@ -15,6 +15,11 @@ app.use(session({
   name: 'sessId'
 }))
 
+app.use(function (req, res, next) {
+  res.locals.user = req.session.username
+  next()
+})
+
 app.use('/user', users)
 app.use('/forum', forum)
 
