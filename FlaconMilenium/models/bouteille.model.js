@@ -24,13 +24,6 @@ var bouteilleSchema = new Schema({
   IDservitavec: { type: String, required: true }// ID SERVIT AVEC
 })
 
-// DEFINITION DU MODELE "VIN"
-var vinSchema = new Schema({
-
-})
-
 const Bouteille = mongoose.model('Bouteille', bouteilleSchema)
-const Vin = mongoose.model('Vin', vinSchema)
 
 module.exports = Bouteille
-module.exports = Vin
