@@ -11,28 +11,40 @@
     <div class="information">
       <h4>Bienvue sur le forum destiné(e) aux fans de la boisson</h4>
       <div id="gif">
-        <iframe src="https://giphy.com/embed/bKBM7H63PIykM" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen>
-        </iframe>
+        <iframe src="https://giphy.com/embed/bKBM7H63PIykM" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed"></iframe>
       </div>
+      <hr>
     </div>
+
+
 
     <!-- Zone d'affichage des messages -->
     <div class="historique">
         <table>
             <% for(var i=0; i < data.length; i++) { %>
                <tr>
+                  <%
+                  
+                  /*
+
+                  */
+                  %>
                  <td><%= data[i].content %></td>
-                 <td>Posté par: <span style='text-decoration: underline; font-size: 95%'><%= data[i].auteur %> </span></td>
+                 <td><small>Posté par: <%= data[i].auteur %>  <%= data[i].date.getDate() %>  <%= data[i].date.getMonth() %> <%= data[i].date.getYear() %></small></td>
+                 <script>
+                   console.log('test');
+                 </script>
                </tr>
             <% } %>
             </table>
     </div>
+    <hr>
 
     <!-- Zone de poste des messages-->
     <div id="commentaire">
       <form action="http://localhost:3000/forum/comment" method="POST">
-        <input name="auteur" type="text" placeholder="Auteur" />
-        <input name="content" type="text" placeholder="Commentaire" />
+        <label>Commentaire: </label>
+        <input name="content" type="text" placeholder="Commentaire" required='required'/><br/><br/>
         
         <input type="submit" value="Poster" />
       </form>

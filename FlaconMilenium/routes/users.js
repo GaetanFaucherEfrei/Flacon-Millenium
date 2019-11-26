@@ -38,7 +38,7 @@ router.post('/login', async (req, res) => {
           req.session.username = person.username
           req.session.userId = person._id
           router.use(tokenToUserMiddleware)
-          res.send('Bienvenue ' + req.body.username)
+          res.send('<html> <body> Bienvenue ' + req.body.username + '<br/> <a href="/forum/comment">Forum</a> </body> </html>')
         }
       } else {
         res.send('Error, wrong password')
