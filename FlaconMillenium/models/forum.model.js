@@ -3,12 +3,12 @@ mongoose.connect('mongodb://localhost/Forum')
 
 const Schema = mongoose.Schema
 
-const CommentaireSchema = new Schema({
+const CommentSchema = new Schema({
   content: { type: String, required: true },
-  auteur: { type: String, required: true },
+  author: { type: String, required: true },
   date: { type: Date, required: true }
 })
 
-const Commentaire = mongoose.model('Commentaire', CommentaireSchema)
+const Comment = mongoose.model('Comment', CommentSchema)
 
-module.exports = Commentaire
+module.exports = Comment

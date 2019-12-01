@@ -40,7 +40,7 @@ td {
   margin-left: 30%;
 }
 
-#commentaire{
+#comment{
   padding: 2%;
   background-color: gray;
   text-align: center;
@@ -48,7 +48,7 @@ td {
   flex-flow: column;
   border-style: double;
 }
-.historique{
+.history{
   display: flex;
   justify-content: space-evenly;
 }

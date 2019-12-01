@@ -1,11 +1,12 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-var statusSchema = new Schema({
+var sizeSchema = new Schema({
   name: { type: String, required: true },
+  size: { type: Number, required: true },
   description: { type: String, required: false }
 })
 
-const Status = mongoose.model('Status', statusSchema)
+const Size = mongoose.model('Size', sizeSchema)
 
-module.exports = Status
+module.exports = Size

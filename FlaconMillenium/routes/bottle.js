@@ -1,5 +1,5 @@
 const express = require('express')
-const Bouteille = require('../models/bouteille.model.js')
+const bottle = require('../models/bottle.model.js')
 const mongoose = require('mongoose')
 var router = express.Router()
 

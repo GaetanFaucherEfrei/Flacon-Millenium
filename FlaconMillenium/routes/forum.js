@@ -7,16 +7,16 @@ global.results = null
 
 router.post('/comment', async (req, res) => {
   const DateSave = new Date()
-  const Commentaire = await new Forum({
+  const Comment = await new Forum({
     content: req.body.content,
-    auteur: req.session.username,
+    author: req.session.username,
     date: DateSave
   })
 
   // console.log('req.body.content', req.body.content)
-  // console.log('req.body.auteur', req.body.auteur)
+  // console.log('req.body.author', req.body.author)
 
-  await Commentaire.save()
+  await Comment.save()
   console.log('global results', global.results)
   res.render('forum', { data: global.results })
 })
@@ -26,11 +26,11 @@ router.get('/comment', async (req, res) => {
   mongoose.connect(url, function (err, db) {
     if (err) throw err
 
-    db.createCollection('commentaires', function (err, res) {
+    db.createCollection('comment', function (err, res) {
       if (err) throw err
       console.log('Collection created!')
     })
-    var coll = db.collection('commentaires')
+    var coll = db.collection('comment')
 
     coll.find({}).limit(10).sort({ _id: -1 }).toArray(function (err, result) {
       if (err) {

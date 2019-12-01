@@ -33,12 +33,12 @@ router.post('/login', async (req, res) => {
           req.session.username = person.username
           req.session.userId = person._id
           router.use(tokenToUserMiddleware)
-          res.send('Bon retour parmi nous ' + req.body.username + ' !')
+          res.send('Welcome back ' + req.body.username + ' !')
         } else {
           req.session.username = person.username
           req.session.userId = person._id
           router.use(tokenToUserMiddleware)
-          res.send('<html> <body> Bienvenue ' + req.body.username + '<br/> <a href="/forum/comment">Forum</a> </body> </html>')
+          res.send('<html> <body> Welcome  ' + req.body.username + '<br/> <a href="/forum/comment">Forum</a> </body> </html>')
         }
       } else {
         res.send('Error, wrong password')
@@ -73,9 +73,9 @@ router.post('/register', async (req, res) => {
 router.get('/logout', (req, res) => {
   console.log(req.user)
   if (req.user) {
-    res.send('Au revoir ' + req.user.username + '!')
+    res.send('Goodbye ' + req.user.username + '!')
   } else {
-    res.send('Qui étiez-vous ?')
+    res.send('Who were you ?')
   }
   req.session.destroy()
 })
