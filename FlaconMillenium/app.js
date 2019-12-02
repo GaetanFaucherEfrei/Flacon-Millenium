@@ -6,7 +6,7 @@ const BOTTLE = require('./routes/bottle.js')
 const BODY_PARSER = require('body-parser') // pour parser les requêtes POST
 const MONGOOSE = require('mongoose')
 const PATH = require('path')
-MONGOOSE.connect('mongodb://localhost/flaconMillenium')
+MONGOOSE.connect('mongodb://localhost/flaconMillenium', { useNewUrlParser: true })
 
 var App = EXPRESS()
 
@@ -24,7 +24,8 @@ App.use(function (req, res, next) {
   next()
 })
 
-App.use('/user', USER)
+App.use('/user', USER.Router)
+App.use(USER.verifUserMiddleWare)
 App.use('/forum', FORUM)
 App.use('/bottle', BOTTLE)
 
