@@ -6,7 +6,10 @@ const BOTTLE = require('./routes/bottle.js')
 const BODY_PARSER = require('body-parser') // pour parser les requêtes POST
 const MONGOOSE = require('mongoose')
 const PATH = require('path')
-MONGOOSE.connect('mongodb://localhost/flaconMillenium', { useNewUrlParser: true })
+MONGOOSE.connect('mongodb://localhost/flaconMillenium', {
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+})
 
 var App = EXPRESS()
 
@@ -16,7 +19,9 @@ App.use(EXPRESS.static(PATH.join(__dirname, '/public'))) // for css
 
 App.use(SESSION({
   secret: 'mydirtylittlesecret',
-  name: 'sessId'
+  name: 'sessId',
+  resave: false,
+  saveUninitialized: false
 }))
 
 App.use(function (req, res, next) {
