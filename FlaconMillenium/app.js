@@ -1,38 +1,40 @@
-const express = require('express')
-const session = require('express-session')
-const users = require('./routes/users.js')
-const forum = require('./routes/forum.js')
-const bottle = require('./routes/bottle.js')
-const bodyParser = require('body-parser') // pour parser les requêtes POST
+const EXPRESS = require('express')
+const SESSION = require('express-session')
+const USER = require('./routes/user.js')
+const FORUM = require('./routes/forum.js')
+const BOTTLE = require('./routes/bottle.js')
+const BODY_PARSER = require('body-parser') // pour parser les requêtes POST
+const MONGOOSE = require('mongoose')
+const PATH = require('path')
+MONGOOSE.connect('mongodb://localhost/flaconMillenium')
 
-var app = express()
+var App = EXPRESS()
 
-app.use(bodyParser.urlencoded({ extended: false })) // for simple form posts
-app.use(bodyParser.json()) // for API requests
-app.use(express.static(__dirname + '/public')) // for css
+App.use(BODY_PARSER.urlencoded({ extended: false })) // for simple form posts
+App.use(BODY_PARSER.json()) // for API requests
+App.use(EXPRESS.static(PATH.join(__dirname, '/public'))) // for css
 
-app.use(session({
+App.use(SESSION({
   secret: 'mydirtylittlesecret',
   name: 'sessId'
 }))
 
-app.use(function (req, res, next) {
+App.use(function (req, res, next) {
   res.locals.user = req.session.username
   next()
 })
 
-app.use('/user', users)
-app.use('/forum', forum)
-app.use('/bottle', bottle)
+App.use('/user', USER)
+App.use('/forum', FORUM)
+App.use('/bottle', BOTTLE)
 
-const path = require('path')
-app.set('views', path.join(__dirname, 'views'))
-app.set('view engine', 'ejs')
+App.set('views', PATH.join(__dirname, 'views'))
+App.set('view engine', 'ejs')
 
-app.listen(3000, () => {
+App.listen(3000, () => {
   console.log('Application launched on port 3000!')
 })
 
-app.get('/', (req, res) => {
+App.get('/', (req, res) => {
   res.send('ok')
 })

@@ -1,16 +1,16 @@
-const express = require('express')
-const bottle = require('../models/bottle.model.js')
-const mongoose = require('mongoose')
-var router = express.Router()
+const EXPRESS = require('express')
+const BOTTLE = require('../models/bottle.model.js')
+const MONGOOSE = require('mongoose')
+var Router = EXPRESS.Router()
 
 global.results = null
 
-router.post('/add', async (req, res) => {
+Router.post('/add', async (req, res) => {
 
 })
 
-router.get('/view', async (req, res) => {
+Router.get('/view', async (req, res) => {
 
 })
 
-module.exports = router
+module.exports = Router
