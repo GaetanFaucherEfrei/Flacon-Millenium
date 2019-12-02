@@ -30,7 +30,7 @@ router.get('/comment', async (req, res) => {
       if (err) throw err
       console.log('Collection created!')
     })
-    var coll = db.collection('comment')
+    var coll = db.collection('comments')
 
     coll.find({}).limit(10).sort({ _id: -1 }).toArray(function (err, result) {
       if (err) {
