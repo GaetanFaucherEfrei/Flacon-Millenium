@@ -17,7 +17,7 @@ Router.use(verifUserMiddleWare)
 Router.get('/login', (req, res) => {
   // console.log('login')
   if (req.user) {
-    res.render('menu', { name: req.user.username })
+    res.render('menu', { name: req.user.username, alert: 'You are already logged in.' })
   } else {
     res.render('login')
   }
@@ -25,7 +25,7 @@ Router.get('/login', (req, res) => {
 
 Router.post('/login', async (req, res) => {
   if (req.user) {
-    res.render('menu', { name: req.user.username })
+    res.render('menu', { name: req.user.username, alert: 'You are already logged in.' })
   } else {
     const PERSON = await USER.findOne({ username: req.body.username })
     // console.log(PERSON)
@@ -56,7 +56,7 @@ Router.post('/login', async (req, res) => {
 
 Router.get('/register', async (req, res) => {
   if (req.user) {
-    res.render('menu', { name: req.user.username })
+    res.render('menu', { name: req.user.username, alert: 'You are already logged in.' })
   } else {
     res.render('register')
   }
@@ -64,7 +64,7 @@ Router.get('/register', async (req, res) => {
 
 Router.post('/register', async (req, res) => {
   if (req.user) {
-    res.render('menu', { name: req.user.username })
+    res.render('menu', { name: req.user.username, alert: 'You are already logged in.' })
   } else {
     const PERSON = await USER.findOne({ username: req.body.username })
     // console.log(PERSON)

@@ -3,3 +3,6 @@
   <li><a href="/forum/comment">Forum</a></li>
   <li class="rightSide"><a href="/user/logout">Logout</a></li>
 </ul>
+<% if(typeof alert !== 'undefined') { %>
+  <script>alert("<%= alert %>");</script>
+<% } %>
