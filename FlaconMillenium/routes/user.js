@@ -28,7 +28,7 @@ Router.post('/login', async (req, res) => {
     res.render('menu', { name: req.user.username })
   } else {
     const PERSON = await USER.findOne({ username: req.body.username })
-    console.log(PERSON)
+    // console.log(PERSON)
     if (PERSON == null) {
       res.send('Error, no such user')
     } else {
@@ -67,7 +67,7 @@ Router.post('/register', async (req, res) => {
     res.render('menu', { name: req.user.username })
   } else {
     const PERSON = await USER.findOne({ username: req.body.username })
-    console.log(PERSON)
+    // console.log(PERSON)
     if (PERSON == null) {
       BCRYPT.hash(req.body.password, SALT_ROUNDS, function (err, passwordhash) {
         if (err) throw err
@@ -88,6 +88,22 @@ Router.get('/logout', async (req, res) => {
   if (req.user) {
     req.session.destroy()
     res.render('logout', { name: req.user.username })
+  } else {
+    res.redirect('/user/login')
+  }
+})
+
+Router.get('/list', async (req, res) => {
+  if (req.user) {
+    USER.find({}, function (err, result) {
+      if (err) {
+        res.send(err)
+      } else {
+      // console.log('Result: ', result)
+        res.send(result)
+      // res.send(JSON.stringify(result))
+      }
+    }).sort({ _id: -1 }).limit(10)
   } else {
     res.redirect('/user/login')
   }

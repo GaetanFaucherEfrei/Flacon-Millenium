@@ -28,7 +28,7 @@ Router.get('/comment', async (req, res) => {
         res.send(err)
       } else {
       // console.log('Result: ', result)
-        res.render('forum', { data: result })
+        res.render('forum', { data: result, name: req.user.username })
       // res.send(JSON.stringify(result))
       }
     }).sort({ _id: -1 }).limit(10)
