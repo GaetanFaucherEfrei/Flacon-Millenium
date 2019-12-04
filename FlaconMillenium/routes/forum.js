@@ -17,6 +17,7 @@ Router.post('/comment', async (req, res) => {
 
     res.redirect('/forum/comment')
   } else {
+    req.session.oldUrl = '/forum/comment'
     res.redirect('/user/login')
   }
 })
@@ -28,11 +29,12 @@ Router.get('/comment', async (req, res) => {
         res.send(err)
       } else {
       // console.log('Result: ', result)
-        res.render('forum', { data: result, name: req.user.username })
+        res.render('forum/forum', { data: result, name: req.user.username })
       // res.send(JSON.stringify(result))
       }
     }).sort({ _id: -1 }).limit(10)
   } else {
+    req.session.oldUrl = '/forum/comment'
     res.redirect('/user/login')
   }
 })

@@ -9,6 +9,7 @@ Router.post('/add', async (req, res) => {
   if (req.user) {
 
   } else {
+    req.session.oldUrl = '/bottle/add'
     res.redirect('/user/login')
   }
 })
@@ -17,6 +18,7 @@ Router.get('/view', async (req, res) => {
   if (req.user) {
 
   } else {
+    req.session.oldUrl = '/bottle/view'
     res.redirect('/user/login')
   }
 })

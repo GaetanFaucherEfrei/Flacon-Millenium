@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Storage</title>
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/storage.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <%- include('../menu.ejs') %>
+    <div id="content">
+      <h1>Storage</h1>
+
+
+      <!-- Message display area -->
+      <div>
+          <table>
+              <tr>
+                  <td>location</td>
+                  <td>name</td>
+                  <td>nbLigne</td>
+                  <td>nbColone</td>
+                  <td>nbPlace</td>
+                  <td>description</td>
+                </tr>
+              <% for(var i=0; i < data.length; i++) { %>
+                <tr>
+                  <td><%= data[i].location %></td>
+                  <td><a href="/storage/unit/<%= data[i].id %>"><%= data[i].name %></a></td>
+                  <td><%= data[i].nbLigne %></td>
+                  <td><%= data[i].nbColone %></td>
+                  <td><%= data[i].nbPlace %></td>
+                  <td><%= data[i].description %></td>
+                  <td><button type="button"><a href="/storage/edit/<%= data[i].id %>">Edit</a></button></td>
+                  <td><button type="button"><a href="/storage/delete/<%= data[i].id %> ">Delete</a></button></td>
+                </tr>
+              <% } %>
+              </table>
+              <button type="button"><a href="/storage/add">Add a storage</a></button>
+      </div>
+    </div>
+  </body>
+</html>

@@ -19,7 +19,7 @@ Router.get('/login', (req, res) => {
   if (req.user) {
     res.render('home', { name: req.user.username, alert: 'You are already logged in.' })
   } else {
-    res.render('login')
+    res.render('user/login')
   }
 })
 
@@ -44,7 +44,13 @@ Router.post('/login', async (req, res) => {
             req.session.username = PERSON.username
             req.session.userId = PERSON._id
 
-            res.render('home', { name: req.session.username })
+            if (req.session.oldUrl && req.session.oldUrl !== '') {
+              var newPath = req.session.oldUrl
+              req.session.oldUrl = ''
+              res.redirect(newPath)
+            } else {
+              res.render('home', { name: req.session.username })
+            }
           }
         } else {
           res.send('Error, wrong password')
@@ -58,7 +64,7 @@ Router.get('/register', async (req, res) => {
   if (req.user) {
     res.render('home', { name: req.user.username, alert: 'You are already logged in.' })
   } else {
-    res.render('register')
+    res.render('user/register')
   }
 })
 
@@ -87,7 +93,7 @@ Router.post('/register', async (req, res) => {
 Router.get('/logout', async (req, res) => {
   if (req.user) {
     req.session.destroy()
-    res.render('logout', { name: req.user.username })
+    res.render('user/logout', { name: req.user.username })
   } else {
     res.redirect('/user/login')
   }
@@ -99,12 +105,14 @@ Router.get('/list', async (req, res) => {
       if (err) {
         res.send(err)
       } else {
-      // console.log('Result: ', result)
-        res.send(result)
+        // console.log('Result: ', result)
+
+        res.render('user/userList', { data: result, name: req.user.username })
       // res.send(JSON.stringify(result))
       }
     }).sort({ _id: -1 }).limit(10)
   } else {
+    req.session.oldUrl = '/user/list'
     res.redirect('/user/login')
   }
 })
