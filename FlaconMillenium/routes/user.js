@@ -99,6 +99,44 @@ Router.get('/logout', async (req, res) => {
   }
 })
 
+Router.get('/delete/:identification', async (req, res) => {
+  if (req.user) {
+    var unit = USER.find({ _id: req.params.identification }, function (err, result) {
+      if (err) {
+        res.send(err)
+      }
+    })
+    await unit.deleteOne()
+    USER.find({}, function (err, result) {
+      if (err) {
+        res.send(err)
+      } else {
+      // console.log('Result: ', result)
+        res.render('user/userList', { data: result, name: req.user.username })
+      // res.send(JSON.stringify(result))
+      }
+    })
+  } else {
+    req.session.oldUrl = '/user/unit/' + req.params.identification
+    res.redirect('/user/login')
+  }
+})
+
+Router.delete('/unit', async (req, res) => {
+  if (req.user) {
+    var unit = USER.find({ _id: req.body.id }, function (err, result) {
+      if (err) {
+        res.send('404')
+      }
+    })
+    await unit.deleteOne()
+    res.send('200')
+  } else {
+    req.session.oldUrl = '/storage/unit/' + req.params.identification
+    res.redirect('/user/login')
+  }
+})
+
 Router.get('/list', async (req, res) => {
   if (req.user) {
     USER.find({}, function (err, result) {

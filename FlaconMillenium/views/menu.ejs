@@ -2,10 +2,9 @@
   <li><a href="/"><%= name %></a></li>
   <li><a href="/user/list">User list</a></li>
   <li><a href="/forum/comment">Forum</a></li>
-  <li><a href="/storage/list">view storage</a></li>
-  <li><a href="/storage/add">add storage</a></li>
+  <li><a href="/storage/list">Storage</a></li>
   <li class="rightSide"><a href="/user/logout">Logout</a></li>
 </ul>
-<% if(typeof alert !== 'undefined') { %>
-  <script>alert("<%= alert %>");</script>
+<% if(typeof alert !== 'undefined' && alert != '') { %>
+  <script>alert("<%= alert %>")</script>
 <% } %>

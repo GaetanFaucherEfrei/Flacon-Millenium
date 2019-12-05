@@ -22,11 +22,35 @@
             <tr>
               <td><%= data[i].username %></td>
               <td><button type="button"><a href="/user/edit/<%= data[i].id %>">Edit</a></button></td>
-              <td><button type="button"><a href="/user/delete/<%= data[i].id %> ">Delete</a></button></td>
+              <td><button type="button" onclick="deleteUnitById('/user/unit','<%= data[i].id %>')">Delete</button></td>
             </tr>
           <% } %>
         </table>
       </div>
     </div>
+
+    <script>
+        function deleteUnitById(path, id){
+          var answer = confirm("Are you sure you want to delete ?");
+          if (answer == true) {
+            $.ajax({
+              type: "DELETE",
+              url: path,
+              data: {
+                id: id
+              },
+              success: function(result, status) {
+                console.log('success : ' + status)
+                location.reload()
+              },
+              error : function(result, status, error){
+                console.log('success : ' + status)
+                alert("This storage unit does not exist.")
+              },
+              complete : function(result, status){}
+            })
+          }
+        }
+      </script>
   </body>
 </html>
