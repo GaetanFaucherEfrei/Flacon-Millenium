@@ -90,11 +90,7 @@ Router.post('/unit', async (req, res) => {
   try {
     if (req.user) {
       new CATEGORY({
-        location: req.body.location,
         name: req.body.name,
-        nbLigne: req.body.nbLigne,
-        nbColone: req.body.nbColone,
-        nbPlace: req.body.nbPlace,
         description: req.body.description
       }).save(function (error, result) {
         if (error) {
@@ -122,11 +118,7 @@ Router.patch('/unit', async (req, res) => {
     if (req.user) {
       CATEGORY.findByIdAndUpdate({ _id: req.body.id }, {
         $set: {
-          location: req.body.location,
           name: req.body.name,
-          nbLigne: req.body.nbLigne,
-          nbColone: req.body.nbColone,
-          nbPlace: req.body.nbPlace,
           description: req.body.description
         }
       }, function (error, result) {
@@ -134,11 +126,7 @@ Router.patch('/unit', async (req, res) => {
           // console.log('The unit did not exist.')
           res.status(404).send('Error : The unit did not exist.')
         } else {
-          result.location = req.body.location
           result.name = req.body.name
-          result.nbLigne = req.body.nbLigne
-          result.nbColone = req.body.nbColone
-          result.nbPlace = req.body.nbPlace
           result.description = req.body.description
 
           // console.log('The post was succesfull.')
