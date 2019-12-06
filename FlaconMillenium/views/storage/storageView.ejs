@@ -4,7 +4,10 @@
     <title>Storage</title>
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
     <link href="/css/storage.css" rel="stylesheet" type="text/css">
+    <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/storageFonctions.js"></script>
   </head>
 
   <body>
@@ -12,31 +15,29 @@
     <div id="content">
       <h1>Storage</h1>
 
-
       <!-- Message display area -->
       <div>
-          <table>
-              <tr>
-                  <td>location</td>
-                  <td>name</td>
-                  <td>nbLigne</td>
-                  <td>nbColone</td>
-                  <td>nbPlace</td>
-                  <td>description</td>
-                </tr>
-              <% for(var i=0; i < data.length; i++) { %>
-                <tr>
-                  <td><%= data[i].location %></td>
-                  <td><%= data[i].name %></td>
-                  <td><%= data[i].nbLigne %></td>
-                  <td><%= data[i].nbColone %></td>
-                  <td><%= data[i].nbPlace %></td>
-                  <td><%= data[i].description %></td>
-                  <td><button type="button"><a href="/storage/edit/<%= data[i].id %>">Edit</a></button></td>
-                  <td><button type="button"><a href="/storage/delete/<%= data[i].id %> ">Delete</a></button></td>
-                </tr>
-              <% } %>
-              </table>
+        <div id="editorForm"></div>
+        <table>
+          <tr>
+            <td>location</td>
+            <td>name</td>
+            <td>nbLigne</td>
+            <td>nbColone</td>
+            <td>nbPlace</td>
+            <td>description</td>
+          </tr>
+            <tr>
+              <td><%= data.location %></td>
+              <td><%= data.name %></td>
+              <td><%= data.nbLigne %></td>
+              <td><%= data.nbColone %></td>
+              <td><%= data.nbPlace %></td>
+              <td><%= data.description %></td>
+              <td><button type="button" class="open-button" onclick="createForm('patchById', '/storage/unit', '<%= data.id %>', '<%= data.location %>', '<%= data.name %>', '<%= data.nbLigne %>', '<%= data.nbColone %>', '<%= data.nbPlace %>', '<%= data.description %>')">Edit</button></td> 
+              <td><button type="button" onclick="deleteById('/storage/unit','<%= data.id %>')">Delete</button></td> 
+            </tr>
+        </table>
       </div>
     </div>
   </body>

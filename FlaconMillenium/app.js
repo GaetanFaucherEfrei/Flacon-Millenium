@@ -4,6 +4,7 @@ const USER = require('./routes/user.js')
 const FORUM = require('./routes/forum.js')
 const BOTTLE = require('./routes/bottle.js')
 const STORAGE = require('./routes/storage.js')
+const CATEGORY = require('./routes/category.js')
 const BODY_PARSER = require('body-parser') // pour parser les requêtes POST
 const MONGOOSE = require('mongoose')
 const PATH = require('path')
@@ -35,6 +36,7 @@ App.use(USER.verifUserMiddleWare)
 App.use('/forum', FORUM)
 App.use('/bottle', BOTTLE)
 App.use('/storage', STORAGE)
+App.use('/category', CATEGORY)
 
 App.set('views', PATH.join(__dirname, 'views'))
 App.set('view engine', 'ejs')
@@ -45,8 +47,28 @@ App.listen(3000, () => {
 
 App.get('/', (req, res) => {
   if (req.user) {
-    res.render('home', { name: req.user.username })
+    res.status(301).redirect('/home')
   } else {
-    res.redirect('/user/login')
+    res.status(401).redirect('/user/login')
+  }
+})
+
+App.get('/home', (req, res) => {
+  if (req.user) {
+    var alert = req.session.alert
+    req.session.alert = ''
+    res.render('home', { name: req.user.username, alert: alert })
+  } else {
+    res.status(401).redirect('/user/login')
+  }
+})
+
+App.all('*', (req, res) => {
+  if (req.user) {
+    req.session.alert = 'Error : ' + req.get('host') + req.originalUrl + ' does not exist.'
+    res.status(301).redirect('/home')
+  } else {
+    req.session.oldUrl = req.originalUrl
+    res.status(401).redirect(301, '/user/login')
   }
 })

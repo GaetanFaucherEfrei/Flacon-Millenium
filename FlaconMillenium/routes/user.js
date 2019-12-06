@@ -17,7 +17,8 @@ Router.use(verifUserMiddleWare)
 Router.get('/login', (req, res) => {
   // console.log('login')
   if (req.user) {
-    res.render('home', { name: req.user.username, alert: 'You are already logged in.' })
+    req.session.alert = 'You are already logged in.'
+    res.status(301).redirect('/home')
   } else {
     res.render('user/login')
   }
@@ -25,12 +26,13 @@ Router.get('/login', (req, res) => {
 
 Router.post('/login', async (req, res) => {
   if (req.user) {
-    res.render('home', { name: req.user.username, alert: 'You are already logged in.' })
+    req.session.alert = 'You are already logged in.'
+    res.status(301).redirect('/home')
   } else {
     const PERSON = await USER.findOne({ username: req.body.username })
     // console.log(PERSON)
     if (PERSON == null) {
-      res.send('Error, no such user')
+      res.render('user/login', { alert: 'Error : no such user.' })
     } else {
       BCRYPT.compare(req.body.password, PERSON.password, function (err, result) {
         if (err) throw err
@@ -49,11 +51,11 @@ Router.post('/login', async (req, res) => {
               req.session.oldUrl = ''
               res.redirect(newPath)
             } else {
-              res.render('home', { name: req.session.username })
+              res.status(200).redirect('/home')
             }
           }
         } else {
-          res.send('Error, wrong password')
+          res.render('user/login', { alert: 'Error : Wrong password.' })
         }
       })
     }
@@ -62,7 +64,8 @@ Router.post('/login', async (req, res) => {
 
 Router.get('/register', async (req, res) => {
   if (req.user) {
-    res.render('home', { name: req.user.username, alert: 'You are already logged in.' })
+    req.session.alert = 'You are already logged in.'
+    res.status(301).redirect('/home')
   } else {
     res.render('user/register')
   }
@@ -70,7 +73,8 @@ Router.get('/register', async (req, res) => {
 
 Router.post('/register', async (req, res) => {
   if (req.user) {
-    res.render('home', { name: req.user.username, alert: 'You are already logged in.' })
+    req.session.alert = 'You are already logged in.'
+    res.status(301).redirect('/home')
   } else {
     const PERSON = await USER.findOne({ username: req.body.username })
     // console.log(PERSON)

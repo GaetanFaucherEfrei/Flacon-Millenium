@@ -1,5 +1,5 @@
 const EXPRESS = require('express')
-const STORAGE = require('../models/storage.model.js')
+const CATEGORY = require('../models/category.model.js')
 var Router = EXPRESS.Router()
 
 global.results = null
@@ -22,7 +22,7 @@ global.results = null
 Router.get('/list', async (req, res) => {
   try {
     if (req.user) {
-      STORAGE.find({}, function (error, result) {
+      CATEGORY.find({}, function (error, result) {
         if (error) {
           // console.log('The unit did not exist.')
           res.status(404).send('Error : The list does not exist.')
@@ -31,7 +31,7 @@ Router.get('/list', async (req, res) => {
           var alert = req.session.alert
           req.session.alert = ''
 
-          res.status(200).render('storage/storageList', { data: result, name: req.user.username, alert: alert })
+          res.status(200).render('category/categoryList', { data: result, name: req.user.username, alert: alert })
           // res.send(JSON.stringify(result))
         }
       }).sort({ _id: -1 })
@@ -53,14 +53,14 @@ Router.get('/unit', async (req, res) => {
         // console.log('The unit did not exist.')
         res.status(404).send('Error : The unit did not exist.')
       } else {
-        STORAGE.findById({ _id: req.query.id }, function (error, result) {
+        CATEGORY.findById({ _id: req.query.id }, function (error, result) {
           if (error) {
             // console.log('The unit did not exist.')
             res.status(404).send('Error : The unit does not exist.')
           } else {
             res.format({
               'text/html': function () {
-                res.status(200).render('storage/storageView', { data: result, name: req.user.username })
+                res.status(200).render('category/categoryView', { data: result, name: req.user.username })
               },
 
               'application/json': function () {
@@ -68,7 +68,7 @@ Router.get('/unit', async (req, res) => {
               },
 
               default: function () {
-                res.status(200).render('storage/storageView', { data: result, name: req.user.username })
+                res.status(200).render('category/categoryView', { data: result, name: req.user.username })
               }
             })
           }
@@ -89,7 +89,7 @@ Router.get('/unit', async (req, res) => {
 Router.post('/unit', async (req, res) => {
   try {
     if (req.user) {
-      new STORAGE({
+      new CATEGORY({
         location: req.body.location,
         name: req.body.name,
         nbLigne: req.body.nbLigne,
@@ -107,7 +107,7 @@ Router.post('/unit', async (req, res) => {
       })
     } else {
     // console.log('User not identified.')
-      req.session.oldUrl = '/storage/list'
+      req.session.oldUrl = '/category/list'
       res.status(401).redirect('/user/login')
     }
   } catch (error) {
@@ -120,7 +120,7 @@ Router.post('/unit', async (req, res) => {
 Router.patch('/unit', async (req, res) => {
   try {
     if (req.user) {
-      STORAGE.findByIdAndUpdate({ _id: req.body.id }, {
+      CATEGORY.findByIdAndUpdate({ _id: req.body.id }, {
         $set: {
           location: req.body.location,
           name: req.body.name,
@@ -160,7 +160,7 @@ Router.patch('/unit', async (req, res) => {
 Router.delete('/unit', async (req, res) => {
   try {
     if (req.user) {
-      STORAGE.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
+      CATEGORY.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
         if (error) {
           // console.log('The unit did not exist.')
           res.status(404).send('Error : The unit did not exist.')

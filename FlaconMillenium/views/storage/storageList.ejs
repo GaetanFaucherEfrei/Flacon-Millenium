@@ -1,4 +1,4 @@
-<!DOCTYPE xhtml>
+<!DOCTYPE html>
 <html>
   <head>
     <title>Storage</title>
@@ -6,7 +6,8 @@
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
     <link href="/css/storage.css" rel="stylesheet" type="text/css">
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/storageFonctions.js"></script>
   </head>
 
   <body>
@@ -16,8 +17,8 @@
 
       <!-- Message display area -->
       <div>
+        <div id="editorForm"></div>
         <table>
-          <div id="editorForm"></div>
           <tr>
             <td>location</td>
             <td>name</td>
@@ -34,146 +35,14 @@
               <td><%= data[i].nbColone %></td>
               <td><%= data[i].nbPlace %></td>
               <td><%= data[i].description %></td>
-              <td><button type="button" onclick="getUnitById('/storage/unit','<%= data[i].id %>')">Detail</button></td> 
-              <td><button type="button" class="open-button" onclick="createStorageForm('editUnitById', '/storage/unit', '<%= data[i].location %>', '<%= data[i].name %>', '<%= data[i].nbLigne %>', '<%= data[i].nbColone %>', '<%= data[i].nbPlace %>', '<%= data[i].description %>','<%= data[i].id %>')">Edit</button></td> 
-              <td><button type="button" onclick="deleteUnitById('/storage/unit','<%= data[i].id %>')">Delete</button></td> 
+              <td><a href="/storage/unit?id=<%= data[i].id %>">Detail</a></td> 
+              <td><button type="button" class="open-button" onclick="createForm('patchById', '/storage/unit', '<%= data[i].id %>', '<%= data[i].location %>', '<%= data[i].name %>', '<%= data[i].nbLigne %>', '<%= data[i].nbColone %>', '<%= data[i].nbPlace %>', '<%= data[i].description %>')">Edit</button></td> 
+              <td><button type="button" onclick="deleteById('/storage/unit','<%= data[i].id %>')">Delete</button></td> 
             </tr>
           <% } %>
         </table>
-        <button type="button" class="open-button" onclick="createStorageForm('addUnitById', '/storage/unit')">Add a storage</button>
+        <button type="button" class="open-button" onclick="createForm('postById', '/storage/unit')">Add a storage</button>
       </div>
-    </div>
-
-    <script>
-                
-      function createStorageForm(fonction, path, location, name, nbLigne, nbColone, nbPlace, description, id) {
-        document.getElementById("editorForm").innerHTML = '<div class="form-popup" id="myForm">'
-              +'<form class="form-container" >'
-              +'  <h1>Edit</h1>'
-              +'  <div class="form-input">'
-              +'    <label for="location"><b>Location</b></label>'
-              +'    <input type="text" value="'+ location +'" name="location" required="required">'
-              +'    <br />'
-              +'    <label for="name"><b>Name</b></label>'
-              +'    <input type="text" value="'+ name +'" name="name" required="required">'
-              +'    <br />'
-              +'    <label for="nbLigne"><b>Number of ligne</b></label>'
-              +'    <input type="number" value="'+ nbLigne +'" name="nbLigne" required="required">'
-              +'    <br />'
-              +'    <label for="nbColone"><b>Number of colone</b></label>'
-              +'    <input type="number" value="'+ nbColone +'" name="nbColone" required="required">'
-              +'    <br />'
-              +'    <label for="nbPlace"><b>Number of place by unit</b></label>'
-              +'    <input type="number" value="'+ nbPlace +'" name="nbPlace" required="required">'
-              +'    <br />'
-              +'    <label for="description"><b>Description</b></label>'
-              +'    <input type="text" value="'+ description +'" name="description">'
-              +'  </div>'
-              +'  <br />'
-            
-              +'  <button type="button" class="btn" onclick="'+fonction+'(\''+ path +'\',\''+ id +'\')">Edit</button> </br>'
-              +'  <button type="button" class="btn cancel" onclick="closeForm(\'editorForm\')">Cancel</button>'
-            +'  </form>'
-            +'</div>'
-      }
-
-      function closeForm(id) {
-        document.getElementById(id).innerHTML = ""
-      }
-
-      function addUnitById(path, id) {
-        console.log('EditUnitById')
-        $.ajax({
-          type: "POST",
-          url: path,
-          data: {
-            id: id,
-            location: document.querySelectorAll('.form-container input[name="location"]')[0].value,
-            name: document.querySelectorAll('.form-container input[name="name"]')[0].value,
-            nbLigne: document.querySelectorAll('.form-container input[name="nbLigne"]')[0].value,
-            nbColone: document.querySelectorAll('.form-container input[name="nbColone"]')[0].value,
-            nbPlace: document.querySelectorAll('.form-container input[name="nbPlace"]')[0].value,
-            description: document.querySelectorAll('.form-container input[name="description"]')[0].value
-          },
-          success: function(result, status) {
-            console.log('success : ' + status)
-            location.reload()
-          },
-          error : function(result, status, error){
-            console.log('success : ' + status)
-            alert("This storage unit does not exist.")
-          },
-          complete : function(result, status){}
-        })
-      }
-
-      function editUnitById(path, id) {
-        console.log('EditUnitById')
-        console.log(document.querySelectorAll('.form-container input[name="name"]')[0].value)
-        $.ajax({
-          type: "PATCH",
-          url: path,
-          data: {
-            id: id,
-            location: document.querySelectorAll('.form-container input[name="location"]')[0].value,
-            name: document.querySelectorAll('.form-container input[name="name"]')[0].value,
-            nbLigne: document.querySelectorAll('.form-container input[name="nbLigne"]')[0].value,
-            nbColone: document.querySelectorAll('.form-container input[name="nbColone"]')[0].value,
-            nbPlace: document.querySelectorAll('.form-container input[name="nbPlace"]')[0].value,
-            description: document.querySelectorAll('.form-container input[name="description"]')[0].value
-          },
-          success: function(result, status) {
-            console.log('success : ' + status)
-            location.reload()
-          },
-          error : function(result, status, error){
-            console.log('success : ' + status)
-            alert("This storage unit does not exist.")
-          },
-          complete : function(result, status){}
-        })
-      }
-
-      function deleteUnitById(path, id){
-        var answer = confirm("Are you sure you want to delete ?")
-        if (answer == true) {
-          $.ajax({
-            type: "DELETE",
-            url: path,
-            data: {
-              id: id
-            },
-            success: function(result, status) {
-              console.log('success : ' + status)
-              location.reload()
-            },
-            error : function(result, status, error){
-              console.log('success : ' + status)
-              alert("This storage unit does not exist.")
-            },
-            complete : function(result, status){}
-          })
-        }
-      }
-
-      function getUnitById(path, id){
-          $.ajax({
-            type: "GET",
-            url: path,
-            data: {
-              id: id
-            },
-            success: function(result, status) {
-              console.log('success : ' + status)
-            },
-            error : function(result, status, error){
-              console.log('success : ' + status)
-              alert("This storage unit does not exist.")
-            },
-            complete : function(result, status){}
-          })
-        }
-    </script>
-      
+    </div> 
   </body>
 </html>

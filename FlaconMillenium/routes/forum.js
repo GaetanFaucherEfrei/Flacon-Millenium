@@ -12,13 +12,10 @@ Router.post('/comment', async (req, res) => {
       date: new Date()
     }).save()
 
-    // console.log('req.body.content', req.body.content)
-    // console.log('req.body.author', req.body.author)
-
-    res.redirect('/forum/comment')
+    res.status(200).redirect('/forum/comment')
   } else {
     req.session.oldUrl = '/forum/comment'
-    res.redirect('/user/login')
+    res.status(401).redirect('/user/login')
   }
 })
 
@@ -28,14 +25,12 @@ Router.get('/comment', async (req, res) => {
       if (err) {
         res.send(err)
       } else {
-      // console.log('Result: ', result)
-        res.render('forum/forum', { data: result, name: req.user.username })
-      // res.send(JSON.stringify(result))
+        res.status(200).render('forum/forum', { data: result, name: req.user.username })
       }
     }).sort({ _id: -1 }).limit(10)
   } else {
     req.session.oldUrl = '/forum/comment'
-    res.redirect('/user/login')
+    res.status(401).redirect('/user/login')
   }
 })
 
