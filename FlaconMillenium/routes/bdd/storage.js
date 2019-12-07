@@ -1,5 +1,5 @@
 const EXPRESS = require('express')
-const STORAGE = require('../models/storage.model.js')
+const STORAGE = require('../../models/storage.model.js')
 var Router = EXPRESS.Router()
 
 global.results = null
@@ -25,7 +25,7 @@ Router.get('/list', async (req, res) => {
       STORAGE.find({}, function (error, result) {
         if (error) {
           // console.log('The unit did not exist.')
-          res.status(404).send('Error : The list does not exist.')
+          notFound(req, res, 0)
         } else {
           // console.log('Result: ', result)
           var alert = req.session.alert
@@ -51,26 +51,30 @@ Router.get('/unit', async (req, res) => {
     if (req.user) {
       if (typeof req.query.id === 'undefined') {
         // console.log('The unit did not exist.')
-        res.status(404).send('Error : The unit did not exist.')
+        notFound(req, res, 0)
       } else {
         STORAGE.findById({ _id: req.query.id }, function (error, result) {
           if (error) {
             // console.log('The unit did not exist.')
-            res.status(404).send('Error : The unit does not exist.')
+            notFound(req, res, 1)
           } else {
-            res.format({
-              'text/html': function () {
-                res.status(200).render('storage/storageView', { data: result, name: req.user.username })
-              },
+            if (result) {
+              res.format({
+                'text/html': function () {
+                  res.status(200).render('storage/storageView', { data: result, name: req.user.username })
+                },
 
-              'application/json': function () {
-                res.status(200).send(result)
-              },
+                'application/json': function () {
+                  res.status(200).send(result)
+                },
 
-              default: function () {
-                res.status(200).render('storage/storageView', { data: result, name: req.user.username })
-              }
-            })
+                default: function () {
+                  res.status(200).render('storage/storageView', { data: result, name: req.user.username })
+                }
+              })
+            } else {
+              notFound(req, res, 1)
+            }
           }
         })
       }
@@ -132,17 +136,21 @@ Router.patch('/unit', async (req, res) => {
       }, function (error, result) {
         if (error) {
           // console.log('The unit did not exist.')
-          res.status(404).send('Error : The unit did not exist.')
+          notFound(req, res, 1)
         } else {
-          result.location = req.body.location
-          result.name = req.body.name
-          result.nbLigne = req.body.nbLigne
-          result.nbColone = req.body.nbColone
-          result.nbPlace = req.body.nbPlace
-          result.description = req.body.description
+          if (result) {
+            result.location = req.body.location
+            result.name = req.body.name
+            result.nbLigne = req.body.nbLigne
+            result.nbColone = req.body.nbColone
+            result.nbPlace = req.body.nbPlace
+            result.description = req.body.description
 
-          // console.log('The post was succesfull.')
-          res.status(200).send(result)
+            // console.log('The post was succesfull.')
+            res.status(200).send(result)
+          } else {
+            notFound(req, res, 1)
+          }
         }
       })
     } else {
@@ -163,7 +171,7 @@ Router.delete('/unit', async (req, res) => {
       STORAGE.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
         if (error) {
           // console.log('The unit did not exist.')
-          res.status(404).send('Error : The unit did not exist.')
+          notFound(req, res, 1)
         } else {
           // console.log('The delete was succesfull.')
           res.status(200).send(result)
@@ -179,5 +187,27 @@ Router.delete('/unit', async (req, res) => {
     res.status(520).send('There was an error with our server.')
   }
 })
+
+function notFound (req, res, alert) {
+  res.format({
+    'text/html': function () {
+      if (alert) {
+        req.session.alert = 'Error : The storage was not found.'
+      }
+      res.status(404).redirect('/home')
+    },
+
+    'application/json': function () {
+      res.status(404).send('Error : The storage was not found.')
+    },
+
+    default: function () {
+      if (alert) {
+        req.session.alert = 'Error : The storage was not found.'
+      }
+      res.status(404).redirect('/home')
+    }
+  })
+}
 
 module.exports = Router

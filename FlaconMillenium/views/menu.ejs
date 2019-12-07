@@ -2,12 +2,17 @@
   <li><a href="/"><%= name %></a></li>
   <li><a href="/user/list">User list</a></li>
   <li><a href="/forum/comment">Forum</a></li>
-  <li><a href="/storage/list">Storage</a></li>
-  <li><a href="/category/list">Category</a></li>
-  <li><a href="/status/list">Status</a></li>
-  <li><a href="/designation/list">Designation</a></li>
-  <li><a href="/accompaniment/list">Accompaniment</a></li>
-  <li><a href="/image/list">Image</a></li>
+  <li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Dropdown</a>
+    <div class="dropdown-content">
+      <a href="/storage/list">Storage</a>
+      <a href="/category/list">Category</a>
+      <a href="/status/list">Status</a>
+      <a href="/designation/list">Designation</a>
+      <a href="/accompaniment/list">Accompaniment</a>
+      <a href="/image/list">Image</a>
+    </div>
+  </li>
   <li class="rightSide"><a href="/user/logout">Logout</a></li>
 </ul>
 <% if(typeof alert !== 'undefined' && alert != '') { %>

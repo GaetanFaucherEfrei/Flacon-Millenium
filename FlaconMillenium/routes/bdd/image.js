@@ -1,5 +1,5 @@
 const EXPRESS = require('express')
-const CATEGORY = require('../models/category.model.js')
+const IMAGE = require('../../models/image.model.js')
 var Router = EXPRESS.Router()
 
 global.results = null
@@ -22,16 +22,16 @@ global.results = null
 Router.get('/list', async (req, res) => {
   try {
     if (req.user) {
-      CATEGORY.find({}, function (error, result) {
+      IMAGE.find({}, function (error, result) {
         if (error) {
-          // console.log('The unit did not exist.')
-          res.status(404).send('Error : The list does not exist.')
+          // console.log('The image did not exist.')
+          notFound(req, res, 0)
         } else {
           // console.log('Result: ', result)
           var alert = req.session.alert
           req.session.alert = ''
 
-          res.status(200).render('category/categoryList', { data: result, name: req.user.username, alert: alert })
+          res.status(200).render('image/imageList', { data: result, name: req.user.username, alert: alert })
           // res.send(JSON.stringify(result))
         }
       }).sort({ _id: -1 })
@@ -50,27 +50,31 @@ Router.get('/unit', async (req, res) => {
   try {
     if (req.user) {
       if (typeof req.query.id === 'undefined') {
-        // console.log('The unit did not exist.')
-        res.status(404).send('Error : The unit did not exist.')
+        // console.log('The image did not exist.')
+        notFound(req, res, 0)
       } else {
-        CATEGORY.findById({ _id: req.query.id }, function (error, result) {
+        IMAGE.findById({ _id: req.query.id }, function (error, result) {
           if (error) {
-            // console.log('The unit did not exist.')
-            res.status(404).send('Error : The unit does not exist.')
+            // console.log('The image did not exist.')
+            notFound(req, res, 1)
           } else {
-            res.format({
-              'text/html': function () {
-                res.status(200).render('category/categoryView', { data: result, name: req.user.username })
-              },
+            if (result) {
+              res.format({
+                'text/html': function () {
+                  res.status(200).render('image/imageView', { data: result, name: req.user.username })
+                },
 
-              'application/json': function () {
-                res.status(200).send(result)
-              },
+                'application/json': function () {
+                  res.status(200).send(result)
+                },
 
-              default: function () {
-                res.status(200).render('category/categoryView', { data: result, name: req.user.username })
-              }
-            })
+                default: function () {
+                  res.status(200).render('image/imageView', { data: result, name: req.user.username })
+                }
+              })
+            } else {
+              notFound(req, res, 1)
+            }
           }
         })
       }
@@ -89,9 +93,8 @@ Router.get('/unit', async (req, res) => {
 Router.post('/unit', async (req, res) => {
   try {
     if (req.user) {
-      new CATEGORY({
-        name: req.body.name,
-        description: req.body.description
+      new IMAGE({
+        accessPath: req.body.accessPath
       }).save(function (error, result) {
         if (error) {
           console.log('Check the type of your entry :' + error)
@@ -103,7 +106,7 @@ Router.post('/unit', async (req, res) => {
       })
     } else {
     // console.log('User not identified.')
-      req.session.oldUrl = '/category/list'
+      req.session.oldUrl = '/image/list'
       res.status(401).redirect('/user/login')
     }
   } catch (error) {
@@ -116,21 +119,22 @@ Router.post('/unit', async (req, res) => {
 Router.patch('/unit', async (req, res) => {
   try {
     if (req.user) {
-      CATEGORY.findByIdAndUpdate({ _id: req.body.id }, {
+      IMAGE.findByIdAndUpdate({ _id: req.body.id }, {
         $set: {
-          name: req.body.name,
-          description: req.body.description
+          accessPath: req.body.accessPath
         }
       }, function (error, result) {
         if (error) {
-          // console.log('The unit did not exist.')
-          res.status(404).send('Error : The unit did not exist.')
+          // console.log('The image did not exist.')
+          notFound(req, res, 1)
         } else {
-          result.name = req.body.name
-          result.description = req.body.description
-
-          // console.log('The post was succesfull.')
-          res.status(200).send(result)
+          if (result) {
+            result.accessPath = req.body.accessPath
+            // console.log('The post was succesfull.')
+            res.status(200).send(result)
+          } else {
+            notFound(req, res, 1)
+          }
         }
       })
     } else {
@@ -148,10 +152,10 @@ Router.patch('/unit', async (req, res) => {
 Router.delete('/unit', async (req, res) => {
   try {
     if (req.user) {
-      CATEGORY.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
+      IMAGE.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
         if (error) {
-          // console.log('The unit did not exist.')
-          res.status(404).send('Error : The unit did not exist.')
+          // console.log('The image did not exist.')
+          notFound(req, res, 1)
         } else {
           // console.log('The delete was succesfull.')
           res.status(200).send(result)
@@ -167,5 +171,27 @@ Router.delete('/unit', async (req, res) => {
     res.status(520).send('There was an error with our server.')
   }
 })
+
+function notFound (req, res, alert) {
+  res.format({
+    'text/html': function () {
+      if (alert) {
+        req.session.alert = 'Error : The image was not found.'
+      }
+      res.status(404).redirect('/home')
+    },
+
+    'application/json': function () {
+      res.status(404).send('Error : The image was not found.')
+    },
+
+    default: function () {
+      if (alert) {
+        req.session.alert = 'Error : The image was not found.'
+      }
+      res.status(404).redirect('/home')
+    }
+  })
+}
 
 module.exports = Router

@@ -1,5 +1,5 @@
 const EXPRESS = require('express')
-const ACCOMPANIMENT = require('../models/accompaniment.model.js')
+const STATUS = require('../../models/status.model.js')
 var Router = EXPRESS.Router()
 
 global.results = null
@@ -22,16 +22,16 @@ global.results = null
 Router.get('/list', async (req, res) => {
   try {
     if (req.user) {
-      ACCOMPANIMENT.find({}, function (error, result) {
+      STATUS.find({}, function (error, result) {
         if (error) {
-          // console.log('The unit did not exist.')
-          res.status(404).send('Error : The list does not exist.')
+          // console.log('The status did not exist.')
+          notFound(req, res, 0)
         } else {
           // console.log('Result: ', result)
           var alert = req.session.alert
           req.session.alert = ''
 
-          res.status(200).render('accompaniment/accompanimentList', { data: result, name: req.user.username, alert: alert })
+          res.status(200).render('status/statusList', { data: result, name: req.user.username, alert: alert })
           // res.send(JSON.stringify(result))
         }
       }).sort({ _id: -1 })
@@ -50,27 +50,31 @@ Router.get('/unit', async (req, res) => {
   try {
     if (req.user) {
       if (typeof req.query.id === 'undefined') {
-        // console.log('The unit did not exist.')
-        res.status(404).send('Error : The unit did not exist.')
+        // console.log('The status did not exist.')
+        notFound(req, res, 0)
       } else {
-        ACCOMPANIMENT.findById({ _id: req.query.id }, function (error, result) {
+        STATUS.findById({ _id: req.query.id }, function (error, result) {
           if (error) {
-            // console.log('The unit did not exist.')
-            res.status(404).send('Error : The unit does not exist.')
+            // console.log('The status did not exist.')
+            notFound(req, res, 1)
           } else {
-            res.format({
-              'text/html': function () {
-                res.status(200).render('accompaniment/accompanimentView', { data: result, name: req.user.username })
-              },
+            if (result) {
+              res.format({
+                'text/html': function () {
+                  res.status(200).render('status/statusView', { data: result, name: req.user.username })
+                },
 
-              'application/json': function () {
-                res.status(200).send(result)
-              },
+                'application/json': function () {
+                  res.status(200).send(result)
+                },
 
-              default: function () {
-                res.status(200).render('accompaniment/accompanimentView', { data: result, name: req.user.username })
-              }
-            })
+                default: function () {
+                  res.status(200).render('status/statusView', { data: result, name: req.user.username })
+                }
+              })
+            } else {
+              notFound(req, res, 1)
+            }
           }
         })
       }
@@ -89,8 +93,8 @@ Router.get('/unit', async (req, res) => {
 Router.post('/unit', async (req, res) => {
   try {
     if (req.user) {
-      new ACCOMPANIMENT({
-        dishType: req.body.dishType,
+      new STATUS({
+        name: req.body.name,
         description: req.body.description
       }).save(function (error, result) {
         if (error) {
@@ -103,7 +107,7 @@ Router.post('/unit', async (req, res) => {
       })
     } else {
     // console.log('User not identified.')
-      req.session.oldUrl = '/accompaniment/list'
+      req.session.oldUrl = '/status/list'
       res.status(401).redirect('/user/login')
     }
   } catch (error) {
@@ -116,21 +120,24 @@ Router.post('/unit', async (req, res) => {
 Router.patch('/unit', async (req, res) => {
   try {
     if (req.user) {
-      ACCOMPANIMENT.findByIdAndUpdate({ _id: req.body.id }, {
+      STATUS.findByIdAndUpdate({ _id: req.body.id }, {
         $set: {
-          dishType: req.body.dishType,
+          name: req.body.name,
           description: req.body.description
         }
       }, function (error, result) {
         if (error) {
-          // console.log('The unit did not exist.')
-          res.status(404).send('Error : The unit did not exist.')
+          // console.log('The status did not exist.')
+          notFound(req, res, 1)
         } else {
           result.name = req.body.name
           result.description = req.body.description
 
-          // console.log('The post was succesfull.')
-          res.status(200).send(result)
+          if (result) { // console.log('The post was succesfull.')
+            res.status(200).send(result)
+          } else {
+            notFound(req, res, 1)
+          }
         }
       })
     } else {
@@ -148,10 +155,10 @@ Router.patch('/unit', async (req, res) => {
 Router.delete('/unit', async (req, res) => {
   try {
     if (req.user) {
-      ACCOMPANIMENT.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
+      STATUS.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
         if (error) {
-          // console.log('The unit did not exist.')
-          res.status(404).send('Error : The unit did not exist.')
+          // console.log('The status did not exist.')
+          notFound(req, res, 1)
         } else {
           // console.log('The delete was succesfull.')
           res.status(200).send(result)
@@ -167,5 +174,27 @@ Router.delete('/unit', async (req, res) => {
     res.status(520).send('There was an error with our server.')
   }
 })
+
+function notFound (req, res, alert) {
+  res.format({
+    'text/html': function () {
+      if (alert) {
+        req.session.alert = 'Error : The status was not found.'
+      }
+      res.status(404).redirect('/home')
+    },
+
+    'application/json': function () {
+      res.status(404).send('Error : The status was not found.')
+    },
+
+    default: function () {
+      if (alert) {
+        req.session.alert = 'Error : The status was not found.'
+      }
+      res.status(404).redirect('/home')
+    }
+  })
+}
 
 module.exports = Router
