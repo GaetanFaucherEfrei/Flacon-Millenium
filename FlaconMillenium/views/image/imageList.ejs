@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Category</title>
+    <title>Image</title>
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
@@ -9,33 +9,31 @@
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
     <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/categoryFonctions.js"></script>
+    <script type="text/javascript" src="/js/imageFonctions.js"></script>
   </head>
 
   <body>
     <%- include('../menu.ejs') %>
     <div id="content">
-      <h1>Category</h1>
+      <h1>Image</h1>
 
       <!-- Message display area -->
       <div>
         <table>
-          <div id="editorCategoryForm"></div>
+          <div id="editorImageForm"></div>
           <tr>
-            <td>name</td>
-            <td>description</td>
+            <td>accessPath</td>
           </tr>
           <% for(var i=0; i < data.length; i++) { %>
             <tr>
-              <td><%= data[i].name %></td>
-              <td><%= data[i].description %></td>
-              <td><a href="/category/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createCategoryForm('patchCategoryById', '/category/unit', '<%= data[i].id %>', '<%= data[i].name %>', '<%= data[i].description %>')">Edit</button></td> 
-              <td><button type="button" onclick="deleteById('/category/unit','<%= data[i].id %>')">Delete</button></td> 
+              <td><%= data[i].accessPath %></td>
+              <td><a href="/image/unit?id=<%= data[i].id %>">Detail</a></td> 
+              <td><button type="button" class="open-button" onclick="createImageForm('patchImageById', '/image/unit', '<%= data[i].id %>', '<%= data[i].accessPath %>')">Edit</button></td> 
+              <td><button type="button" onclick="deleteById('/image/unit','<%= data[i].id %>')">Delete</button></td> 
             </tr>
           <% } %>
         </table>
-        <button type="button" class="open-button" onclick="createCategoryForm('postCategoryById', '/category/unit')">Add a category</button>
+        <button type="button" class="open-button" onclick="createImageForm('postImageById', '/image/unit')">Add a image</button>
       </div>
     </div>
   </body>
