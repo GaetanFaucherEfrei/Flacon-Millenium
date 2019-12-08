@@ -11,6 +11,8 @@ const DESIGNATION = require('./routes/bdd/designation.js')
 const ACCOMPANIMENT = require('./routes/bdd/accompaniment.js')
 const IMAGE = require('./routes/bdd/image.js')
 const SUGARDOSAGE = require('./routes/bdd/sugarDosage.js')
+const CEPAGE = require('./routes/bdd/cepage.js')
+const PRODUCER = require('./routes/bdd/producer.js')
 const SIZE = require('./routes/bdd/size.js')
 const BODY_PARSER = require('body-parser') // pour parser les requêtes POST
 const MONGOOSE = require('mongoose')
@@ -50,6 +52,8 @@ App.use('/designation', DESIGNATION)
 App.use('/accompaniment', ACCOMPANIMENT)
 App.use('/image', IMAGE)
 App.use('/sugarDosage', SUGARDOSAGE)
+App.use('/cepage', CEPAGE)
+App.use('/producer', PRODUCER)
 App.use('/size', SIZE)
 
 App.set('views', PATH.join(__dirname, 'views'))
@@ -71,7 +75,7 @@ App.get('/home', (req, res) => {
   if (req.user) {
     var alert = req.session.alert
     req.session.alert = ''
-    res.render('home', { name: req.user.username, alert: alert })
+    res.status(200).render('home', { name: req.user.username, alert: alert })
   } else {
     res.status(401).redirect('/user/login')
   }

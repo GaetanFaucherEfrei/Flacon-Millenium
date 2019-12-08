@@ -1,20 +1,20 @@
 function createStatusForm (fonction, path, id, name, description) {
   console.log('testt')
-  document.getElementById('editorStatusForm').innerHTML = '<div class="form-popup" id="myStatusForm">' +
-      '<form class="form-container" >' +
-      '  <h1>Edit</h1>' +
-      '  <div class="form-input">' +
-      '    <label for="name"><b>Name</b></label>' +
-      '    <input type="text" value="' + name + '" name="name" required="required" />' +
-      '    <br />' +
-      '    <label for="description"><b>Description</b></label>' +
-      '    <input type="text" value="' + description + '" name="description" />' +
-      '  </div>' +
-      '  <br />' +
-      '  <button type="button" class="btn" onclick="' + fonction + '(\'' + path + '\',\'' + id + '\')">Submit</button> </br>' +
-      '  <button type="button" class="btn cancel" onclick="closeForm(\'editorStatusForm\')">Cancel</button>' +
-      '  </form>' +
-      '</div>'
+  document.getElementById('editorStatusForm').innerHTML = `<div class="form-popup" id="myStatusForm">
+      <form class="form-container" >
+        <h1>Edit</h1>
+        <div class="form-input">
+          <label for="name"><b>Name</b></label>
+          <input type="text" value="' + name + '" name="name" required="required" />
+          <br />
+          <label for="description"><b>Description</b></label>
+          <input type="text" value="' + description + '" name="description" />
+        </div>
+        <br />
+        <button type="button" class="btn" onclick="' + fonction + '(' + path + ',' + id + ')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm(editorStatusForm)">Cancel</button>
+        </form>
+      </div>`
 }
 
 function postStatusById (path, id) {

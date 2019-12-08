@@ -25,38 +25,106 @@ const TRANSPORTER = NODEMAILER.createTransport({
   }
 })
 
-var MAIL_NOTIFICATION = null
+var MailNotification = null
+
+Router.get('/', async (req, res) => {
+  try {
+    if (req.user) {
+      var alert = req.session.alert
+      req.session.alert = ''
+      res.status(200).render('mail', { name: req.user.username, alert: alert })
+    } else {
+    // console.log('User not identified.')
+      req.session.oldUrl = req.originalUrl
+      res.status(401).redirect('/user/login')
+    }
+  } catch (error) {
+    console.log('There was an error with our server : ' + error)
+    res.status(403).send('There was an error with our server.')
+  }
+})
 
 Router.get('/start', async (req, res) => {
-  var content = `<body>
-    <h1>Hi Etienne</h1>
-    <p>Your bottle has acheived maturity</p>
-  </body>`
-  var emailAddress = 'etienne.robbiani@gmail.com'
-  var subject = 'Testing Sending Email using Node.js'
+  console.log('start mail')
+  try {
+    if (req.user) {
+      var content = `<body>
+        <h1>Hi User</h1>
+        <p>Your bottle has acheived maturity</p>
+      </body>`
+      var emailAddress = req.query.userMail
+      var subject = 'Testing Sending Email using Node.js'
 
-  MAIL_NOTIFICATION = setInterval(function () {
-    testMail(emailAddress, subject, content)
-  }, 5000)
+      if (validateEmail(emailAddress)) {
+        MailNotification = setInterval(function () {
+          testMail(emailAddress, subject, content)
+        }, 5000)
 
-  res.status(200).send('notification started')
-  // res.status(401).redirect(301, '/user/login')
+        res.status(200).send('notification started')
+      } else {
+        res.status(200).send('Invalid email address')
+      }
+    } else {
+      // console.log('User not identified.')
+      req.session.oldUrl = req.originalUrl
+      res.status(401).redirect('/user/login')
+    }
+  } catch (error) {
+    console.log('There was an error with our server : ' + error)
+    res.status(403).send('There was an error with our server.')
+  }
 })
 
 Router.get('/stop', async (req, res) => {
-  // stop the repeated call of the fonction attach to this global variable
-  clearInterval(MAIL_NOTIFICATION)
+  console.log('stop mail')
+  try {
+    if (req.user) {
+      // stop the repeated call of the fonction attach to this global variable
+      clearInterval(MailNotification)
+      MailNotification = null
 
-  res.status(200).send('notification stopped')
-  // res.status(401).redirect(301, '/user/login')
+      res.status(200).send('notification stopped')
+    } else {
+      // console.log('User not identified.')
+      req.session.oldUrl = req.originalUrl
+      res.status(401).redirect('/user/login')
+    }
+  } catch (error) {
+    console.log('There was an error with our server : ' + error)
+    res.status(403).send('There was an error with our server.')
+  }
 })
 
-function testMail (dynamicParameter) {
+Router.get('/status', async (req, res) => {
+  try {
+    if (req.user) {
+      if (MailNotification) {
+        res.status(200).send('notification service is running')
+      } else {
+        res.status(200).send('notification service is not running')
+      }
+    } else {
+      // console.log('User not identified.')
+      req.session.oldUrl = req.originalUrl
+      res.status(401).redirect('/user/login')
+    }
+  } catch (error) {
+    console.log('There was an error with our server : ' + error)
+    res.status(403).send('There was an error with our server.')
+  }
+})
+
+function validateEmail (email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return re.test(String(email).toLowerCase())
+}
+
+function testMail (emailAddress, subject, content) {
   var mailOptions = {
     from: 'Flacon Millenium <FlaconMillenium@gmail.com>',
-    to: dynamicParameter.emailAddress,
-    subject: dynamicParameter.subject,
-    html: dynamicParameter.content
+    to: emailAddress,
+    subject: subject,
+    html: content
   }
 
   TRANSPORTER.sendMail(mailOptions, function (error, info) {

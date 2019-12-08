@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flacon Millénium</title>
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <%- include('menu.ejs') %>
+    <div id="content">
+      <h1>Mail</h1>
+
+      <div class="form-popup" id="myMailForm">
+        <form class="form-container" >
+          <h1>Notification Service</h1>
+          <div class="form-input">
+              <p id='notificationStatus'></p>
+            <label for="userMail"><b>user email : </b></label>
+            <input type="email" value="user mail@example.com" name="userMail" required="required" />
+          </div>
+          <br />
+          <button type="button" class="btn" onclick="start('/mail/start')">Start</button> </br>
+          <button type="button" class="btn cancel" onclick="stop('/mail/stop')">Stop</button>
+        </form>
+      </div>
+    </div>
+
+    <script>
+
+setInterval(getMailStatus, 2000)
+
+      function start (path) {
+        var targetMail = document.querySelectorAll('#myMailForm > form > div > input[name="userMail"]')[0].value
+        if(validateEmail(targetMail))
+        {
+          $.ajax({
+            type: 'GET',
+            url: path,
+            data: {
+              userMail: targetMail,
+            },
+            success: function (answer, status) {
+              console.log('success : ' + status)
+            },
+            error: function (answer, status, error) {
+              console.log('error : ' + status)
+              window.alert(answer.responseText)
+            },
+            complete: function (answer, status) {}
+          }) 
+        } else {
+          window.alert('Insert an email address')
+        }
+      }
+
+      function stop (path) {
+        $.ajax({
+          type: 'GET',
+          url: path,
+          data: {},
+          success: function (answer, status) {
+            console.log('success : ' + status)
+          },
+          error: function (answer, status, error) {
+            console.log('error : ' + status)
+            window.alert(answer.responseText)
+          },
+          complete: function (answer, status) {}
+        })
+      }
+
+      function getMailStatus () {
+        $.ajax({
+          type: 'GET',
+          url: '/mail/status',
+          data: {},
+          success: function (answer, status) {
+            //console.log('success : ' + status)
+            $('#notificationStatus').html(answer)
+          },
+          error: function (answer, status, error) {
+            console.log('error : ' + status)
+            window.alert(answer.responseText)
+          },
+          complete: function (answer, status) {}
+        })
+      }
+
+      function validateEmail(email) {
+        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+      }
+    </script>
+  </body>
+</html>

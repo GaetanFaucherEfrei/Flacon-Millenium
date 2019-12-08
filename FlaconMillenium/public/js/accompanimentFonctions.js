@@ -1,20 +1,20 @@
 
 function createAccompanimentForm (fonction, path, id, dishType, description) {
-  document.getElementById('editorAccompanimentForm').innerHTML = '<div class="form-popup" id="myAccompanimentForm">' +
-      '<form class="form-container" >' +
-      '  <h1>Edit</h1>' +
-      '  <div class="form-input">' +
-      '    <label for="dishType"><b>DishType</b></label>' +
-      '    <input type="text" value="' + dishType + '" name="dishType" required="required" />' +
-      '    <br />' +
-      '    <label for="description"><b>Description</b></label>' +
-      '    <input type="text" value="' + description + '" name="description" />' +
-      '  </div>' +
-      '  <br />' +
-      '  <button type="button" class="btn" onclick="' + fonction + '(\'' + path + '\',\'' + id + '\')">Submit</button> </br>' +
-      '  <button type="button" class="btn cancel" onclick="closeForm(\'editorAccompanimentForm\')">Cancel</button>' +
-      '  </form>' +
-      '</div>'
+  document.getElementById('editorAccompanimentForm').innerHTML = `<div class="form-popup" id="myAccompanimentForm">
+      <form class="form-container" >
+        <h1>Edit</h1>
+        <div class="form-input">
+          <label for="dishType"><b>DishType</b></label>
+          <input type="text" value="' + dishType + '" name="dishType" required="required" />
+          <br />
+          <label for="description"><b>Description</b></label>
+          <input type="text" value="' + description + '" name="description" />
+        </div>
+        <br />
+        <button type="button" class="btn" onclick="' + fonction + '(' + path + ',' + id + ')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm(editorAccompanimentForm)">Cancel</button>
+        </form>
+      </div>``
 }
 
 function postAccompanimentById (path, id) {

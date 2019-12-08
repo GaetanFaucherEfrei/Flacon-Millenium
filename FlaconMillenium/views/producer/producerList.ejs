@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Producer</title>
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
+    <link href="/css/list.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
+    <script type="text/javascript" src="/js/producerFonctions.js"></script>
+  </head>
+
+  <body>
+    <%- include('../menu.ejs') %>
+    <div id="content">
+      <h1>Producer</h1>
+
+      <!-- Message display area -->
+      <div>
+        <table>
+          <div id="editorProducerForm"></div>
+          <tr>
+            <td>name</td>
+            <td>address</td>
+            <td>region</td>
+            <td>country</td>
+            <td>comment</td>
+            <td>phone</td>
+            <td>email</td>
+            <td>website</td>
+          </tr>
+          <% for(var i=0; i < data.length; i++) { %>
+            <tr>
+              <td><%= data[i].name %></td>
+              <td><%= data[i].address %></td>
+              <td><%= data[i].region %></td>
+              <td><%= data[i].country %></td>
+              <td><%= data[i].comment %></td>
+              <td><%= data[i].phone %></td>
+              <td><%= data[i].email %></td>
+              <td><%= data[i].website %></td>
+              <td><a href="/producer/unit?id=<%= data[i].id %>">Detail</a></td> 
+              <td><button type="button" class="open-button" onclick="createProducerForm('patchProducerById', '/producer/unit', '<%= data[i].id %>', '<%= data[i].name %>', '<%= data[i].address %>', '<%= data[i].region %>', '<%= data[i].country %>', '<%= data[i].comment %>', '<%= data[i].phone %>', '<%= data[i].email %>', '<%= data[i].website %>')">Edit</button></td> 
+              <td><button type="button" onclick="deleteById('/producer/unit','<%= data[i].id %>')">Delete</button></td> 
+            </tr>
+          <% } %>
+        </table>
+        <button type="button" class="open-button" onclick="createProducerForm('postProducerById', '/producer/unit')">Add a producer</button>
+      </div>
+    </div>
+  </body>
+</html>
