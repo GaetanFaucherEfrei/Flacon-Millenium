@@ -2,8 +2,6 @@ const EXPRESS = require('express')
 const DESIGNATION = require('../../models/designation.model.js')
 var Router = EXPRESS.Router()
 
-global.results = null
-
 /* ERROR CODE : https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
   200 : OK
   206 : Partial Content

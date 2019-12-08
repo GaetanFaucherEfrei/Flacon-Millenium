@@ -1,23 +1,23 @@
 
 function createSizeForm (fonction, path, id, name, size, description) {
-  document.getElementById('editorSizeForm').innerHTML = '<div class="form-popup" id="mySizeForm">' +
-      '<form class="form-container" >' +
-      '  <h1>Edit</h1>' +
-      '  <div class="form-input">' +
-      '    <label for="name"><b>Name</b></label>' +
-      '    <input type="text" value="' + name + '" name="name" required="required" />' +
-      '    <br />' +
-      '    <label for="size"><b>Size</b></label>' +
-      '    <input type="Number" value="' + size + '" name="size" />' +
-      '    <br />' +
-      '    <label for="description"><b>Description</b></label>' +
-      '    <input type="text" value="' + description + '" name="description" />' +
-      '  </div>' +
-      '  <br />' +
-      '  <button type="button" class="btn" onclick="' + fonction + '(\'' + path + '\',\'' + id + '\')">Submit</button> </br>' +
-      '  <button type="button" class="btn cancel" onclick="closeForm(\'editorSizeForm\')">Cancel</button>' +
-      '  </form>' +
-      '</div>'
+  document.getElementById('editorSizeForm').innerHTML = `<div class="form-popup" id="mySizeForm">
+      <form class="form-container" >
+        <h1>Edit</h1>
+        <div class="form-input">
+          <label for="name"><b>Name</b></label>
+          <input type="text" value="' + name + '" name="name" required="required" />
+          <br />
+          <label for="size"><b>Size</b></label>
+          <input type="Number" value="' + size + '" name="size" />
+          <br />
+          <label for="description"><b>Description</b></label>
+          <input type="text" value="' + description + '" name="description" />
+        </div>
+        <br />
+        <button type="button" class="btn" onclick="' + fonction + '(' + path + ',' + id + ')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm(editorSizeForm)">Cancel</button>
+        </form>
+      </div>`
 }
 
 function postSizeById (path, id) {
