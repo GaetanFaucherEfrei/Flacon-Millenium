@@ -1,23 +1,23 @@
 
 function createSugarDosageForm (fonction, path, id, name, dosage, description) {
-  document.getElementById('editorSugarDosageForm').innerHTML = '<div class="form-popup" id="mySugarDosageForm">' +
-      '<form class="form-container" >' +
-      '  <h1>Edit</h1>' +
-      '  <div class="form-input">' +
-      '    <label for="name"><b>Name</b></label>' +
-      '    <input type="text" value="' + name + '" name="name" required="required" />' +
-      '    <br />' +
-      '    <label for="dosage"><b>Dosage</b></label>' +
-      '    <input type="Number" value="' + dosage + '" name="dosage" />' +
-      '    <br />' +
-      '    <label for="description"><b>Description</b></label>' +
-      '    <input type="text" value="' + description + '" name="description" />' +
-      '  </div>' +
-      '  <br />' +
-      '  <button type="button" class="btn" onclick="' + fonction + '(\'' + path + '\',\'' + id + '\')">Submit</button> </br>' +
-      '  <button type="button" class="btn cancel" onclick="closeForm(\'editorSugarDosageForm\')">Cancel</button>' +
-      '  </form>' +
-      '</div>'
+  document.getElementById('editorSugarDosageForm').innerHTML = `<div class="form-popup" id="mySugarDosageForm">' +
+      <form class="form-container" >
+        <h1>Edit</h1>
+        <div class="form-input">
+          <label for="name"><b>Name</b></label>
+          <input type="text" value="` + name + `" name="name" required="required" />
+          <br />
+          <label for="dosage"><b>Dosage</b></label>
+          <input type="Number" value="` + dosage + `" name="dosage" />
+          <br />
+          <label for="description"><b>Description</b></label>
+          <input type="text" value="` + description + `" name="description" />
+        </div>
+        <br />
+        <button type="button" class="btn" onclick="` + fonction + `('` + path + `','` + id + `')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm('editorSugarDosageForm')">Cancel</button>
+        </form>
+      </div>`
 }
 
 function postSugarDosageById (path, id) {

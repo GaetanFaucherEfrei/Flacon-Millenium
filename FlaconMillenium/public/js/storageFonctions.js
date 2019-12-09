@@ -5,26 +5,26 @@ function createStorageForm (fonction, path, id, location, name, nbLigne, nbColon
         <h1>Edit</h1>
         <div class="form-input">
           <label for="location"><b>Location</b></label>
-          <input type="text" value="' + location + '" name="location" required="required" />
+          <input type="text" value="` + location + `" name="location" required="required" />
           <br />
           <label for="name"><b>Name</b></label>
-          <input type="text" value="' + name + '" name="name" required="required" />
+          <input type="text" value="` + name + `" name="name" required="required" />
           <br />
           <label for="nbLigne"><b>Number of ligne</b></label>
-          <input type="number" value="' + nbLigne + '" name="nbLigne" required="required" />
+          <input type="number" value="` + nbLigne + `" name="nbLigne" required="required" />
           <br />
           <label for="nbColone"><b>Number of colone</b></label>
-          <input type="number" value="' + nbColone + '" name="nbColone" required="required" />
+          <input type="number" value="` + nbColone + `" name="nbColone" required="required" />
           <br />
           <label for="nbPlace"><b>Number of place by unit</b></label>
-          <input type="number" value="' + nbPlace + '" name="nbPlace" required="required" />
+          <input type="number" value="` + nbPlace + `" name="nbPlace" required="required" />
           <br />
           <label for="description"><b>Description</b></label>
-          <input type="text" value="' + description + '" name="description" />
+          <input type="text" value="` + description + `" name="description" />
         </div>
         <br />
-        <button type="button" class="btn" onclick="' + fonction + '(' + path + ',' + id + ')">Submit</button> </br>
-        <button type="button" class="btn cancel" onclick="closeForm(editorStorageForm)">Cancel</button>
+        <button type="button" class="btn" onclick="` + fonction + `('` + path + `','` + id + `')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm('editorStorageForm')">Cancel</button>
         </form>
       </div>`
 }

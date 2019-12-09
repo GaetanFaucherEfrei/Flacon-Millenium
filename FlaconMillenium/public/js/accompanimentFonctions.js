@@ -5,16 +5,16 @@ function createAccompanimentForm (fonction, path, id, dishType, description) {
         <h1>Edit</h1>
         <div class="form-input">
           <label for="dishType"><b>DishType</b></label>
-          <input type="text" value="' + dishType + '" name="dishType" required="required" />
+          <input type="text" value="` + dishType + `" name="dishType" required="required" />
           <br />
           <label for="description"><b>Description</b></label>
-          <input type="text" value="' + description + '" name="description" />
+          <input type="text" value="` + description + `" name="description" />
         </div>
         <br />
-        <button type="button" class="btn" onclick="' + fonction + '(' + path + ',' + id + ')">Submit</button> </br>
-        <button type="button" class="btn cancel" onclick="closeForm(editorAccompanimentForm)">Cancel</button>
+        <button type="button" class="btn" onclick="` + fonction + `('` + path + `','` + id + `')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm('editorAccompanimentForm')">Cancel</button>
         </form>
-      </div>``
+      </div>`
 }
 
 function postAccompanimentById (path, id) {

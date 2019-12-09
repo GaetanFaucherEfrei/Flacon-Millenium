@@ -5,11 +5,11 @@ function createImageForm (fonction, path, id, accessPath) {
         <h1>Edit</h1>
         <div class="form-input">
           <label for="accessPath"><b>AccessPath</b></label>
-          <input type="text" value="' + accessPath + '" name="accessPath" />
+          <input type="text" value="` + accessPath + `" name="accessPath" />
         </div>
         <br />
-        <button type="button" class="btn" onclick="' + fonction + '(' + path + ',' + id + ')">Submit</button> </br>
-        <button type="button" class="btn cancel" onclick="closeForm(editorImageForm)">Cancel</button>
+        <button type="button" class="btn" onclick="` + fonction + `('` + path + `','` + id + `')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm('editorImageForm')">Cancel</button>
         </form>
       </div>`
 }
