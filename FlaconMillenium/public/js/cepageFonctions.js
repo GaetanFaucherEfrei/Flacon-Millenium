@@ -1,31 +1,31 @@
 function createCepageForm (fonction, path, id, name, type, region, country, climate, description) {
-  document.getElementById('editorCepageForm').innerHTML = '<div class="form-popup" id="myCepageForm">' +
-      '<form class="form-container" >' +
-      '  <h1>Edit</h1>' +
-      '  <div class="form-input">' +
-      '    <label for="name"><b>Name</b></label>' +
-      '    <input type="text" value="' + name + '" name="name" required="required" />' +
-      '    <br />' +
-      '    <label for="type"><b>Type</b></label>' +
-      '    <input type="text" value="' + type + '" name="type" />' +
-      '    <br />' +
-      '    <label for="region"><b>Region</b></label>' +
-      '    <input type="text" value="' + region + '" name="region" />' +
-      '    <br />' +
-      '    <label for="country"><b>Country</b></label>' +
-      '    <input type="text" value="' + country + '" name="country" />' +
-      '    <br />' +
-      '    <label for="climate"><b>Climate</b></label>' +
-      '    <input type="text" value="' + climate + '" name="climate" />' +
-      '    <br />' +
-      '    <label for="description"><b>Description</b></label>' +
-      '    <input type="text" value="' + description + '" name="description" />' +
-      '  </div>' +
-      '  <br />' +
-      '  <button type="button" class="btn" onclick="' + fonction + '(\'' + path + '\',\'' + id + '\')">Submit</button> </br>' +
-      '  <button type="button" class="btn cancel" onclick="closeForm(\'editorCepageForm\')">Cancel</button>' +
-      '  </form>' +
-      '</div>'
+  document.getElementById('editorCepageForm').innerHTML = `<div class="form-popup" id="myCepageForm">
+      <form class="form-container" >
+        <h1>Edit</h1>
+        <div class="form-input">
+          <label for="name"><b>Name</b></label>
+          <input type="text" value="` + name + `" name="name" required="required" />
+          <br />
+          <label for="type"><b>Type</b></label>
+          <input type="text" value="` + type + `" name="type" />
+          <br />
+          <label for="region"><b>Region</b></label>
+          <input type="text" value="` + region + `" name="region" />
+          <br />
+          <label for="country"><b>Country</b></label>
+          <input type="text" value="` + country + `" name="country" />
+          <br />
+          <label for="climate"><b>Climate</b></label>
+          <input type="text" value="` + climate + `" name="climate" />
+          <br />
+          <label for="description"><b>Description</b></label>
+          <input type="text" value="` + description + `" name="description" />
+        </div>
+        <br />
+        <button type="button" class="btn" onclick="` + fonction + '(\'' + path + '\',\'' + id + `')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm('editorCepageForm')">Cancel</button>
+        </form>' +
+      </div>`
 }
 
 function postCepageById (path, id) {

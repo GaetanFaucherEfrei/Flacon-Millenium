@@ -23,6 +23,7 @@ MONGOOSE.connect('mongodb://localhost/flaconMillenium', {
 })
 
 var App = EXPRESS()
+var favicon = require('serve-favicon')
 
 App.use(BODY_PARSER.urlencoded({ extended: false })) // for simple form posts
 App.use(BODY_PARSER.json()) // for API requests
@@ -39,6 +40,8 @@ App.use(function (req, res, next) {
   res.locals.user = req.session.username
   next()
 })
+console.log(__dirname)
+App.use(favicon(PATH.join(__dirname, 'public', 'image', 'logo000.png')))
 
 App.use('/user', USER.Router)
 App.use(USER.verifUserMiddleWare)
@@ -90,3 +93,12 @@ App.all('*', (req, res) => {
     res.status(401).redirect(301, '/user/login')
   }
 })
+
+/*
+;(function () {
+  console.log('Fonction qui s\'execute toute seule')
+  setInterval(function () {
+    console.log('Fonction qui s\'execute toute seule')
+  }, 10000)
+})()
+*/

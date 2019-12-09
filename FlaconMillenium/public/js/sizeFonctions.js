@@ -5,17 +5,17 @@ function createSizeForm (fonction, path, id, name, size, description) {
         <h1>Edit</h1>
         <div class="form-input">
           <label for="name"><b>Name</b></label>
-          <input type="text" value="' + name + '" name="name" required="required" />
+          <input type="text" value="` + name + `" name="name" required="required" />
           <br />
           <label for="size"><b>Size</b></label>
-          <input type="Number" value="' + size + '" name="size" />
+          <input type="Number" value="` + size + `" name="size" />
           <br />
           <label for="description"><b>Description</b></label>
-          <input type="text" value="' + description + '" name="description" />
+          <input type="text" value="` + description + `" name="description" />
         </div>
         <br />
-        <button type="button" class="btn" onclick="' + fonction + '(' + path + ',' + id + ')">Submit</button> </br>
-        <button type="button" class="btn cancel" onclick="closeForm(editorSizeForm)">Cancel</button>
+        <button type="button" class="btn" onclick="` + fonction + '(\'' + path + '\',\'' + id + `')">Submit</button> </br>
+        <button type="button" class="btn cancel" onclick="closeForm('editorSizeForm')">Cancel</button>
         </form>
       </div>`
 }

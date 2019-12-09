@@ -57,6 +57,7 @@ Router.get('/unit', async (req, res) => {
             notFound(req, res, 1)
           } else {
             if (result) {
+              console.log(result)
               res.format({
                 'text/html': function () {
                   res.status(200).render('accompaniment/accompanimentView', { data: result, name: req.user.username })

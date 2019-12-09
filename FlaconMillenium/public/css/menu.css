@@ -88,6 +88,12 @@ li a, .dropbtn {
     text-align: center;
     float: none;
   }
+
+  ul.menu li img {
+    text-align: center;
+    float: none;
+  }
+
   ul.menu li.rightSide a{
     text-align: center;
     float: none;
