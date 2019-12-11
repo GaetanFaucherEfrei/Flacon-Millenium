@@ -2,30 +2,34 @@
 <html>
   <head>
     <title>User</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/storage.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
-    <%- include('../menu.ejs') %>
-    <div id="content">
-      <h1>User</h1>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>User</h1>
 
-      <!-- Message display area -->
-      <div>
-        <table>
-          <tr>
-              <td>name</td>
-            </tr>
-          <% for(var i=0; i < data.length; i++) { %>
+        <!-- Message display area -->
+        <div>
+          <table>
             <tr>
-              <td><%= data[i].username %></td>
-              <td><button type="button"><a href="/user/edit/<%= data[i].id %>">Edit</a></button></td>
-              <td><button type="button" onclick="deleteUnitById('/user/unit','<%= data[i].id %>')">Delete</button></td>
-            </tr>
-          <% } %>
-        </table>
+                <td>name</td>
+              </tr>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr>
+                <td><%= data[i].username %></td>
+                <td><button type="button"><a href="/user/edit/<%= data[i].id %>">Edit</a></button></td>
+                <td><button type="button" onclick="deleteUnitById('/user/unit','<%= data[i].id %>')">Delete</button></td>
+              </tr>
+            <% } %>
+          </table>
+        </div>
       </div>
     </div>
 

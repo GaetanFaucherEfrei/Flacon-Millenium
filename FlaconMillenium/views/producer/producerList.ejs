@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Producer</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
@@ -12,42 +13,45 @@
   </head>
 
   <body>
-    <%- include('../menu.ejs') %>
-    <div id="content">
-      <h1>Producer</h1>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Producer</h1>
 
-      <!-- Message display area -->
-      <div>
-        <table>
-          <div id="editorProducerForm"></div>
-          <tr id="fieldProducer">
-            <td name ="name" type="text" required="required">name</td>
-            <td name ="address" type="text" required="">address</td>
-            <td name ="region" type="text" required="">region</td>
-            <td name ="country" type="text" required="">country</td>
-            <td name ="comment" type="text" required="">comment</td>
-            <td name ="phone" type="number" required="">phone</td>
-            <td name ="email" type="text" required="">email</td>
-            <td name ="website" type="text" required="">website</td>
-          </tr>
-          <% for(var i=0; i < data.length; i++) { %>
-            <tr id="<%= data[i].id %>">
-              <td name ="name"><%= data[i].name %></td>
-              <td name ="address"><%= data[i].address %></td>
-              <td name ="region"><%= data[i].region %></td>
-              <td name ="country"><%= data[i].country %></td>
-              <td name ="comment"><%= data[i].comment %></td>
-              <td name ="phone"><%= data[i].phone %></td>
-              <td name ="email"><%= data[i].email %></td>
-              <td name ="website"><%= data[i].website %></td>
-
-              <td><a href="/producer/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createForm('/producer/unit', 'editorProducerForm',  'fieldProducer',  '<%= data[i].id %>')">Edit</button></td> 
-              <td><button type="button" onclick="deleteById('/producer/unit','<%= data[i].id %>')">Delete</button></td> 
+        <!-- Message display area -->
+        <div>
+          <table>
+            <div id="editorProducerForm"></div>
+            <tr id="fieldProducer">
+              <td name ="name" type="text" required="required">name</td>
+              <td name ="address" type="text" required="">address</td>
+              <td name ="region" type="text" required="">region</td>
+              <td name ="country" type="text" required="">country</td>
+              <td name ="comment" type="text" required="">comment</td>
+              <td name ="phone" type="number" required="">phone</td>
+              <td name ="email" type="text" required="">email</td>
+              <td name ="website" type="text" required="">website</td>
             </tr>
-          <% } %>
-        </table>
-        <button type="button" class="open-button" onclick="createForm('/producer/unit', 'editorProducerForm', 'fieldProducer')">Add a producer</button>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="name"><%= data[i].name %></td>
+                <td name ="address"><%= data[i].address %></td>
+                <td name ="region"><%= data[i].region %></td>
+                <td name ="country"><%= data[i].country %></td>
+                <td name ="comment"><%= data[i].comment %></td>
+                <td name ="phone"><%= data[i].phone %></td>
+                <td name ="email"><%= data[i].email %></td>
+                <td name ="website"><%= data[i].website %></td>
+
+                <td><a href="/producer/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createForm('/producer/unit', 'editorProducerForm',  'fieldProducer',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/producer/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
+          </table>
+          <button type="button" class="open-button" onclick="createForm('/producer/unit', 'editorProducerForm', 'fieldProducer')">Add a producer</button>
+        </div>
       </div>
     </div>
   </body>

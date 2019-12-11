@@ -1,0 +1,18 @@
+<script type="text/javascript">
+  console.log('loading started')
+
+  window.addEventListener('load', function () {
+    console.log('loading finished')
+    document.getElementsByTagName('body')[0].classList.add('pg-loaded')
+  }, false);
+
+  function gifLoad(){
+    document.getElementsByClassName('png')[0].style["display"] = "none" 
+  }
+</script>
+<div class="loader">
+  <div class="empty"></div>
+  <img src="/image/logoGif2.gif"  width="200" alt="website logo" >
+  <p class='loading-message'>A good day to you fine user!</p>
+  <div class="empty"></div>
+</div>

@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Cepage</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
@@ -12,38 +13,41 @@
   </head>
 
   <body>
-    <%- include('../menu.ejs') %>
-    <div id="content">
-      <h1>Cepage</h1>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Cepage</h1>
 
-      <!-- Message display area -->
-      <div>
-        <table>
-          <div id="editorCepageForm"></div>
-          <tr id="fieldCepage">
-            <td name ="name" type="text" required="required">name</td>
-            <td name ="type" type="text" required="required">type</td>
-            <td name ="region" type="text" required="required">region</td>
-            <td name ="country" type="text" required="required">country</td>
-            <td name ="climate" type="text" required="required">climate</td>
-            <td name ="description" type="text" required="">description</td>
-          </tr>
-          <% for(var i=0; i < data.length; i++) { %>
-            <tr id="<%= data[i].id %>">
-              <td name ="name"><%= data[i].name %></td>
-              <td name ="type"><%= data[i].type %></td>
-              <td name ="region"><%= data[i].region %></td>
-              <td name ="country"><%= data[i].country %></td>
-              <td name ="climate"><%= data[i].climate %></td>
-              <td name ="description"><%= data[i].description %></td>
-
-              <td><a href="/cepage/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createForm('/cepage/unit', 'editorCepageForm',  'fieldCepage',  '<%= data[i].id %>')">Edit</button></td> 
-              <td><button type="button" onclick="deleteById('/cepage/unit','<%= data[i].id %>')">Delete</button></td> 
+        <!-- Message display area -->
+        <div>
+          <table>
+            <div id="editorCepageForm"></div>
+            <tr id="fieldCepage">
+              <td name ="name" type="text" required="required">name</td>
+              <td name ="type" type="text" required="required">type</td>
+              <td name ="region" type="text" required="required">region</td>
+              <td name ="country" type="text" required="required">country</td>
+              <td name ="climate" type="text" required="required">climate</td>
+              <td name ="description" type="text" required="">description</td>
             </tr>
-          <% } %>
-        </table>
-        <button type="button" class="open-button" onclick="createForm('/cepage/unit', 'editorCepageForm', 'fieldCepage')">Add a cepage</button>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="name"><%= data[i].name %></td>
+                <td name ="type"><%= data[i].type %></td>
+                <td name ="region"><%= data[i].region %></td>
+                <td name ="country"><%= data[i].country %></td>
+                <td name ="climate"><%= data[i].climate %></td>
+                <td name ="description"><%= data[i].description %></td>
+
+                <td><a href="/cepage/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createForm('/cepage/unit', 'editorCepageForm',  'fieldCepage',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/cepage/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
+          </table>
+          <button type="button" class="open-button" onclick="createForm('/cepage/unit', 'editorCepageForm', 'fieldCepage')">Add a cepage</button>
+        </div>
       </div>
     </div>
   </body>

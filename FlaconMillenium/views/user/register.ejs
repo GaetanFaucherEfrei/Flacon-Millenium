@@ -2,21 +2,25 @@
 <html>
   <head>
     <title>Register</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/login-register.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
-    <%- include('logMenu.ejs') %>
-    <div id="content">
-      <h1>Register</h1>
-      <div>
-        <form action="http://localhost:3000/user/register" method="POST">
-          <input name="username" type="text" placeholder="Username" />
-          <input name="password" type="password" placeholder="Passeword" />
-          <input type="submit" value="Register" />
-        </form>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('logMenu.ejs') %>
+      <div id="content">
+        <h1>Register</h1>
+        <div>
+          <form action="http://localhost:3000/user/register" method="POST">
+            <input name="username" type="text" placeholder="Username" />
+            <input name="password" type="password" placeholder="Passeword" />
+            <input type="submit" value="Register" />
+          </form>
+        </div>
       </div>
     </div>
   </body>

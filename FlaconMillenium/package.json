@@ -19,6 +19,8 @@
     "express-session": "^1.17.0",
     "mongoose": "^5.7.7",
     "nodemailer": "^6.4.1",
-    "serve-favicon": "^2.5.0"
+    "please-wait": "0.0.5",
+    "serve-favicon": "^2.5.0",
+    "supports-color": "^7.1.0"
   }
 }

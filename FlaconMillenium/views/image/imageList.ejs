@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Image</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
@@ -12,28 +13,31 @@
   </head>
 
   <body>
-    <%- include('../menu.ejs') %>
-    <div id="content">
-      <h1>Image</h1>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Image</h1>
 
-      <!-- Message display area -->
-      <div>
-        <table>
-          <div id="editorImageForm"></div>
-          <tr id="fieldImage">
-            <td name ="accessPath" type="text" required="required">accessPath</td>
-          </tr>
-          <% for(var i=0; i < data.length; i++) { %>
-            <tr id="<%= data[i].id %>">
-              <td name ="accessPath"><%= data[i].accessPath %></td>
-
-              <td><a href="/image/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm',  'fieldImage',  '<%= data[i].id %>')">Edit</button></td> 
-              <td><button type="button" onclick="deleteById('/image/unit','<%= data[i].id %>')">Delete</button></td> 
+        <!-- Message display area -->
+        <div>
+          <table>
+            <div id="editorImageForm"></div>
+            <tr id="fieldImage">
+              <td name ="accessPath" type="text" required="required">accessPath</td>
             </tr>
-          <% } %>
-        </table>
-        <button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm', 'fieldImage')">Add an image</button>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="accessPath"><%= data[i].accessPath %></td>
+
+                <td><a href="/image/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm',  'fieldImage',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/image/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
+          </table>
+          <button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm', 'fieldImage')">Add an image</button>
+        </div>
       </div>
     </div>
   </body>

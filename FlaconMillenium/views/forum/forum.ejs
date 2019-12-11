@@ -2,63 +2,64 @@
 <html>
   <head>
     <title>Forum</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/forum.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
-    <%- include('../menu.ejs') %>
-    <div id="content">
-      <h1>Forum</h1>
-      <!-- Information area-->
-      <div class="information">
-        <h4>Welcome to the forum for the fans of the drink</h4>
-        <div id="gif">
-          <iframe src="https://giphy.com/embed/bKBM7H63PIykM" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed"></iframe>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Forum</h1>
+        <!-- Information area-->
+        <div class="information">
+          <h4>Welcome to the forum for the fans of the drink</h4>
+          <div id="gif">
+            <iframe src="https://giphy.com/embed/bKBM7H63PIykM" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed"></iframe>
+          </div>
+          <hr>
+        </div>
+
+
+        <!-- Message display area -->
+        <div class="history">
+            <table>
+                <% for(var i=0; i < data.length; i++) { %>
+                  <tr>
+                    <td><%= data[i].content %></td>
+                    <td><small>Post by: <%= data[i].author %>  <%= data[i].date.getDate() %>-<%= data[i].date.getMonth() %>-<%= data[i].date.getYear() %></small></td>
+                    <script>
+                     // console.log('test');
+                    </script>
+                  </tr>
+                <% } %>
+                </table>
         </div>
         <hr>
-      </div>
 
+        
+        <!-- Message post area-->
+        <div id="comment">
+          <form action="/forum/comment" method="POST">
 
-      <!-- Message display area -->
-      <div class="history">
-          <table>
-              <% for(var i=0; i < data.length; i++) { %>
-                <tr>
-                  <td><%= data[i].content %></td>
-                  <td><small>Post by: <%= data[i].author %>  <%= data[i].date.getDate() %>-<%= data[i].date.getMonth() %>-<%= data[i].date.getYear() %></small></td>
-                  <script>
-                    console.log('test');
-                  </script>
-                </tr>
-              <% } %>
-              </table>
-      </div>
-      <hr>
-
-      
-      <!-- Message post area-->
-      <div id="comment">
-        <form action="/forum/comment" method="POST">
-
-          <label>Comment: </label>
-          <input name="content" type="text" placeholder="Comment" required='required'/><br/><br/>
-          
-          <% 
-          if(user == null)
-              {
-          %>
-              <small style="color: red"> Please login to post your messages</small>
-            <%
-              }
-              else{
-            %>
-              <input type="submit" value="Submit"/>
-            <%  
-              }
-            %> 
-        </form>
+            <label>Comment: </label>
+            <input name="content" type="text" placeholder="Comment" required='required'/><br/><br/>
+            
+            <% if(name == null){ %>
+                <small style="color: red"> Please login to post your messages</small>
+              <%
+                }
+                else{
+              %>
+                <input type="submit" value="Submit"/>
+              <%  
+                }
+              %> 
+          </form>
+        </div>
       </div>
     </div>
   </body>

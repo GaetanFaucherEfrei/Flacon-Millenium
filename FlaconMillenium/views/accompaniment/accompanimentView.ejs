@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Accompaniment</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
@@ -12,29 +13,31 @@
   </head>
 
   <body>
-    <%- include('../menu.ejs') %>
-    <div id="content">
-      <h1>Accompaniment</h1>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Accompaniment</h1>
 
 
-      <!-- Message display area -->
-      <div>
-        <div id="editorAccompanimentForm"></div>
-        <table>
-          <tr id="fieldAccompaniment">
-            <td name ="dishType" type="text" required="required">dishType</td>
-            <td name ="description" type="text" required="">description</td>
-          </tr>
-          <tr id="<%= data.id %>">
-            <td name ="dishType" ><%= data.dishType %></td>
-            <td name ="description" ><%= data.description %></td>
-              
-            <td><button type="button" class="open-button" onclick="createForm('/accompaniment/unit', 'editorAccompanimentForm', 'fieldAccompaniment',  '<%= data.id %>')">Edit</button></td> 
-            <td><button type="button" onclick="deleteById('/accompaniment/unit','<%= data.id %>')">Delete</button></td> 
-          </tr>
-        </table>
+        <!-- Message display area -->
+        <div>
+          <div id="editorAccompanimentForm"></div>
+          <table>
+            <tr id="fieldAccompaniment">
+              <td name ="dishType" type="text" required="required">dishType</td>
+              <td name ="description" type="text" required="">description</td>
+            </tr>
+            <tr id="<%= data.id %>">
+              <td name ="dishType" ><%= data.dishType %></td>
+              <td name ="description" ><%= data.description %></td>
+                
+              <td><button type="button" class="open-button" onclick="createForm('/accompaniment/unit', 'editorAccompanimentForm', 'fieldAccompaniment',  '<%= data.id %>')">Edit</button></td> 
+              <td><button type="button" onclick="deleteById('/accompaniment/unit','<%= data.id %>')">Delete</button></td> 
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
-
   </body>
 </html>

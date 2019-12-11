@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Category</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
@@ -12,30 +13,33 @@
   </head>
 
   <body>
-    <%- include('../menu.ejs') %>
-    <div id="content">
-      <h1>Category</h1>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Category</h1>
 
-      <!-- Message display area -->
-      <div>
-        <table>
-          <div id="editorCategoryForm"></div>
-          <tr id="fieldCategory">
-            <td name ="name" type="text" required="required">name</td>
-            <td name ="description" type="text" required="">description</td>
-          </tr>
-          <% for(var i=0; i < data.length; i++) { %>
-            <tr id="<%= data[i].id %>">
-              <td name ="name"><%= data[i].name %></td>
-              <td name ="description"><%= data[i].description %></td>
-
-              <td><a href="/category/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createForm('/category/unit', 'editorCategoryForm',  'fieldCategory',  '<%= data[i].id %>')">Edit</button></td> 
-              <td><button type="button" onclick="deleteById('/category/unit','<%= data[i].id %>')">Delete</button></td> 
+        <!-- Message display area -->
+        <div>
+          <table>
+            <div id="editorCategoryForm"></div>
+            <tr id="fieldCategory">
+              <td name ="name" type="text" required="required">name</td>
+              <td name ="description" type="text" required="">description</td>
             </tr>
-          <% } %>
-        </table>
-        <button type="button" class="open-button" onclick="createForm('/category/unit', 'editorCategoryForm', 'fieldCategory')">Add a category</button>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="name"><%= data[i].name %></td>
+                <td name ="description"><%= data[i].description %></td>
+
+                <td><a href="/category/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createForm('/category/unit', 'editorCategoryForm',  'fieldCategory',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/category/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
+          </table>
+          <button type="button" class="open-button" onclick="createForm('/category/unit', 'editorCategoryForm', 'fieldCategory')">Add a category</button>
+        </div>
       </div>
     </div>
   </body>

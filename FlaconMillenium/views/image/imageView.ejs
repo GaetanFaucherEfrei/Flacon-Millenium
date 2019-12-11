@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Image</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
@@ -12,25 +13,28 @@
   </head>
 
   <body>
-    <%- include('../menu.ejs') %>
-    <div id="content">
-      <h1>Image</h1>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Image</h1>
 
 
-      <!-- Message display area -->
-      <div>
-        <div id="editorImageForm"></div>
-        <table>
-          <tr id="fieldImage">
-            <td name ="accessPath" type="text" required="required">accessPath</td>
-          </tr>
-          <tr id="<%= data.id %>">
-            <td name ="accessPath"><%= data.accessPath %></td>
-            
-            <td><button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm',  'fieldImage',  '<%= data.id %>')">Edit</button></td> 
-            <td><button type="button" onclick="deleteById('/image/unit','<%= data.id %>')">Delete</button></td> 
-          </tr>
-        </table>
+        <!-- Message display area -->
+        <div>
+          <div id="editorImageForm"></div>
+          <table>
+            <tr id="fieldImage">
+              <td name ="accessPath" type="text" required="required">accessPath</td>
+            </tr>
+            <tr id="<%= data.id %>">
+              <td name ="accessPath"><%= data.accessPath %></td>
+              
+              <td><button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm',  'fieldImage',  '<%= data.id %>')">Edit</button></td> 
+              <td><button type="button" onclick="deleteById('/image/unit','<%= data.id %>')">Delete</button></td> 
+            </tr>
+          </table>
+        </div>
       </div>
     </div>
   </body>

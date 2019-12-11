@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Flacon Millénium</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/popup.css" rel="stylesheet" type="text/css">
@@ -10,22 +11,25 @@
   </head>
 
   <body>
-    <%- include('menu.ejs') %>
-    <div id="content">
-      <h1>Mail</h1>
+    <%- include('loader.ejs')%>
+    <div class="inner">
+      <%- include('menu.ejs') %>
+      <div id="content">
+        <h1>Mail</h1>
 
-      <div class="form-popup" id="myMailForm">
-        <form class="form-container" >
-          <h1>Notification Service</h1>
-          <div class="form-input">
-              <p id='notificationStatus'></p>
-            <label for="userMail"><b>user email : </b></label>
-            <input type="email" value="user mail@example.com" name="userMail" required="required" />
-          </div>
-          <br />
-          <button type="button" class="btn" onclick="start('/mail/start')">Start</button> </br>
-          <button type="button" class="btn cancel" onclick="stop('/mail/stop')">Stop</button>
-        </form>
+        <div class="form-popup" id="myMailForm">
+          <form class="form-container" >
+            <h1>Notification Service</h1>
+            <div class="form-input">
+                <p id='notificationStatus'></p>
+              <label for="userMail"><b>user email : </b></label>
+              <input type="email" value="user mail@example.com" name="userMail" required="required" />
+            </div>
+            <br />
+            <button type="button" class="btn" onclick="start('/mail/start')">Start</button> </br>
+            <button type="button" class="btn cancel" onclick="stop('/mail/stop')">Stop</button>
+          </form>
+        </div>
       </div>
     </div>
 
