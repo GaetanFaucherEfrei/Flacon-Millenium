@@ -1,5 +1,9 @@
 const EXPRESS = require('express')
 const SESSION = require('express-session')
+const BODY_PARSER = require('body-parser') // pour parser les requêtes POST
+const MONGOOSE = require('mongoose')
+const PATH = require('path')
+
 const USER = require('./routes/user.js')
 const MAIL = require('./routes/mail.js')
 const FORUM = require('./routes/forum.js')
@@ -14,9 +18,7 @@ const SUGARDOSAGE = require('./routes/bdd/sugarDosage.js')
 const CEPAGE = require('./routes/bdd/cepage.js')
 const PRODUCER = require('./routes/bdd/producer.js')
 const SIZE = require('./routes/bdd/size.js')
-const BODY_PARSER = require('body-parser') // pour parser les requêtes POST
-const MONGOOSE = require('mongoose')
-const PATH = require('path')
+
 MONGOOSE.connect('mongodb://localhost/flaconMillenium', {
   useUnifiedTopology: true,
   useNewUrlParser: true
@@ -24,6 +26,13 @@ MONGOOSE.connect('mongodb://localhost/flaconMillenium', {
 
 var App = EXPRESS()
 var favicon = require('serve-favicon')
+
+var debug = require('debug')('flaconMillenium:appJS')
+var debugRoute = require('debug')('flaconMillenium:route')
+var debugRouteParameters = require('debug')('flaconMillenium:route:parameters')
+
+App.set('views', PATH.join(__dirname, 'views'))
+App.set('view engine', 'ejs')
 
 App.use(BODY_PARSER.urlencoded({ extended: false })) // for simple form posts
 App.use(BODY_PARSER.json()) // for API requests
@@ -36,12 +45,20 @@ App.use(SESSION({
   saveUninitialized: false
 }))
 
+/*
 App.use(function (req, res, next) {
   res.locals.user = req.session.username
   next()
 })
-console.log(__dirname)
-App.use(favicon(PATH.join(__dirname, 'public', 'image', 'logo000.png')))
+*/
+
+App.use(function (req, res, next) {
+  debugRoute(' ' + req.method + ' ::> ' + req.path)
+  debugRouteParameters(req.body)
+  next()
+})
+
+App.use(favicon(PATH.join(__dirname, 'public', 'image', 'logoGif2.gif')))
 
 App.use('/user', USER.Router)
 App.use(USER.verifUserMiddleWare)
@@ -59,11 +76,9 @@ App.use('/cepage', CEPAGE)
 App.use('/producer', PRODUCER)
 App.use('/size', SIZE)
 
-App.set('views', PATH.join(__dirname, 'views'))
-App.set('view engine', 'ejs')
-
 App.listen(3000, () => {
   console.log('Application launched on port 3000!')
+  debug('Application launched on port 3000!')
 })
 
 App.get('/', (req, res) => {
@@ -95,8 +110,9 @@ App.all('*', (req, res) => {
 })
 
 /*
+// function that execute itself
 ;(function () {
-  console.log('Fonction qui s\'execute toute seule')
+  // execute a function evrey X millisecond
   setInterval(function () {
     console.log('Fonction qui s\'execute toute seule')
   }, 10000)

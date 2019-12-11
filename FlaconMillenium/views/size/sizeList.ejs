@@ -8,8 +8,7 @@
     <link href="/css/list.css" rel="stylesheet" type="text/css">
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/sizeFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -21,23 +20,24 @@
       <div>
         <table>
           <div id="editorSizeForm"></div>
-          <tr>
-            <td>name</td>
-            <td>size</td>
-            <td>description</td>
-          </tr>
-          <% for(var i=0; i < data.length; i++) { %>
-            <tr>
-              <td><%= data[i].name %></td>
-              <td><%= data[i].size %></td>
-              <td><%= data[i].description %></td>
-              <td><a href="/size/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createSizeForm('patchSizeById', '/size/unit', '<%= data[i].id %>', '<%= data[i].name %>', '<%= data[i].size %>', '<%= data[i].description %>')">Edit</button></td> 
-              <td><button type="button" onclick="deleteById('/size/unit','<%= data[i].id %>')">Delete</button></td> 
+            <tr id="fieldSize">
+              <td name ="name" type="text" required="required">name</td>
+              <td name ="size" type="number" required="required">size</td>
+              <td name ="description" type="text" required="">description</td>
             </tr>
-          <% } %>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="name"><%= data[i].name %></td>
+                <td name ="size"><%= data[i].size %></td>
+                <td name ="description"><%= data[i].description %></td>
+
+                <td><a href="/size/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createForm('/size/unit', 'editorSizeForm',  'fieldSize',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/size/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
         </table>
-        <button type="button" class="open-button" onclick="createSizeForm('postSizeById', '/size/unit')">Add a size</button>
+        <button type="button" class="open-button" onclick="createForm('/size/unit', 'editorSizeForm', 'fieldSize')">Add a size</button>
       </div>
     </div>
   </body>

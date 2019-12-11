@@ -8,8 +8,7 @@
     <link href="/css/list.css" rel="stylesheet" type="text/css">
 
     <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script defer  type="text/javascript" src="/js/storageFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -21,29 +20,30 @@
       <div>
         <div id="editorStorageForm"></div>
         <table>
-          <tr>
-            <td>location</td>
-            <td>name</td>
-            <td>nbLigne</td>
-            <td>nbColone</td>
-            <td>nbPlace</td>
-            <td>description</td>
+          <tr id="fieldStorage">
+            <td name ="location" type="text" required="required">location</td>
+            <td name ="name" type="text" required="required">name</td>
+            <td name ="nbLigne" type="number" required="required">nbLigne</td>
+            <td name ="nbColone" type="number" required="required">nbColone</td>
+            <td name ="nbPlace" type="number" required="required">nbPlace</td>
+            <td name ="description" type="text" required="">description</td>
           </tr>
           <% for(var i=0; i < data.length; i++) { %>
-            <tr>
-              <td><%= data[i].location %></td>
-              <td><%= data[i].name %></td>
-              <td><%= data[i].nbLigne %></td>
-              <td><%= data[i].nbColone %></td>
-              <td><%= data[i].nbPlace %></td>
-              <td><%= data[i].description %></td>
+            <tr id="<%= data[i].id %>">
+              <td name ="location"><%= data[i].location %></td>
+              <td name ="name"><%= data[i].name %></td>
+              <td name ="nbLigne"><%= data[i].nbLigne %></td>
+              <td name ="nbColone"><%= data[i].nbColone %></td>
+              <td name ="nbPlace"><%= data[i].nbPlace %></td>
+              <td name ="description"><%= data[i].description %></td>
+
               <td><a href="/storage/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createStorageForm('patchStorageById', '/storage/unit', '<%= data[i].id %>', '<%= data[i].location %>', '<%= data[i].name %>', '<%= data[i].nbLigne %>', '<%= data[i].nbColone %>', '<%= data[i].nbPlace %>', '<%= data[i].description %>')">Edit</button></td> 
+              <td><button type="button" class="open-button" onclick="createForm('/storage/unit', 'editorStorageForm',  'fieldStorage',  '<%= data[i].id %>')">Edit</button></td> 
               <td><button type="button" onclick="deleteById('/storage/unit','<%= data[i].id %>')">Delete</button></td> 
             </tr>
           <% } %>
         </table>
-        <button type="button" class="open-button" onclick="createStorageForm('postStorageById', '/storage/unit')">Add a storage</button>
+        <button type="button" class="open-button" onclick="createForm('/storage/unit', 'editorStorageForm', 'fieldStorage')">Add a storage</button>
       </div>
     </div> 
   </body>

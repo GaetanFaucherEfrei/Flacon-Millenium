@@ -8,8 +8,7 @@
     <link href="/css/list.css" rel="stylesheet" type="text/css">
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/imageFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -21,19 +20,20 @@
       <div>
         <table>
           <div id="editorImageForm"></div>
-          <tr>
-            <td>accessPath</td>
+          <tr id="fieldImage">
+            <td name ="accessPath" type="text" required="required">accessPath</td>
           </tr>
           <% for(var i=0; i < data.length; i++) { %>
-            <tr>
-              <td><%= data[i].accessPath %></td>
+            <tr id="<%= data[i].id %>">
+              <td name ="accessPath"><%= data[i].accessPath %></td>
+
               <td><a href="/image/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createImageForm('patchImageById', '/image/unit', '<%= data[i].id %>', '<%= data[i].accessPath %>')">Edit</button></td> 
+              <td><button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm',  'fieldImage',  '<%= data[i].id %>')">Edit</button></td> 
               <td><button type="button" onclick="deleteById('/image/unit','<%= data[i].id %>')">Delete</button></td> 
             </tr>
           <% } %>
         </table>
-        <button type="button" class="open-button" onclick="createImageForm('postImageById', '/image/unit')">Add a image</button>
+        <button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm', 'fieldImage')">Add an image</button>
       </div>
     </div>
   </body>

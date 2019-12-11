@@ -8,8 +8,7 @@
     <link href="/css/view.css" rel="stylesheet" type="text/css">
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/sugarDosageFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -22,16 +21,17 @@
       <div>
         <div id="editorSugarDosageForm"></div>
         <table>
-          <tr>
-            <td>name</td>
-            <td>dosage</td>
-            <td>description</td>
+          <tr id="fieldSugarDosage">
+            <td name ="name" type="text" required="required">name</td>
+            <td name ="dosage" type="number" required="required">dosage</td>
+            <td name ="description" type="text" required="required">description</td>
           </tr>
-          <tr>
-            <td><%= data.name %></td>
-            <td><%= data.dosage %></td>
-            <td><%= data.description %></td>
-            <td><button type="button" class="open-button" onclick="createSugarDosageForm('patchSugarDosageById', '/sugarDosage/unit', '<%= data.id %>', '<%= data.name %>', '<%= data.dosage %>', '<%= data.description %>')">Edit</button></td> 
+          <tr id="<%= data.id %>">
+            <td name ="name"><%= data.name %></td>
+            <td name ="dosage"><%= data.dosage %></td>
+            <td name ="description"><%= data.description %></td>
+            
+            <td><button type="button" class="open-button" onclick="createForm('/sugardosage/unit', 'editorSugarDosageForm',  'fieldSugarDosage',  '<%= data.id %>')">Edit</button></td> 
             <td><button type="button" onclick="deleteById('/sugarDosage/unit','<%= data.id %>')">Delete</button></td> 
           </tr>
         </table>

@@ -8,8 +8,7 @@
     <link href="/css/view.css" rel="stylesheet" type="text/css">
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/accompanimentFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -21,26 +20,21 @@
       <!-- Message display area -->
       <div>
         <div id="editorAccompanimentForm"></div>
-        <div id="test22"></div>
         <table>
-          <tr>
-            <td>dishType</td>
-            <td>description</td>
+          <tr id="fieldAccompaniment">
+            <td name ="dishType" type="text" required="required">dishType</td>
+            <td name ="description" type="text" required="">description</td>
           </tr>
-          <tr>
-            <td><%= data.dishType %></td>
-            <td><%= data.description %></td>
-            <td><button type="button" class="open-button" onclick="createAccompanimentForm('patchAccompanimentById', '/accompaniment/unit', '<%= data.id %>', '<%= data.dishType %>', '<%= data.description %>')">Edit</button></td> 
+          <tr id="<%= data.id %>">
+            <td name ="dishType" ><%= data.dishType %></td>
+            <td name ="description" ><%= data.description %></td>
+              
+            <td><button type="button" class="open-button" onclick="createForm('/accompaniment/unit', 'editorAccompanimentForm', 'fieldAccompaniment',  '<%= data.id %>')">Edit</button></td> 
             <td><button type="button" onclick="deleteById('/accompaniment/unit','<%= data.id %>')">Delete</button></td> 
           </tr>
         </table>
       </div>
     </div>
 
-    <script>
-    window.onload = function() {
-      $('#test22').html("test succes")
-    }
-</script>
   </body>
 </html>

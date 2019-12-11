@@ -8,8 +8,7 @@
     <link href="/css/view.css" rel="stylesheet" type="text/css">
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/cepageFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -22,22 +21,23 @@
       <div>
         <div id="editorCepageForm"></div>
         <table>
-          <tr>
-            <td>name</td>
-            <td>type</td>
-            <td>region</td>
-            <td>country</td>
-            <td>climate</td>
-            <td>description</td>
+          <tr id="fieldCepage">
+            <td name ="name" type="text" required="required">name</td>
+            <td name ="type" type="text" required="required">type</td>
+            <td name ="region" type="text" required="required">region</td>
+            <td name ="country" type="text" required="required">country</td>
+            <td name ="climate" type="text" required="required">climate</td>
+            <td name ="description" type="text" required="">description</td>
           </tr>
-          <tr>
-            <td><%= data.name %></td>
-            <td><%= data.type %></td>
-            <td><%= data.region %></td>
-            <td><%= data.country %></td>
-            <td><%= data.climate %></td>
-            <td><%= data.description %></td>
-            <td><button type="button" class="open-button" onclick="createCepageForm('patchCepageById', '/cepage/unit', '<%= data.id %>', '<%= data.name %>', '<%= data.type %>', '<%= data.region %>', '<%= data.country %>', '<%= data.climate %>', '<%= data.description %>')">Edit</button></td> 
+          <tr id="<%= data.id %>">
+            <td name ="name"><%= data.name %></td>
+            <td name ="type"><%= data.type %></td>
+            <td name ="region"><%= data.region %></td>
+            <td name ="country"><%= data.country %></td>
+            <td name ="climate"><%= data.climate %></td>
+            <td name ="description"><%= data.description %></td>
+            
+            <td><button type="button" class="open-button" onclick="createForm('/cepage/unit', 'editorCepageForm', 'fieldCepage', '<%= data.id %>')">Edit</button></td> 
             <td><button type="button" onclick="deleteById('/cepage/unit','<%= data.id %>')">Delete</button></td> 
           </tr>
         </table>

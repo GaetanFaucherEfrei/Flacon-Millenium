@@ -8,8 +8,7 @@
     <link href="/css/list.css" rel="stylesheet" type="text/css">
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/accompanimentFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -21,21 +20,22 @@
       <div>
         <table>
           <div id="editorAccompanimentForm"></div>
-          <tr>
-            <td>dishType</td>
-            <td>description</td>
+          <tr id="fieldAccompaniment">
+            <td name ="dishType" type="text" required="required">dishType</td>
+            <td name ="description" type="text" required="">description</td>
           </tr>
           <% for(var i=0; i < data.length; i++) { %>
-            <tr>
-              <td><%= data[i].dishType %></td>
-              <td><%= data[i].description %></td>
+            <tr id="<%= data[i].id %>">
+              <td name ="dishType"><%= data[i].dishType %></td>
+              <td name ="description"><%= data[i].description %></td>
+
               <td><a href="/accompaniment/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createAccompanimentForm('patchAccompanimentById', '/accompaniment/unit', '<%= data[i].id %>', '<%= data[i].dishType %>', '<%= data[i].description %>')">Edit</button></td> 
+              <td><button type="button" class="open-button" onclick="createForm('/accompaniment/unit', 'editorAccompanimentForm',  'fieldAccompaniment',  '<%= data[i].id %>')">Edit</button></td> 
               <td><button type="button" onclick="deleteById('/accompaniment/unit','<%= data[i].id %>')">Delete</button></td> 
             </tr>
           <% } %>
         </table>
-        <button type="button" class="open-button" onclick="createAccompanimentForm('postAccompanimentById', '/accompaniment/unit')">Add an accompaniment</button>
+        <button type="button" class="open-button" onclick="createForm('/accompaniment/unit', 'editorAccompanimentForm', 'fieldAccompaniment')">Add an accompaniment</button>
       </div>
     </div>
   </body>

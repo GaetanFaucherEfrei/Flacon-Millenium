@@ -8,8 +8,7 @@
     <link href="/css/list.css" rel="stylesheet" type="text/css">
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/cepageFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -21,29 +20,30 @@
       <div>
         <table>
           <div id="editorCepageForm"></div>
-          <tr>
-            <td>name</td>
-            <td>type</td>
-            <td>region</td>
-            <td>country</td>
-            <td>climate</td>
-            <td>description</td>
+          <tr id="fieldCepage">
+            <td name ="name" type="text" required="required">name</td>
+            <td name ="type" type="text" required="required">type</td>
+            <td name ="region" type="text" required="required">region</td>
+            <td name ="country" type="text" required="required">country</td>
+            <td name ="climate" type="text" required="required">climate</td>
+            <td name ="description" type="text" required="">description</td>
           </tr>
           <% for(var i=0; i < data.length; i++) { %>
-            <tr>
-              <td><%= data[i].name %></td>
-              <td><%= data[i].type %></td>
-              <td><%= data[i].region %></td>
-              <td><%= data[i].country %></td>
-              <td><%= data[i].climate %></td>
-              <td><%= data[i].description %></td>
+            <tr id="<%= data[i].id %>">
+              <td name ="name"><%= data[i].name %></td>
+              <td name ="type"><%= data[i].type %></td>
+              <td name ="region"><%= data[i].region %></td>
+              <td name ="country"><%= data[i].country %></td>
+              <td name ="climate"><%= data[i].climate %></td>
+              <td name ="description"><%= data[i].description %></td>
+
               <td><a href="/cepage/unit?id=<%= data[i].id %>">Detail</a></td> 
-              <td><button type="button" class="open-button" onclick="createCepageForm('patchCepageById', '/cepage/unit', '<%= data[i].id %>', '<%= data[i].name %>', '<%= data[i].type %>', '<%= data[i].region %>', '<%= data[i].country %>', '<%= data[i].climate %>', '<%= data[i].description %>')">Edit</button></td> 
+              <td><button type="button" class="open-button" onclick="createForm('/cepage/unit', 'editorCepageForm',  'fieldCepage',  '<%= data[i].id %>')">Edit</button></td> 
               <td><button type="button" onclick="deleteById('/cepage/unit','<%= data[i].id %>')">Delete</button></td> 
             </tr>
           <% } %>
         </table>
-        <button type="button" class="open-button" onclick="createCepageForm('postCepageById', '/cepage/unit')">Add a cepage</button>
+        <button type="button" class="open-button" onclick="createForm('/cepage/unit', 'editorCepageForm', 'fieldCepage')">Add a cepage</button>
       </div>
     </div>
   </body>

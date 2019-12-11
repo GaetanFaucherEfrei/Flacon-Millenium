@@ -8,8 +8,7 @@
     <link href="/css/view.css" rel="stylesheet" type="text/css">
     
     <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-    <script defer  type="text/javascript" src="/js/defaultFonctions.js"></script>
-    <script type="text/javascript" src="/js/imageFonctions.js"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
   </head>
 
   <body>
@@ -22,12 +21,13 @@
       <div>
         <div id="editorImageForm"></div>
         <table>
-          <tr>
-            <td>accessPath</td>
+          <tr id="fieldImage">
+            <td name ="accessPath" type="text" required="required">accessPath</td>
           </tr>
-          <tr>
-            <td><%= data.accessPath %></td>
-            <td><button type="button" class="open-button" onclick="createImageForm('patchImageById', '/image/unit', '<%= data.id %>', '<%= data.accessPath %>')">Edit</button></td> 
+          <tr id="<%= data.id %>">
+            <td name ="accessPath"><%= data.accessPath %></td>
+            
+            <td><button type="button" class="open-button" onclick="createForm('/image/unit', 'editorImageForm',  'fieldImage',  '<%= data.id %>')">Edit</button></td> 
             <td><button type="button" onclick="deleteById('/image/unit','<%= data.id %>')">Delete</button></td> 
           </tr>
         </table>
