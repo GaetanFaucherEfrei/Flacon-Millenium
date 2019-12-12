@@ -86,7 +86,11 @@ Router.post('/register', async (req, res) => {
           username: req.body.username,
           password: passwordhash
         }).save()
-        res.send('ok, user registered. Go <br/> <a href="/user/login">login</a>')
+        // res.status(301).redirect('/user/confirm')
+        // res.send('ok, user registered. Go <br/> <a href="/user/login">login</a>')
+        var alert = req.session.alert
+        req.session.alert = ''
+        res.render('user/confirm', { alert: alert })
       })
     } else {
       res.send('erreur 403, Username already taken')
