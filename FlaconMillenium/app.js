@@ -6,6 +6,7 @@ const PATH = require('path')
 
 const USER = require('./routes/user.js')
 const MAIL = require('./routes/mail.js')
+const TEXT = require('./routes/text.js')
 const FORUM = require('./routes/forum.js')
 const BOTTLE = require('./routes/bottle.js')
 const STORAGE = require('./routes/bdd/storage.js')
@@ -52,11 +53,13 @@ App.use(function (req, res, next) {
 })
 */
 
-App.use(function (req, res, next) {
-  debugRoute(' ' + req.method + ' ::> ' + req.path)
-  debugRouteParameters(req.body)
-  next()
-})
+if (debug) {
+  App.use(function (req, res, next) {
+    debugRoute(' ' + req.method + ' ::> ' + req.path)
+    debugRouteParameters(req.body)
+    next()
+  })
+}
 
 App.use(favicon(PATH.join(__dirname, 'public', 'image', 'logoGif2.gif')))
 
@@ -64,6 +67,7 @@ App.use('/user', USER.Router)
 App.use(USER.verifUserMiddleWare)
 App.use('/forum', FORUM)
 App.use('/mail', MAIL)
+App.use('/text', TEXT)
 App.use('/bottle', BOTTLE)
 App.use('/storage', STORAGE)
 App.use('/category', CATEGORY)

@@ -79,22 +79,62 @@ Router.post('/register', async (req, res) => {
     const PERSON = await USER.findOne({ username: req.body.username })
     // console.log(PERSON)
     if (PERSON == null) {
-      BCRYPT.hash(req.body.password, SALT_ROUNDS, function (err, passwordhash) {
-        if (err) throw err
+      if (confirmEmail(req.body.email, req.body.email2)) {
+        BCRYPT.hash(req.body.password, SALT_ROUNDS, function (err, passwordhash) {
+          if (err) throw err
 
-        new USER({
-          username: req.body.username,
-          password: passwordhash
-        }).save()
-        // res.status(301).redirect('/user/confirm')
-        // res.send('ok, user registered. Go <br/> <a href="/user/login">login</a>')
-        var alert = req.session.alert
-        req.session.alert = ''
-        res.render('user/confirm', { alert: alert })
-      })
+          new USER({
+            username: req.body.username,
+            password: passwordhash,
+            email: req.body.email
+          }).save()
+          // res.status(301).redirect('/user/confirm')
+          // res.send('ok, user registered. Go <br/> <a href="/user/login">login</a>')
+          é
+          res.redirect('/confirm')
+        })
+      }
     } else {
       res.send('erreur 403, Username already taken')
     }
+  }
+})
+
+function confirmEmail (email, confemail) {
+  console.log('email : ' + email)
+  console.log('confemail : ' + confemail)
+  if (validate(email)) {
+    if (email !== confemail) {
+      console.log('Email Not Matching!')
+      return false
+    } else {
+      return true
+    }
+  } else {
+    console.log('Email Not valid!')
+    return false
+  }
+}
+
+function validate (email) {
+  var model = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  if (model.test(email)) {
+    console.log(email + ' is valid')
+    return true
+  } else {
+    console.log(email + ' is not a valid email.')
+    return false
+  }
+}
+
+Router.get('/confirm', async (req, res) => {
+  if (req.user) {
+    req.session.alert = 'You are already logged in.'
+    res.status(301).redirect('/home')
+  } else {
+    var alert = req.session.alert
+    req.session.alert = ''
+    res.render('user/confirm', { alert: alert })
   }
 })
 
