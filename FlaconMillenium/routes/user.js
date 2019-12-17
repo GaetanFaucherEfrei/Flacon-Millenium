@@ -90,7 +90,7 @@ Router.post('/register', async (req, res) => {
           }).save()
           // res.status(301).redirect('/user/confirm')
           // res.send('ok, user registered. Go <br/> <a href="/user/login">login</a>')
-          é
+
           res.redirect('/confirm')
         })
       }
