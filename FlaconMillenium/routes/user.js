@@ -37,22 +37,28 @@ Router.post('/login', async (req, res) => {
       BCRYPT.compare(req.body.password, PERSON.password, function (err, result) {
         if (err) throw err
 
-        if (result) {
-          if (req.body.username === req.session.username) {
-            req.session.username = PERSON.username
-            req.session.userId = PERSON._id
-            res.send('Welcome back ' + req.body.username + ' !')
-          } else {
-            req.session.username = PERSON.username
-            req.session.userId = PERSON._id
 
-            if (req.session.oldUrl && req.session.oldUrl !== '') {
-              var newPath = req.session.oldUrl
-              req.session.oldUrl = ''
-              res.redirect(newPath)
+        if (result) {
+          if(PERSON.confirmStatus === 1){
+            if (req.body.username === req.session.username) {
+              req.session.username = PERSON.username
+              req.session.userId = PERSON._id
+              res.send('Welcome back ' + req.body.username + ' !')
             } else {
-              res.status(200).redirect('/home')
+              req.session.username = PERSON.username
+              req.session.userId = PERSON._id
+
+              if (req.session.oldUrl && req.session.oldUrl !== '') {
+                var newPath = req.session.oldUrl
+                req.session.oldUrl = ''
+                res.redirect(newPath)
+              } else {
+                res.status(200).redirect('/home')
+              }
             }
+          }
+          else{
+            res.render('user/confirm', { alert: 'Error : The account is not confirmed.' })
           }
         } else {
           res.render('user/login', { alert: 'Error : Wrong password.' })
@@ -67,7 +73,9 @@ Router.get('/register', async (req, res) => {
     req.session.alert = 'You are already logged in.'
     res.status(301).redirect('/home')
   } else {
-    res.render('user/register')
+    var alert = req.session.alert
+    req.session.alert = ''
+    res.render('user/register', { alert: alert })
   }
 })
 
@@ -80,19 +88,26 @@ Router.post('/register', async (req, res) => {
     // console.log(PERSON)
     if (PERSON == null) {
       if (confirmEmail(req.body.email, req.body.email2)) {
-        BCRYPT.hash(req.body.password, SALT_ROUNDS, function (err, passwordhash) {
+        BCRYPT.hash(req.body.password, SALT_ROUNDS, async function (err, passwordhash) {
           if (err) throw err
 
-          new USER({
+          await new USER({
             username: req.body.username,
             password: passwordhash,
+            confirmStatus: 0,
+            comfirmationCode: Math.floor(Math.random() * (10000 - 1000) + 1000),
             email: req.body.email
           }).save()
           // res.status(301).redirect('/user/confirm')
           // res.send('ok, user registered. Go <br/> <a href="/user/login">login</a>')
-
-          res.redirect('/confirm')
+          USER.find({username: req.body.username }, function (error, result){
+            if (err) throw err
+            res.redirect('/user/confirm/?var=' + result[0]._id )
+          })
         })
+      } else {
+        req.session.alert = 'The mail field is not valid.'
+        res.redirect('/user/register')
       }
     } else {
       res.send('erreur 403, Username already taken')
@@ -134,7 +149,44 @@ Router.get('/confirm', async (req, res) => {
   } else {
     var alert = req.session.alert
     req.session.alert = ''
-    res.render('user/confirm', { alert: alert })
+    console.log('var : ' + req.query.var)
+    res.render('user/confirm', { alert: alert, userID : req.query.var })
+  }
+})
+
+Router.get('/confirmationForm', async (req, res) => {
+  if (req.user) {
+    req.session.alert = 'You are already logged in.'
+    res.status(301).redirect('/home')
+  } else {
+    var alert = req.session.alert
+    req.session.alert = ''
+    res.render('user/confirmationForm', { alert: alert})
+  }
+})
+
+Router.post('/confirm', async (req, res) => {
+  if (req.user) {
+    req.session.alert = 'You are already logged in.'
+    res.status(301).redirect('/home')
+  } else {
+    var user = await USER.findById(req.body.id)
+    if(user.confirmStatus === 0){
+      console.log('code: '+ req.body.code)
+      console.log('comfirmationCode: '+ user.comfirmationCode)
+      if(req.body.code == user.comfirmationCode){
+        user.confirmStatus = 1
+        user.save()
+
+        var alert = req.session.alert
+        req.session.alert = ''
+        res.render('user/login', { alert: alert})
+      }else{
+        res.status(400).send('Bad comfirmation')
+      }
+    }else{
+      res.status(400).send('This account is already comfirmed')
+    }
   }
 })
 

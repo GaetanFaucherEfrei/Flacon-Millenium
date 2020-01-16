@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Confirm your account</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/login-register.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    
+  </head>
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('logMenu.ejs') %>
+      <div id="content">
+        <h1>Confirm your account</h1>
+        <div>
+          <p>Fill the form</p>
+          <form action="/user/confirm" method="POST">
+            <input type="text" name="id" value='' placeholder='id'>
+            <input type="text" name="code" value='' placeholder='code'>
+            <input type="submit" value="Submit">
+          </form> 
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

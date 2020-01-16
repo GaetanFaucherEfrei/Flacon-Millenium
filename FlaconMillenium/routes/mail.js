@@ -2,6 +2,8 @@ const EXPRESS = require('express')
 const NODEMAILER = require('nodemailer')
 var Router = EXPRESS.Router()
 
+const USER = require('../models/user.model.js')
+
 /* ERROR CODE : https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
   200 : OK
   206 : Partial Content
@@ -44,6 +46,48 @@ Router.get('/', async (req, res) => {
   }
 })
 
+Router.get('/confirmUser', async (req, res) => {
+  console.log('start mail')
+  try {
+    if (!req.user) {
+      if (req.query.id) {
+        var user = await USER.findById(req.query.id)
+        var content = `<body>
+                      <h1>Hi `+ user.username +`</h1>
+                      <div id="content">
+                      <p>click on the link bellow to confirm your inscription</p>
+                      <p>Id :  `+ user._id +`</p>
+                      <p>Code :  `+ user.comfirmationCode +`</p>
+                      </br>
+                      <a href="localhost:3000/user/confirmationForm">Confirmation Link</a>
+                      
+                  </body>`
+        var emailAddress = user.email
+        var subject = 'Confirm your inscription to Flacon Millenium'
+
+        if (validateEmail(emailAddress)) {
+          sendMail(emailAddress, subject, content)
+
+          res.status(200).send('mail send')
+        } else {
+          res.status(400).send('Invalid email address')
+        }
+
+      } else{
+        res.status(400).send('Invalid user id')
+      }
+
+    } else {
+      // console.log('User already identified.')
+      req.session.oldUrl = req.originalUrl
+      res.status(401).redirect('/home')
+    }
+  } catch (error) {
+    console.log('There was an error with our server : ' + error)
+    res.status(403).send('There was an error with our server.')
+  }
+})
+
 Router.get('/start', async (req, res) => {
   console.log('start mail')
   try {
@@ -57,12 +101,12 @@ Router.get('/start', async (req, res) => {
 
       if (validateEmail(emailAddress)) {
         MailNotification = setInterval(function () {
-          testMail(emailAddress, subject, content)
+          sendMail(emailAddress, subject, content)
         }, 5000)
 
         res.status(200).send('notification started')
       } else {
-        res.status(200).send('Invalid email address')
+        res.status(400).send('Invalid email address')
       }
     } else {
       // console.log('User not identified.')
@@ -119,7 +163,7 @@ function validateEmail (email) {
   return re.test(String(email).toLowerCase())
 }
 
-function testMail (emailAddress, subject, content) {
+function sendMail (emailAddress, subject, content) {
   var mailOptions = {
     from: 'Flacon Millenium <FlaconMillenium@gmail.com>',
     to: emailAddress,

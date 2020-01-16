@@ -6,6 +6,9 @@
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/login-register.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    
   </head>
 
   <body>
@@ -17,9 +20,31 @@
         <div>
           <p>The account was created</p>
           <p>An email was send with the confirmation link</p>
-          <button>Resend</button>
+          <button onclick="sendConfirmationEmail()" onload="sendConfirmationEmail()">Resend</button>
         </div>
       </div>
     </div>
+    <script>
+      function sendConfirmationEmail() {
+        path = '/mail/confirmUser'
+        $.ajax({
+          type: 'GET',
+          url: path,
+          data: {
+            id: '<%= userID %>'
+          },
+          success: function (answer, status) {
+            console.log('success : ' + status)
+            window.alert('The email was sent.')
+            // window.location.reload()
+          },
+          error: function (answer, status, error) {
+            console.log('success : ' + status)
+            window.alert(answer.responseText)
+          },
+          complete: function (answer, status) {}
+        })
+      }
+    </script>
   </body>
 </html>
