@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Register</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/login-register.css" rel="stylesheet" type="text/css">
+
+    <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    
+  </head>
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('logMenu.ejs') %>
+      <div id="content">
+        <h1>Register</h1>
+        <div>
+          <form action="http://localhost:3000/user/register" method="POST">
+            <input name="username" type="text" placeholder="Username" />
+            <input name="password" type="password" placeholder="Passeword" />
+            <br/>
+            <br/>
+            <input name="email" type="email" placeholder="Email" onblur="validate()"/>
+            <input name="email2" type="email" placeholder="Confirm email"  onblur="confirmEmail()"/>
+            <br/>
+            <p></p>
+            <br/>
+            <input type="submit" value="Register" />
+          </form>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript">
+      function confirmEmail() {
+          var email =  $('form > input[name=\'email\']').val()
+          var confemail =  $('form > input[name=\'email2\']').val()
+          console.log('email : ' + email)
+          console.log('confemail : ' + confemail)
+          if(email !== confemail) {
+            console.log('Email Not Matching!')
+            $('form > p').html('Email Not Matching!')
+            // alert('Email Not Matching!')
+          } else{
+            console.log('Email Matching!')
+            $('form > p').html('')
+          }
+      }
+      function validateEmail(email) {
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(email)
+      }
+
+      function validate() {
+        var $result = $('form > p').html('')
+        var email = $('form > input[name=\'email\']').val()
+        $result.text('')
+
+        if (validateEmail(email)) {
+          console.log(email + ' is valid')
+          $result.css('color', 'none')
+          return true
+        } else {
+          $result.text(email + ' is not a valid email.')
+          $result.css('color', 'red')
+          return false
+        }
+      }
+
+      // $("#validate").on("click", validate);
+  </script>
+  </body>
+</html>

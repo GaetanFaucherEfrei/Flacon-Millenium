@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Logout</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/login-register.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('logMenu.ejs') %>
+      <div id="content">
+        <h1>Loging out</h1>
+        <div>
+            <p>See you soon <%= name %> </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

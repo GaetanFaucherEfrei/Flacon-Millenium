@@ -33,6 +33,27 @@ ul.menu li a:hover:not(.active) {
   color: white;
 }
 
+li a, .dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+
+.dropdown-content {
+  display: none;
+  background-color: #555;
+  width: 100%;
+  z-index: 1;
+}
+
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
 #content {
   margin-left: 10%;
   padding: 1px 16px;
@@ -67,6 +88,12 @@ ul.menu li a:hover:not(.active) {
     text-align: center;
     float: none;
   }
+
+  ul.menu li img {
+    text-align: center;
+    float: none;
+  }
+
   ul.menu li.rightSide a{
     text-align: center;
     float: none;

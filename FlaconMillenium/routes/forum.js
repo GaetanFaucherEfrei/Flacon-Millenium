@@ -2,7 +2,20 @@ const EXPRESS = require('express')
 const COMMENT = require('../models/comment.model.js')
 var Router = EXPRESS.Router()
 
-global.results = null
+/* ERROR CODE : https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+  200 : OK
+  206 : Partial Content
+
+  client:
+    400 : Bad Request
+    401 : Unauthorized
+    403 : Forbidden
+    404 : Not Found
+
+  server:
+    500 : Internal Server Error
+    520 : Unknown Error
+*/
 
 Router.post('/comment', async (req, res) => {
   if (req.user) {
@@ -12,12 +25,10 @@ Router.post('/comment', async (req, res) => {
       date: new Date()
     }).save()
 
-    // console.log('req.body.content', req.body.content)
-    // console.log('req.body.author', req.body.author)
-
-    res.redirect('/forum/comment')
+    res.status(200).redirect('/forum/comment')
   } else {
-    res.redirect('/user/login')
+    req.session.oldUrl = '/forum/comment'
+    res.status(401).redirect('/user/login')
   }
 })
 
@@ -27,13 +38,12 @@ Router.get('/comment', async (req, res) => {
       if (err) {
         res.send(err)
       } else {
-      // console.log('Result: ', result)
-        res.render('forum', { data: result, name: req.user.username })
-      // res.send(JSON.stringify(result))
+        res.status(200).render('forum/forum', { data: result, name: req.user.username })
       }
     }).sort({ _id: -1 }).limit(10)
   } else {
-    res.redirect('/user/login')
+    req.session.oldUrl = '/forum/comment'
+    res.status(401).redirect('/user/login')
   }
 })
 

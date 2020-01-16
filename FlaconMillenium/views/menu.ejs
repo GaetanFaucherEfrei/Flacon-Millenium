@@ -1,8 +1,25 @@
 <ul class="menu">
-  <li><a href="#"><%= name %></a></li>
+  <li><img src="/image/glass2YYY.png" width="96" height="136" alt="website logo"></li>
+  <li><a href="/"><%= name %></a></li>
+  <li><a href="/user/list">User list</a></li>
   <li><a href="/forum/comment">Forum</a></li>
+  <li class="dropdown">
+    <a href="javascript:void(0)" class="dropbtn">Data</a>
+    <div class="dropdown-content">
+      <a href="/storage/list">Storage</a>
+      <a href="/category/list">Category</a>
+      <a href="/status/list">Status</a>
+      <a href="/designation/list">Designation</a>
+      <a href="/accompaniment/list">Accompaniment</a>
+      <a href="/image/list">Image</a>
+      <a href="/cepage/list">Cepage</a>
+      <a href="/producer/list">Producer</a>
+      <a href="/sugarDosage/list">Sugar Dosage</a>
+      <a href="/size/list">Size</a>
+    </div>
+  </li>
   <li class="rightSide"><a href="/user/logout">Logout</a></li>
 </ul>
-<% if(typeof alert !== 'undefined') { %>
-  <script>alert("<%= alert %>");</script>
+<% if(typeof alert !== 'undefined' && alert != '') { %>
+  <script>alert("<%= alert %>")</script>
 <% } %>

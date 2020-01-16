@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Storage</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
+    <link href="/css/list.css" rel="stylesheet" type="text/css">
+
+    <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
+  </head>
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Storage</h1>
+
+        <!-- Message display area -->
+        <div>
+          <div id="editorStorageForm"></div>
+          <table>
+            <tr id="fieldStorage">
+              <td name ="location" type="text" required="required">location</td>
+              <td name ="name" type="text" required="required">name</td>
+              <td name ="nbLigne" type="number" required="required">nbLigne</td>
+              <td name ="nbColone" type="number" required="required">nbColone</td>
+              <td name ="nbPlace" type="number" required="required">nbPlace</td>
+              <td name ="description" type="text" required="">description</td>
+            </tr>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="location"><%= data[i].location %></td>
+                <td name ="name"><%= data[i].name %></td>
+                <td name ="nbLigne"><%= data[i].nbLigne %></td>
+                <td name ="nbColone"><%= data[i].nbColone %></td>
+                <td name ="nbPlace"><%= data[i].nbPlace %></td>
+                <td name ="description"><%= data[i].description %></td>
+
+                <td><a href="/storage/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createForm('/storage/unit', 'editorStorageForm',  'fieldStorage',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/storage/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
+          </table>
+          <button type="button" class="open-button" onclick="createForm('/storage/unit', 'editorStorageForm', 'fieldStorage')">Add a storage</button>
+        </div>
+      </div> 
+    </div>
+  </body>
+</html>

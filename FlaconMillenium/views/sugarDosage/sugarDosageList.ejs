@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>SugarDosage</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
+    <link href="/css/list.css" rel="stylesheet" type="text/css">
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
+  </head>
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>SugarDosage</h1>
+
+        <!-- Message display area -->
+        <div>
+          <table>
+            <div id="editorSugarDosageForm"></div>
+            <tr id="fieldSugarDosage">
+              <td name ="name" type="text" required="required">name</td>
+              <td name ="dosage" type="number" required="required">dosage</td>
+              <td name ="description" type="text" required="">description</td>
+            </tr>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="name"><%= data[i].name %></td>
+                <td name ="dosage"><%= data[i].dosage %></td>
+                <td name ="description"><%= data[i].description %></td>
+
+                <td><a href="/sugarDosage/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createForm('/sugardosage/unit', 'editorSugarDosageForm',  'fieldSugarDosage',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/sugarDosage/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
+          </table>
+          <button type="button" class="open-button" onclick="createForm('/sugardosage/unit', 'editorSugarDosageForm', 'fieldSugarDosage')">Add a sugardosage</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

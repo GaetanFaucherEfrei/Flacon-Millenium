@@ -13,9 +13,16 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "date": "^1.0.2",
+    "debug": "^4.1.1",
     "ejs": "^2.7.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
-    "mongoose": "^5.7.7"
+    "mongoose": "^5.7.7",
+    "nodemailer": "^6.4.1",
+    "please-wait": "0.0.5",
+    "serve-favicon": "^2.5.0",
+    "supports-color": "^7.1.0",
+    "telesignsdk": "^2.2.1",
+    "textbelt": "0.0.4"
   }
 }

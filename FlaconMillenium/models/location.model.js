@@ -2,12 +2,11 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 var locationSchema = new Schema({
-  locationStorage: { type: String, required: true },
-  nameStorage: { type: String, required: true },
   ligne: { type: Number, required: true },
   colone: { type: Number, required: true },
   place: { type: Number, required: true },
-  description: { type: String, required: false }
+  description: { type: String, required: false },
+  IDstorage: { type: String, required: true }
 })
 
 const Location = mongoose.model('Location', locationSchema)
