@@ -140,11 +140,11 @@ function patchById (path, formId, referenceId, id) {
       closeForm(formId)
 
       for (let index = 1; index <= $('#' + referenceId + ' > td').length; index++) {
-        var name = Object.keys(data)[index]
+        var nameOfElement = Object.keys(data)[index]
         // console.log('name : ' + name)
         // console.log('index : ' + index)
         // console.log('answer : ' + answer[name])
-        $('#' + id + ' > td[name=\'' + name + '\']').html(answer[name])
+        $('#' + id + ' > td[name=\'' + nameOfElement + '\']').html(answer[nameOfElement])
       }
       // window.location.reload()
     },

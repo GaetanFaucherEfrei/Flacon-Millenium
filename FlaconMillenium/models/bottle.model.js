@@ -17,10 +17,10 @@ var bottleSchema = new Schema({
   IDsize: { type: String, required: true }, // ID TAILLE
   IDlocation: { type: String, required: true }, // ID LOCALISATION
   IDowner: { type: String, required: true }, // ID PROPRIETAIRE
-  IDgiver: { type: String, required: true }, // ID DONNEUR
-  IDrecipient: { type: String, required: true }, // ID RECEVEUR
-  IDdosage: { type: String, required: true }, // ID DOSAGE SUCRE
-  IDservedWith: { type: String, required: true }// ID SERVIT AVEC
+  IDgiver: { type: String, required: false }, // ID DONNEUR
+  IDrecipient: { type: String, required: false }, // ID RECEVEUR
+  IDdosage: { type: String, required: false }, // ID DOSAGE SUCRE
+  IDservedWith: { type: String, required: false }// ID SERVIT AVEC
 })
 
 const Bottle = mongoose.model('Bottle', bottleSchema)
