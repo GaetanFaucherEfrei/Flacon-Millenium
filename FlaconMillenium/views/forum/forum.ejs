@@ -6,7 +6,52 @@
     <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
     <link href="/css/menu.css" rel="stylesheet" type="text/css">
     <link href="/css/forum.css" rel="stylesheet" type="text/css">
+    <script>
+      var topiclist = []
+      function showhide(id) {
+        //var e = document.getElementById(id)
+        //e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+
+        for(var z = 0; z < topiclist.length; z++)
+        {
+          var r = document.getElementsByClassName(topiclist[z])
+          for(var y=0; y<r.length; y++)
+          {
+            r[y].style["display"] = "none"
+          }
+        }
+         
+        var e = document.getElementsByClassName(id)
+        for(var i=0;i<e.length; i++){
+          e[i].style.display = (e[i].style.display == 'block') ? 'none' : 'block';
+        }
+     }
+
+     function newtopic()
+     {
+        var e = document.getElementById("addtopic")
+        e.style.display = (e.style.display == 'block') ? 'none' : 'block';
+     }
+
+     function addnewtopic(name)
+     {
+       topiclist.push(name)
+     }
+     </script>
   </head>
+  <style>
+    input[type=text]{
+    width: 50%;
+    height: 20%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    }
+
+  </style>
 
   <body>
     <%- include('../loader.ejs')%>
@@ -17,36 +62,55 @@
         <!-- Information area-->
         <div class="information">
           <h4>Welcome to the forum for the fans of the drink</h4>
+          <!-- 
           <div id="gif">
             <iframe src="https://giphy.com/embed/bKBM7H63PIykM" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed"></iframe>
           </div>
+          -->
           <hr>
         </div>
-
 
         <!-- Message display area -->
         <div class="history">
             <table>
                 <% for(var i=0; i < data.length; i++) { %>
-                  <tr>
-                    <td><%= data[i].content %></td>
-                    <td><small>Post by: <%= data[i].author %>  <%= data[i].date.getDate() %>-<%= data[i].date.getMonth() %>-<%= data[i].date.getYear() %></small></td>
-                    <script>
-                     // console.log('test');
-                    </script>
-                  </tr>
+                      <tr class="<%= data[i].topic %>" style="display:none;">
+                          <td><%= data[i].content %></td>
+                          <td><spacer size="1000"></spacer></td>
+                          <td><small>Posted by: <%= data[i].author %>  <%= data[i].date.getDate() %> - <%= data[i].date.getMonth() + 1 %> - <%= data[i].date.getFullYear() %></small></td>
+                      </tr>
                 <% } %>
-                </table>
+              </table>
         </div>
         <hr>
 
-        
-        <!-- Message post area-->
+        <!-- Message post Area -->
         <div id="comment">
           <form action="/forum/comment" method="POST">
+            
+
+            <label>Topic: </label>
+            <select id="ok" name="topic" onchange="showhide(this.value)" style="width: max-content; text-align-last:center;">
+              <% for(var i=0; i < data.length; i++) { %>
+                <script> 
+                if(topiclist.find(element => element == "<%= data[i].topic %>") == undefined )
+                {
+                  topiclist.push("<%= data[i].topic %>")
+                } </script>
+                        
+              <% } %>
+              <script>
+              var z = document.getElementById("ok")
+              for( var index = 0; index < topiclist.length; index++ ) { 
+                z.innerHTML += "<option id='topic' value='" + topiclist[index] + "'>" + topiclist[index]+" </option>"
+               }
+               </script>
+                
+
+            </select><br/>
 
             <label>Comment: </label>
-            <input name="content" type="text" placeholder="Comment" required='required'/><br/><br/>
+            <input name="content" type='text' placeholder="Comment" required='required'/><br/><br/>
             
             <% if(name == null){ %>
                 <small style="color: red"> Please login to post your messages</small>
@@ -58,6 +122,15 @@
               <%  
                 }
               %> 
+          </form>
+        </div>
+        <button type="button" style="width: max-content; position: absolute; right: 5vw;" onclick="newtopic()"> New Topic </button>
+        <div id="addtopic" style="display: none">
+          <form action="/forum/comment" method="POST">
+            <label>Topic Name:</label>
+            <input name="topic" type='text' placeholder="Add Topic" required='required'/>
+            <input name="content" type='hidden' placeholder="Comment" required='required' value='Welcome to this new topic'/>
+            <input type="submit" value="Add New Topic">
           </form>
         </div>
       </div>

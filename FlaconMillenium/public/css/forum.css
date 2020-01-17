@@ -35,9 +35,33 @@ td {
   flex-flow: column;
   border-style: double;
 }
+
+#addtopic{
+  padding: 2%;
+  background-color: gray;
+  text-align: center;
+  display: flex;
+  flex-flow: column;
+  border-style: double;
+}
+
 .history{
   display: flex;
   justify-content: space-evenly;
+}
+
+.choice{
+  display: flex;
+  flex-flow: column;
+  justify-content: space-evenly;
+}
+
+.topic{
+  display: flex;
+  flex-flow: column;
+  text-decoration: none;
+  color: black;
+  font-family: cursive;
 }
 
 hr {

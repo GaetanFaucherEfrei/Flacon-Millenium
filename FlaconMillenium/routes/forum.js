@@ -20,11 +20,11 @@ var Router = EXPRESS.Router()
 Router.post('/comment', async (req, res) => {
   if (req.user) {
     new COMMENT({
+      topic: req.body.topic,
       content: req.body.content,
       author: req.session.username,
       date: new Date()
     }).save()
-
     res.status(200).redirect('/forum/comment')
   } else {
     req.session.oldUrl = '/forum/comment'
