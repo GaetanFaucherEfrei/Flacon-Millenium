@@ -59,7 +59,7 @@ Router.get('/confirmUser', async (req, res) => {
                       <p>Id :  `+ user._id +`</p>
                       <p>Code :  `+ user.comfirmationCode +`</p>
                       </br>
-                      <a href="localhost:3000/user/confirmationForm">Confirmation Link</a>
+                      <a href="FlaconMillenium.local:3000/user/confirmationForm">Confirmation Link</a>
                       
                   </body>`
         var emailAddress = user.email
