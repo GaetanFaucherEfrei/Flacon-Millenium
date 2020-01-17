@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Flacon Millénium</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/home.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body >
+    <%- include('loader.ejs')%>
+    <div class="inner">
+      <%- include('menu.ejs') %>
+      <div id="content">
+          <img src="/image/logoXXX.png" width="96" height="136" alt="website logo">
+        <h1>Humidity : <%= humidity %> % +/- 5%</h1>
+        <h1>Temperature : <%= temperature %> °C +/- 2°c</h1>
+      </div>
+    </div>
+  </body>
+</html>
