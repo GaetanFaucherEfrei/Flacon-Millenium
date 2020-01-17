@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Location</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
+    <link href="/css/view.css" rel="stylesheet" type="text/css">
+
+    <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
+  </head>
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Location</h1>
+
+        <!-- Message display area -->
+        <div>
+          <div id="editorLocationForm"></div>
+          <table>
+            <tr id="fieldLocation">
+              <td name ="ligne" type="number" required="required">ligne</td>
+              <td name ="colone" type="number" required="required">colone</td>
+              <td name ="place" type="number" required="required">place</td>
+              <td name ="description" type="text" required="">description</td>
+              <td name ="IDstorage" type="text" identifier="IDstorage" required="">IDstorage</td>
+            </tr>
+            <tr id="<%= data.id %>">
+              <td name ="ligne"><%= data.ligne %></td>
+              <td name ="colone"><%= data.colone %></td>
+              <td name ="place"><%= data.place %></td>
+              <td name ="description"><%= data.description %></td>
+              <td name ="IDstorage" onload="getStorageName(this, '<%= data.IDstorage %>')" identifier="<%= data.IDstorage %>"> </td>
+
+              <td><button type="button" class="open-button" onclick="createLocationForm('/location/unit', 'editorLocationForm',  'fieldLocation',  '<%= data.id %>')">Edit</button></td> 
+              <td><button type="button" onclick="deleteById('/location/unit','<%= data.id %>')">Delete</button></td> 
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      async function getStorageName(element, IDstorage){
+        const storage = await getById ('/storage/unit', IDstorage)
+        element.innerHTML = storage.name
+      }
+
+      async function createLocationForm (path, formId, referenceId, id) {
+        var functionName = 'postById'
+        var tittle = 'Add'
+        if (id) {
+          functionName = 'patchById'
+          tittle = 'Edit'
+        }
+
+
+        var content = `<div class="form-popup" >
+                        <form class="form-container" onsubmit = "event.preventDefault(); myValidation();">
+                          <h1>`+ tittle +`</h1>
+                          <div class="form-input">`
+
+        for (let index = 0; index < $('#' + referenceId + ' > td').length; index++) {
+          var name = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('name')
+          var type = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('type')
+          var patern = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('patern')
+          var identifier = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('identifier')
+          var required = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('required')
+          var value = ''
+
+          if (id) {
+            value = $('#' + id + ' > td[name=\'' + name + '\']').text()
+          }
+
+          if(identifier){
+            var storageList = await getList('/storage/list')
+            if (id) {
+              value = $('#' + id + ' > td[name=\'' + name + '\']').attr('identifier')
+            }else{
+              value = storageList[0]._id
+            }
+            content += '<label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
+                <input type="hidden" value="` + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
+                <br />`
+
+            content += `<select onchange="changeSelectValue(this, '` + formId + `', '` + name + `')">`
+
+            for (let index = 0; index < storageList.length; index++) {
+              content += ` <option value="`+ storageList[index]._id+`" `
+              if(value === storageList[index]._id){
+                content += ` selected="true" `
+              }
+              content += `>`+ storageList[index].name+` </option>`
+            }
+            content += `</select>`
+          }else{
+            content += '<label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
+                <input type="` + type + '" value="' + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
+                <br />`
+          }
+        }
+        content += `</div>
+                    <br />
+                    <button type="submit" class="btn" onclick="` + functionName + '(\'' + path + '\', \'' + formId + '\', \'' + referenceId + '\',\'' + id + `')" >Submit</button> </br>
+                    <button type="button" class="btn cancel" onclick="closeForm('` + formId + `')" >Cancel</button>
+                    </form>
+                  </div>`
+
+        document.getElementById(formId).innerHTML = content
+      }
+
+    </script>
+    
+  </body>
+</html>

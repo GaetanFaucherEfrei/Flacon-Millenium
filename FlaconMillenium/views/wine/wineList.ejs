@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wine</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
+    <link href="/css/list.css" rel="stylesheet" type="text/css">
+
+    <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
+  </head>
+
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Wine</h1>
+
+        <!-- Message display area -->
+        <div>
+          <div id="editorWineForm"></div>
+          <table>
+            <tr id="fieldWine">
+              <td name ="name" type="text" required="required">name</td>
+              <td name ="alcoholPercentage" type="number" required="required">alcoholPercentage</td>
+              <td name ="vintage" type="checkbox" required="">vintage</td>
+              <td name ="bio" type="checkbox" required="">bio</td>
+              <td name ="oakBarrel" type="checkbox" required="">oakBarrel</td>
+              <td name ="conservationTime" type="date" required="required">conservationTime</td>
+              <td name ="temperatureConservation" type="number" required="">temperatureConservation</td>
+              <td name ="consomationTime" type="date" required="required">consomationTime</td>
+              <td name ="temperatureConsomation" type="number" required="">temperatureConsomation</td>
+              <td name ="comment" type="text" required="">comment</td>
+              <td name ="IDproducer" type="text" identifier="IDproducer" required="">IDproducer</td>
+              <td name ="IDcategory" type="text" identifier="IDcategory" required="">IDcategory</td>
+              <td name ="IDdesignation" type="text" identifier="IDdesignation" required="">IDdesignation</td>
+            </tr>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="name"><%= data[i].name %></td>
+                <td name ="alcoholPercentage"><%= data[i].alcoholPercentage %></td>
+                <td name ="vintage"><%= data[i].vintage %></td>
+                <td name ="bio"><%= data[i].bio %></td>
+                <td name ="oakBarrel"><%= data[i].oakBarrel %></td>
+                <td name ="conservationTime"><%= data[i].conservationTime %></td>
+                <td name ="temperatureConservation"><%= data[i].temperatureConservation %></td>
+                <td name ="consomationTime"><%= data[i].consomationTime %></td>
+                <td name ="temperatureConsomation"><%= data[i].temperatureConsomation %></td>
+                <td name ="comment"><%= data[i].comment %></td>
+                <td name ="IDproducer" onload="getProducerName(this, '<%= data[i].IDproducer %>')" identifier="<%= data[i].IDproducer %>"> </td>
+                <td name ="IDcategory" onload="getCategoryName(this, '<%= data[i].IDcategory %>')" identifier="<%= data[i].IDcategory %>"> </td>
+                <td name ="IDdesignation" onload="getDesignationName(this, '<%= data[i].IDdesignation %>')" identifier="<%= data[i].IDdesignation %>"> </td>
+
+                <td><a href="/wine/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createWineForm('/wine/unit', 'editorWineForm',  'fieldWine',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/wine/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
+          </table>
+          <button type="button" class="open-button" onclick="createWineForm('/wine/unit', 'editorWineForm', 'fieldWine')">Add a wine</button>
+        </div>
+      </div> 
+    </div>
+
+    <script>
+      async function getProducerName(element, IDproducer){
+        const producer = await getById ('/producer/unit', IDproducer)
+        element.innerHTML = producer.name
+      }
+
+      async function getCategoryName(element, IDcategory){
+        const category = await getById ('/category/unit', IDcategory)
+        element.innerHTML = category.name
+      }
+
+      async function getDesignationName(element, IDdesignation){
+        const designation = await getById ('/designation/unit', IDdesignation)
+        element.innerHTML = designation.name
+      }
+
+
+      async function createWineForm (path, formId, referenceId, id) {
+        var functionName = 'postById'
+        var tittle = 'Add'
+        if (id) {
+          functionName = 'patchById'
+          tittle = 'Edit'
+        }
+        var producerList = await getList('/producer/list')
+        var categoryList = await getList('/category/list')
+        var designationList = await getList('/designation/list')
+
+
+        var content = `<div class="form-popup" >
+                        <form class="form-container" onsubmit = "event.preventDefault(); myValidation();">
+                          <h1>`+ tittle +`</h1>
+                          <div class="form-input">`
+
+        for (let index = 0; index < $('#' + referenceId + ' > td').length; index++) {
+          var name = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('name')
+          var type = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('type')
+          var patern = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('patern')
+          var identifier = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('identifier')
+          var required = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('required')
+          var value = ''
+
+          if (id) {
+            value = $('#' + id + ' > td[name=\'' + name + '\']').text()
+          }
+
+          if(identifier){
+            var list = producerList
+            if(identifier === 'IDcategory'){
+              list = categoryList
+            }else if (identifier === 'IDdesignation'){
+              list = designationList
+            }
+
+            if (id) {
+              value = $('#' + id + ' > td[name=\'' + name + '\']').attr('identifier')
+            }else{
+              value = list[0]._id
+            }
+            content += '<br /><label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
+                <input type="hidden" value="` + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
+                <br />`
+
+            content += `<select onchange="changeSelectValue(this, '` + formId + `', '` + name + `')">`
+
+            for (let index = 0; index < list.length; index++) {
+
+              content += ` <option value="`+ list[index]._id+`" `
+              if(value === list[index]._id){
+                content += ` selected="true" `
+              }
+              if(identifier === 'IDproducer'){
+                content += `>`+ list[index].name +` </option>`
+              }else if (identifier === 'IDcategory'){
+                content += `>`+ list[index].name +` </option>`
+              }else if (identifier === 'IDdesignation'){
+                content += `>`+ list[index].name +` </option>`
+              }
+            }
+            content += `</select>`
+          }else{
+            content += '<label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
+                <input type="` + type + '" value="' + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
+                <br />`
+          }
+        }
+        content += `</div>
+                    <br />
+                    <button type="submit" class="btn" onclick="` + functionName + '(\'' + path + '\', \'' + formId + '\', \'' + referenceId + '\',\'' + id + `')" >Submit</button> </br>
+                    <button type="button" class="btn cancel" onclick="closeForm('` + formId + `')" >Cancel</button>
+                    </form>
+                  </div>`
+
+        document.getElementById(formId).innerHTML = content
+      }
+
+    </script>
+  </body>
+</html>

@@ -1,5 +1,5 @@
 const EXPRESS = require('express')
-const DESIGNATION = require('../../models/designation.model.js')
+const WINECEPAGE = require('../../models/winecepage.model.js')
 var Router = EXPRESS.Router()
 
 /* ERROR CODE : https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
@@ -20,9 +20,9 @@ var Router = EXPRESS.Router()
 Router.get('/list', async (req, res) => {
   try {
     if (req.user) {
-      DESIGNATION.find({}, function (error, result) {
+      WINECEPAGE.find({}, function (error, result) {
         if (error) {
-          // console.log('The designation did not exist.')
+          // console.log('The unit did not exist.')
           notFound(req, res, 0)
         } else {
           // console.log('Result: ', result)
@@ -31,7 +31,7 @@ Router.get('/list', async (req, res) => {
 
           res.format({
             'text/html': function () {
-              res.status(200).render('designation/designationList', { data: result, name: req.user.username, alert: alert })
+              res.status(200).render('winecepage/winecepageList', { data: result, name: req.user.username, alert: alert })
             },
 
             'application/json': function () {
@@ -39,9 +39,10 @@ Router.get('/list', async (req, res) => {
             },
 
             default: function () {
-              res.status(200).render('designation/designationView', { data: result, name: req.user.username })
+              res.status(200).render('winecepage/winecepageView', { data: result, name: req.user.username })
             }
-          })// res.send(JSON.stringify(result))
+          })
+          // res.send(JSON.stringify(result))
         }
       }).sort({ _id: -1 })
     } else {
@@ -59,18 +60,18 @@ Router.get('/unit', async (req, res) => {
   try {
     if (req.user) {
       if (typeof req.query.id === 'undefined') {
-        // console.log('The designation did not exist.')
+        // console.log('The unit did not exist.')
         notFound(req, res, 0)
       } else {
-        DESIGNATION.findById({ _id: req.query.id }, function (error, result) {
+        WINECEPAGE.findById({ _id: req.query.id }, function (error, result) {
           if (error) {
-            // console.log('The designation did not exist.')
+            // console.log('The unit did not exist.')
             notFound(req, res, 1)
           } else {
             if (result) {
               res.format({
                 'text/html': function () {
-                  res.status(200).render('designation/designationView', { data: result, name: req.user.username })
+                  res.status(200).render('winecepage/winecepageView', { data: result, name: req.user.username })
                 },
 
                 'application/json': function () {
@@ -78,7 +79,7 @@ Router.get('/unit', async (req, res) => {
                 },
 
                 default: function () {
-                  res.status(200).render('designation/designationView', { data: result, name: req.user.username })
+                  res.status(200).render('winecepage/winecepageView', { data: result, name: req.user.username })
                 }
               })
             } else {
@@ -102,13 +103,13 @@ Router.get('/unit', async (req, res) => {
 Router.post('/unit', async (req, res) => {
   try {
     if (req.user) {
-      new DESIGNATION({
-        name: req.body.name,
-        description: req.body.description
+      new WINECEPAGE({
+        IDcepage: req.body.IDcepage,
+        IDwine: req.body.IDwine
       }).save(function (error, result) {
         if (error) {
           console.log('Check the type of your entry :' + error)
-          res.status(400).send('Check the type of your entry.')
+          res.status(400).send('Check the type of your entry')
         } else {
           // console.log('The post was succesfull.')
           res.status(200).send(result)
@@ -116,7 +117,7 @@ Router.post('/unit', async (req, res) => {
       })
     } else {
     // console.log('User not identified.')
-      req.session.oldUrl = '/designation/list'
+      req.session.oldUrl = '/winecepage/list'
       res.status(401).redirect('/user/login')
     }
   } catch (error) {
@@ -129,20 +130,21 @@ Router.post('/unit', async (req, res) => {
 Router.patch('/unit', async (req, res) => {
   try {
     if (req.user) {
-      DESIGNATION.findByIdAndUpdate({ _id: req.body.id }, {
+      WINECEPAGE.findByIdAndUpdate({ _id: req.body.id }, {
         $set: {
-          name: req.body.name,
-          description: req.body.description
+          IDcepage: req.body.IDcepage,
+          IDwine: req.body.IDwine
         }
       }, function (error, result) {
         if (error) {
-          // console.log('The designation did not exist.')
+          // console.log('The unit did not exist.')
           notFound(req, res, 1)
         } else {
-          result.name = req.body.name
-          result.description = req.body.description
+          if (result) {
+            result.IDcepage = req.body.IDcepage
+            result.IDwine = req.body.IDwine
 
-          if (result) { // console.log('The post was succesfull.')
+            // console.log('The post was succesfull.')
             res.status(200).send(result)
           } else {
             notFound(req, res, 1)
@@ -164,9 +166,9 @@ Router.patch('/unit', async (req, res) => {
 Router.delete('/unit', async (req, res) => {
   try {
     if (req.user) {
-      DESIGNATION.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
+      WINECEPAGE.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
         if (error) {
-          // console.log('The designation did not exist.')
+          // console.log('The unit did not exist.')
           notFound(req, res, 1)
         } else {
           // console.log('The delete was succesfull.')
@@ -188,18 +190,18 @@ function notFound (req, res, alert) {
   res.format({
     'text/html': function () {
       if (alert) {
-        req.session.alert = 'Error : The designation was not found.'
+        req.session.alert = 'Error : The winecepage was not found.'
       }
       res.status(404).redirect('/home')
     },
 
     'application/json': function () {
-      res.status(404).send('Error : The designation was not found.')
+      res.status(404).send('Error : The winecepage was not found.')
     },
 
     default: function () {
       if (alert) {
-        req.session.alert = 'Error : The designation was not found.'
+        req.session.alert = 'Error : The winecepage was not found.'
       }
       res.status(404).redirect('/home')
     }

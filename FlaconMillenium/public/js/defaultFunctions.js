@@ -28,8 +28,9 @@ function deleteById (path, id) {
 
 // exemple :
 // <button type="button" onclick="getById('/storage/unit','id')">details</button>
-function getById (path, id) {
-  $.ajax({
+async function getById (path, id) {
+  var result = ''
+  await $.ajax({
     type: 'GET',
     contentType: 'application/json',
     dataType: 'json',
@@ -39,6 +40,7 @@ function getById (path, id) {
     },
     success: function (answer, status) {
       console.log('success : ' + status)
+      result = answer
     },
     error: function (answer, status, error) {
       console.log('success : ' + status)
@@ -46,22 +48,27 @@ function getById (path, id) {
     },
     complete: function (answer, status) {}
   })
+  return result
 }
 
 function createForm (path, formId, referenceId, id) {
   var functionName = 'postById'
+  var tittle = 'Add'
   if (id) {
     functionName = 'patchById'
+    tittle = 'Edit'
   }
+
 
   var content = `<div class="form-popup" >
                   <form class="form-container" onsubmit = "event.preventDefault(); myValidation();">
-                    <h1>Edit</h1>
+                    <h1>`+ tittle +`</h1>
                     <div class="form-input">`
 
   for (let index = 0; index < $('#' + referenceId + ' > td').length; index++) {
     var name = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('name')
     var type = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('type')
+    var patern = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('patern')
     var required = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('required')
     var value = ''
 
@@ -69,7 +76,7 @@ function createForm (path, formId, referenceId, id) {
       value = $('#' + id + ' > td[name=\'' + name + '\']').text()
     }
     content += '<label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
-          <input type="` + type + '" value="' + value + '" placeholder="' + name + '" name="' + name + '" required="' + required + `" />
+          <input type="` + type + '" value="' + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
           <br />`
   }
   content += `</div>
@@ -159,3 +166,32 @@ function patchById (path, formId, referenceId, id) {
 function capitalizeFirstLetter (word) {
   return word[0].toUpperCase() + word.slice(1)
 }
+
+function changeSelectValue(element, formId, name){
+  $('#' + formId + ' > div.form-popup > form > div > input[name=\'' + name + '\']')[0].value = element.value
+}
+
+async function getList (path) {
+  var result = ''
+  await $.ajax({
+    type: 'GET',
+    contentType: 'application/json',
+    dataType: 'json',
+    url: path,
+    data: {},
+    success: function (answer, status) {
+      console.log('success : ' + status)
+      result = answer
+    },
+    error: function (answer, status, error) {
+      console.log('success : ' + status)
+      window.alert(answer.responseText)
+    },
+    complete: function (answer, status) {}
+  })
+  return result
+}
+
+$(function(){
+  $('td[onload]').trigger('onload');
+})

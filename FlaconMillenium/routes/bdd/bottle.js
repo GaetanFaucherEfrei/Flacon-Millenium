@@ -1,5 +1,5 @@
 const EXPRESS = require('express')
-const DESIGNATION = require('../../models/designation.model.js')
+const BOTTLE = require('../../models/bottle.model.js')
 var Router = EXPRESS.Router()
 
 /* ERROR CODE : https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
@@ -20,9 +20,9 @@ var Router = EXPRESS.Router()
 Router.get('/list', async (req, res) => {
   try {
     if (req.user) {
-      DESIGNATION.find({}, function (error, result) {
+      BOTTLE.find({}, function (error, result) {
         if (error) {
-          // console.log('The designation did not exist.')
+          // console.log('The unit did not exist.')
           notFound(req, res, 0)
         } else {
           // console.log('Result: ', result)
@@ -31,7 +31,7 @@ Router.get('/list', async (req, res) => {
 
           res.format({
             'text/html': function () {
-              res.status(200).render('designation/designationList', { data: result, name: req.user.username, alert: alert })
+              res.status(200).render('bottle/bottleList', { data: result, name: req.user.username, alert: alert })
             },
 
             'application/json': function () {
@@ -39,9 +39,10 @@ Router.get('/list', async (req, res) => {
             },
 
             default: function () {
-              res.status(200).render('designation/designationView', { data: result, name: req.user.username })
+              res.status(200).render('bottle/bottleView', { data: result, name: req.user.username })
             }
-          })// res.send(JSON.stringify(result))
+          })
+          // res.send(JSON.stringify(result))
         }
       }).sort({ _id: -1 })
     } else {
@@ -59,18 +60,18 @@ Router.get('/unit', async (req, res) => {
   try {
     if (req.user) {
       if (typeof req.query.id === 'undefined') {
-        // console.log('The designation did not exist.')
+        // console.log('The unit did not exist.')
         notFound(req, res, 0)
       } else {
-        DESIGNATION.findById({ _id: req.query.id }, function (error, result) {
+        BOTTLE.findById({ _id: req.query.id }, function (error, result) {
           if (error) {
-            // console.log('The designation did not exist.')
+            // console.log('The unit did not exist.')
             notFound(req, res, 1)
           } else {
             if (result) {
               res.format({
                 'text/html': function () {
-                  res.status(200).render('designation/designationView', { data: result, name: req.user.username })
+                  res.status(200).render('bottle/bottleView', { data: result, name: req.user.username })
                 },
 
                 'application/json': function () {
@@ -78,7 +79,7 @@ Router.get('/unit', async (req, res) => {
                 },
 
                 default: function () {
-                  res.status(200).render('designation/designationView', { data: result, name: req.user.username })
+                  res.status(200).render('bottle/bottleView', { data: result, name: req.user.username })
                 }
               })
             } else {
@@ -98,17 +99,50 @@ Router.get('/unit', async (req, res) => {
   }
 })
 
+function verifBoolean(bool){
+  if(bool){
+    if(bool === ''){
+      bool = false
+    }else{
+      bool = true
+    }
+  }else{
+    bool = false
+  }
+  return bool
+}
+
 // to use with an ajax call
 Router.post('/unit', async (req, res) => {
   try {
     if (req.user) {
-      new DESIGNATION({
-        name: req.body.name,
-        description: req.body.description
+      req.body.gift = verifBoolean(req.body.gift)
+      req.body.given = verifBoolean(req.body.given)
+      req.body.corkscrew = verifBoolean(req.body.corkscrew)
+      new BOTTLE({
+        gift: req.body.gift,
+        given: req.body.given,
+        price: req.body.price,
+        corkscrew: req.body.corkscrew,
+        dateInput: req.body.dateInput,
+        reasonInput: req.body.reasonInput,
+        dateOutput: req.body.dateOutput,
+        reasonOutput: req.body.reasonOutput,
+        observation: req.body.observation,
+        recomandation: req.body.recomandation,
+        IDwine: req.body.IDwine,
+        IDstatus: req.body.IDstatus,
+        IDsize: req.body.IDsize,
+        IDlocation: req.body.IDlocation,
+        IDowner: req.body.IDowner,
+        IDgiver: req.body.IDgiver,
+        IDrecipient: req.body.IDrecipient,
+        IDsugarDosage: req.body.IDsugarDosage,
+        IDservedWith: req.body.IDservedWith
       }).save(function (error, result) {
         if (error) {
           console.log('Check the type of your entry :' + error)
-          res.status(400).send('Check the type of your entry.')
+          res.status(400).send('Check the type of your entry')
         } else {
           // console.log('The post was succesfull.')
           res.status(200).send(result)
@@ -116,7 +150,7 @@ Router.post('/unit', async (req, res) => {
       })
     } else {
     // console.log('User not identified.')
-      req.session.oldUrl = '/designation/list'
+      req.session.oldUrl = '/bottle/list'
       res.status(401).redirect('/user/login')
     }
   } catch (error) {
@@ -129,20 +163,58 @@ Router.post('/unit', async (req, res) => {
 Router.patch('/unit', async (req, res) => {
   try {
     if (req.user) {
-      DESIGNATION.findByIdAndUpdate({ _id: req.body.id }, {
+      req.body.gift = verifBoolean(req.body.gift)
+      req.body.given = verifBoolean(req.body.given)
+      req.body.corkscrew = verifBoolean(req.body.corkscrew)
+      BOTTLE.findByIdAndUpdate({ _id: req.body.id }, {
         $set: {
-          name: req.body.name,
-          description: req.body.description
+          gift: req.body.gift,
+          given: req.body.given,
+          price: req.body.price,
+          corkscrew: req.body.corkscrew,
+          dateInput: req.body.dateInput,
+          reasonInput: req.body.reasonInput,
+          dateOutput: req.body.dateOutput,
+          reasonOutput: req.body.reasonOutput,
+          observation: req.body.observation,
+          recomandation: req.body.recomandation,
+          IDwine: req.body.IDwine,
+          IDstatus: req.body.IDstatus,
+          IDsize: req.body.IDsize,
+          IDlocation: req.body.IDlocation,
+          IDowner: req.body.IDowner,
+          IDgiver: req.body.IDgiver,
+          IDrecipient: req.body.IDrecipient,
+          IDsugarDosage: req.body.IDsugarDosage,
+          IDservedWith: req.body.IDservedWith
         }
       }, function (error, result) {
         if (error) {
-          // console.log('The designation did not exist.')
+          // console.log('The unit did not exist.')
           notFound(req, res, 1)
         } else {
-          result.name = req.body.name
-          result.description = req.body.description
+          if (result) {
+            result.gift = req.body.gift
+            result.given = req.body.given
+            result.price = req.body.price
+            result.corkscrew = req.body.corkscrew
+            result.dateInput = req.body.dateInput,
+            result.reasonInput = req.body.reasonInput
+            result.dateOutput = req.body.dateOutput
+            result.reasonOutput = req.body.reasonOutput
+            result.observation = req.body.observation
+            result.recomandation = req.body.recomandation
+            result.IDwine = req.body.IDwine
+            result.IDstatus = req.body.IDstatus
+            result.IDsize = req.body.IDsize
+            result.IDlocation = req.body.IDlocation
+            result.IDowner = req.body.IDowner
+            result.IDgiver = req.body.IDgiver
+            result.IDrecipient = req.body.IDrecipient
+            result.IDsugarDosage = req.body.IDsugarDosage
+            result.IDservedWith = req.body.IDservedWith
 
-          if (result) { // console.log('The post was succesfull.')
+            // console.log('The post was succesfull.')
             res.status(200).send(result)
           } else {
             notFound(req, res, 1)
@@ -164,9 +236,9 @@ Router.patch('/unit', async (req, res) => {
 Router.delete('/unit', async (req, res) => {
   try {
     if (req.user) {
-      DESIGNATION.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
+      BOTTLE.findByIdAndDelete({ _id: req.body.id }, function (error, result) {
         if (error) {
-          // console.log('The designation did not exist.')
+          // console.log('The unit did not exist.')
           notFound(req, res, 1)
         } else {
           // console.log('The delete was succesfull.')
@@ -188,18 +260,18 @@ function notFound (req, res, alert) {
   res.format({
     'text/html': function () {
       if (alert) {
-        req.session.alert = 'Error : The designation was not found.'
+        req.session.alert = 'Error : The bottle was not found.'
       }
       res.status(404).redirect('/home')
     },
 
     'application/json': function () {
-      res.status(404).send('Error : The designation was not found.')
+      res.status(404).send('Error : The bottle was not found.')
     },
 
     default: function () {
       if (alert) {
-        req.session.alert = 'Error : The designation was not found.'
+        req.session.alert = 'Error : The bottle was not found.'
       }
       res.status(404).redirect('/home')
     }

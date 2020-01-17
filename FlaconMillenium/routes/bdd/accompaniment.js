@@ -29,8 +29,19 @@ Router.get('/list', async (req, res) => {
           var alert = req.session.alert
           req.session.alert = ''
 
-          res.status(200).render('accompaniment/accompanimentList', { data: result, name: req.user.username, alert: alert })
-          // res.send(JSON.stringify(result))
+          res.format({
+            'text/html': function () {
+              res.status(200).render('accompaniment/accompanimentList', { data: result, name: req.user.username, alert: alert })
+            },
+
+            'application/json': function () {
+              res.status(200).send(result)
+            },
+
+            default: function () {
+              res.status(200).render('accompaniment/accompanimentView', { data: result, name: req.user.username })
+            }
+          })
         }
       }).sort({ _id: -1 })
     } else {

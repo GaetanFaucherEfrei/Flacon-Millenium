@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Bottle</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
+    <link href="/css/list.css" rel="stylesheet" type="text/css">
+
+    <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
+  </head>
+
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>Bottle</h1>
+
+        <!-- Message display area -->
+        <div>
+          <div id="editorBottleForm"></div>
+          <table>
+            <tr id="fieldBottle">
+              <td name ="gift" type="checkbox" required="">gift</td>
+              <td name ="given" type="checkbox" required="">given</td>
+              <td name ="price" type="number" required="">price</td>
+              <td name ="corkscrew" type="checkbox" required="">corkscrew</td>
+              <td name ="dateInput" type="date" required="required">dateInput</td>
+              <td name ="reasonInput" type="text" required="">reasonInput</td>
+              <td name ="dateOutput" type="date" required="">dateOutput</td>
+              <td name ="reasonOutput" type="text" required="">reasonOutput</td>
+              <td name ="observation" type="text" required="">observation</td>
+              <td name ="recomandation" type="text" required="">recomandation</td>
+              <td name ="IDwine" type="text" identifier="IDwine" required="">IDwine</td>
+              <td name ="IDstatus" type="text" identifier="IDstatus" required="">IDstatus</td>
+              <td name ="IDsize" type="text" identifier="IDsize" required="required">IDsize</td>
+              <td name ="IDlocation" type="text" identifier="IDlocation" required="">IDlocation</td>
+              <td name ="IDowner" type="text" identifier="IDowner" required="">IDowner</td>
+              <td name ="IDgiver" type="text" identifier="IDgiver" required="">IDgiver</td>
+              <td name ="IDrecipient" type="text" identifier="IDrecipient" required="">IDrecipient</td>
+              <td name ="IDsugarDosage" type="text" identifier="IDsugarDosage" required="">IDsugarDosage</td>
+              <td name ="IDservedWith" type="text" identifier="IDservedWith" required="">IDservedWith</td>
+            </tr>
+            <% for(var i=0; i < data.length; i++) { %>
+              <tr id="<%= data[i].id %>">
+                <td name ="gift"><%= data[i].gift %></td>
+                <td name ="given"><%= data[i].given %></td>
+                <td name ="price"><%= data[i].price %></td>
+                <td name ="corkscrew"><%= data[i].corkscrew %></td>
+                <td name ="dateInput"><%= data[i].dateInput %></td>
+                <td name ="reasonInput"><%= data[i].reasonInput %></td>
+                <td name ="dateOutput"><%= data[i].dateOutput %></td>
+                <td name ="reasonOutput"><%= data[i].reasonOutput %></td>
+                <td name ="observation"><%= data[i].observation %></td>
+                <td name ="recomandation"><%= data[i].recomandation %></td>
+                <td name ="IDwine" onload="getWineName(this, '<%= data[i].IDwine %>')" identifier="<%= data[i].IDwine %>"> </td>
+                <td name ="IDstatus" onload="getSatusName(this, '<%= data[i].IDstatus %>')" identifier="<%= data[i].IDstatus %>"> </td>
+                <td name ="IDsize" onload="getSizeName(this, '<%= data[i].IDsize %>')" identifier="<%= data[i].IDsize %>"> </td>
+                <td name ="IDlocation" onload="getLocationName(this, '<%= data[i].IDlocation %>')" identifier="<%= data[i].IDlocation %>"> </td>
+                <td name ="IDowner" onload="getPersonName(this, '<%= data[i].IDowner %>')" identifier="<%= data[i].IDowner %>"> </td>
+                <td name ="IDgiver" onload="getPersonName(this, '<%= data[i].IDgiver %>')" identifier="<%= data[i].IDgiver %>"> </td>
+                <td name ="IDrecipient" onload="getPersonName(this, '<%= data[i].IDrecipient %>')" identifier="<%= data[i].IDrecipient %>"> </td>
+                <td name ="IDsugarDosage" onload="getSugarDosageName(this, '<%= data[i].IDsugarDosage %>')" identifier="<%= data[i].IDsugarDosage %>"> </td>
+                <td name ="IDservedWith" onload="getServedWithName(this, '<%= data[i].IDservedWith %>')" identifier="<%= data[i].IDservedWith %>"> </td>
+
+                <td><a href="/bottle/unit?id=<%= data[i].id %>">Detail</a></td> 
+                <td><button type="button" class="open-button" onclick="createBottleForm('/bottle/unit', 'editorBottleForm',  'fieldBottle',  '<%= data[i].id %>')">Edit</button></td> 
+                <td><button type="button" onclick="deleteById('/bottle/unit','<%= data[i].id %>')">Delete</button></td> 
+              </tr>
+            <% } %>
+          </table>
+          <button type="button" class="open-button" onclick="createBottleForm('/bottle/unit', 'editorBottleForm', 'fieldBottle')">Add a bottle</button>
+        </div>
+      </div> 
+    </div>
+
+    <script>
+      async function getWineName(element, IDwine){
+        const wine = await getById ('/wine/unit', IDwine)
+        element.innerHTML = wine.name
+      }
+
+      async function getSatusName(element, IDstatus){
+        const status = await getById ('/status/unit', IDstatus)
+        element.innerHTML = status.name
+      }
+
+      async function getSizeName(element, IDsize){
+        const size = await getById ('/size/unit', IDsize)
+        element.innerHTML = size.name
+      }
+      async function getLocationName(element, IDlocation){
+        const location = await getById ('/location/unit', IDlocation)
+        element.innerHTML = `Etage ` + location.ligne +`, rang `+ location.colone
+      }
+
+      async function getPersonName(element, IDperson){
+        const person = await getById ('/person/unit', IDperson)
+        element.innerHTML = person.firstName
+      }
+
+      async function getSugarDosageName(element, IDsugarDosage){
+        const sugarDosage = await getById ('/sugardosage/unit', IDsugarDosage)
+        element.innerHTML = sugarDosage.name
+      }
+
+      async function getServedWithName(element, IDservedWith){
+        const servedWith = await getById ('/servedwith/unit', IDservedWith)
+        element.innerHTML = servedWith.dishName
+      }
+
+
+      async function createBottleForm (path, formId, referenceId, id) {
+        var functionName = 'postById'
+        var tittle = 'Add'
+        if (id) {
+          functionName = 'patchById'
+          tittle = 'Edit'
+        }
+        var wineList = await getList('/wine/list')
+        var statusList = await getList('/status/list')
+        var sizeList = await getList('/size/list')
+        var locationList = await getList('/location/list')
+        var ownerList = await getList('/person/list')
+        var giverList = await getList('/person/list')
+        var recipientList = await getList('/person/list')
+        var sugarDosageList = await getList('/sugardosage/list')
+        var servedWithList = await getList('/servedwith/list')
+
+
+        var content = `<div class="form-popup" >
+                        <form class="form-container" onsubmit = "event.preventDefault(); myValidation();">
+                          <h1>`+ tittle +`</h1>
+                          <div class="form-input">`
+
+        for (let index = 0; index < $('#' + referenceId + ' > td').length; index++) {
+          var name = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('name')
+          var type = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('type')
+          var patern = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('patern')
+          var identifier = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('identifier')
+          var required = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('required')
+          var value = ''
+
+          if (id) {
+            value = $('#' + id + ' > td[name=\'' + name + '\']').text()
+          }
+
+          if(identifier){
+            var list = wineList
+            if(identifier === 'IDstatus'){
+              list = statusList
+            }else if (identifier === 'IDsize'){
+              list = sizeList
+            }else if (identifier === 'IDlocation'){
+              list = locationList
+            }else if (identifier === 'IDowner'){
+              list = ownerList
+            }else if (identifier === 'IDgiver'){
+              list = giverList
+            }else if (identifier === 'IDrecipient'){
+              list = recipientList
+            }else if (identifier === 'IDsugarDosage'){
+              list = sugarDosageList
+            }else if (identifier === 'IDservedWith'){
+              list = servedWithList
+            }
+
+
+            if (id) {
+              value = $('#' + id + ' > td[name=\'' + name + '\']').attr('identifier')
+            }else if(list[0]){
+              value = list[0]._id
+            }else {
+              value = []
+            }
+            content += '<br /><label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
+                <input type="hidden" value="` + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
+                <br />`
+
+            content += `<select onchange="changeSelectValue(this, '` + formId + `', '` + name + `')">`
+
+            for (let index = 0; index < list.length; index++) {
+
+              content += ` <option value="`+ list[index]._id+`" `
+              if(value === list[index]._id){
+                content += ` selected="true" `
+              }
+              if (identifier === 'IDlocation'){
+                content += `>Etage ` + list[index].ligne +`, rang `+ list[index].colone +` </option>`
+              }else if (identifier === 'IDservedWith'){
+                content += `>`+ list[index].dishName +` </option>`
+              }else if (identifier === 'IDowner' || identifier === 'IDgiver' || identifier === 'IDrecipient'){
+                content += `>`+ list[index].firstName +` </option>`
+              }else{
+                content += `>`+ list[index].name +` </option>`
+              }
+            }
+            content += `</select>`
+          }else{
+            content += '<label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
+                <input type="` + type + '" value="' + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
+                <br />`
+          }
+        }
+        content += `</div>
+                    <br />
+                    <button type="submit" class="btn" onclick="` + functionName + '(\'' + path + '\', \'' + formId + '\', \'' + referenceId + '\',\'' + id + `')" >Submit</button> </br>
+                    <button type="button" class="btn cancel" onclick="closeForm('` + formId + `')" >Cancel</button>
+                    </form>
+                  </div>`
+
+        document.getElementById(formId).innerHTML = content
+      }
+
+    </script>
+  </body>
+</html>

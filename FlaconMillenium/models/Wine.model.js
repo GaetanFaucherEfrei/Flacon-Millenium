@@ -3,10 +3,9 @@ const Schema = mongoose.Schema
 
 var wineSchema = new Schema({
   name: { type: String, required: true },
-  vintage: { type: String, required: true },
-  alcoholPercentage: { type: String, required: true },
+  vintage: { type: Boolean, required: false },
+  alcoholPercentage: { type: Number, required: true },
   bio: { type: Boolean, required: false },
-  oldVine: { type: Boolean, required: false },
   oakBarrel: { type: Boolean, required: false },
   conservationTime: { type: Date, required: false },
   temperatureConservation: { type: Number, required: false },

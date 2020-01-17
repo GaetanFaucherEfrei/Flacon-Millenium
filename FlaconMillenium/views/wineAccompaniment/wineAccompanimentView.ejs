@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WineAccompaniment</title>
+    <link href="/css/loader.css" rel="stylesheet" type="text/css">
+    <link href="/css/flaconMilleniumDefault.css" rel="stylesheet" type="text/css">
+    <link href="/css/menu.css" rel="stylesheet" type="text/css">
+    <link href="/css/popup.css" rel="stylesheet" type="text/css">
+    <link href="/css/view.css" rel="stylesheet" type="text/css">
+
+    <script defer  src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script defer  type="text/javascript" src="/js/defaultFunctions.js"></script>
+  </head>
+
+  <body>
+    <%- include('../loader.ejs')%>
+    <div class="inner">
+      <%- include('../menu.ejs') %>
+      <div id="content">
+        <h1>WineAccompaniment</h1>
+
+        <!-- Message display area -->
+        <div>
+          <div id="editorWineAccompanimentForm"></div>
+          <table>
+            <tr id="fieldWineAccompaniment">
+              <td name ="IDaccompaniment" type="text" identifier="IDaccompaniment" required="">IDaccompaniment</td>
+              <td name ="IDwine" type="text" identifier="IDwine" required="">IDwine</td>
+           </tr>
+            <tr id="<%= data.id %>">
+              <td name ="IDaccompaniment" onload="getAccompanimentName(this, '<%= data.IDaccompaniment %>')" identifier="<%= data.IDaccompaniment %>"> </td>
+              <td name ="IDwine" onload="getWineName(this, '<%= data.IDwine %>')" identifier="<%= data.IDwine %>"> </td>
+
+              <td><button type="button" class="open-button" onclick="createWineAccompanimentForm('/wineaccompaniment/unit', 'editorWineAccompanimentForm',  'fieldWineAccompaniment',  '<%= data.id %>')">Edit</button></td> 
+              <td><button type="button" onclick="deleteById('/wineaccompaniment/unit','<%= data.id %>')">Delete</button></td> 
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      async function getAccompanimentName(element, IDaccompaniment){
+        const accompaniment = await getById ('/accompaniment/unit', IDaccompaniment)
+        element.innerHTML = accompaniment.dishType
+      }
+
+      async function getWineName(element, IDwine){
+        const wine = await getById ('/wine/unit', IDwine)
+        element.innerHTML = wine.name
+      }
+
+      async function createWineAccompanimentForm (path, formId, referenceId, id) {
+        var functionName = 'postById'
+        var tittle = 'Add'
+        if (id) {
+          functionName = 'patchById'
+          tittle = 'Edit'
+        }
+        var accompanimentList = await getList('/accompaniment/list')
+        var wineList = await getList('/wine/list')
+
+
+        var content = `<div class="form-popup" >
+                        <form class="form-container" onsubmit = "event.preventDefault(); myValidation();">
+                          <h1>`+ tittle +`</h1>
+                          <div class="form-input">`
+
+        for (let index = 0; index < $('#' + referenceId + ' > td').length; index++) {
+          var name = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('name')
+          var type = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('type')
+          var patern = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('patern')
+          var identifier = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('identifier')
+          var required = $('#' + referenceId + ' > td:nth-of-type(' + Number(index + 1) + ')').attr('required')
+          var value = ''
+
+          if (id) {
+            value = $('#' + id + ' > td[name=\'' + name + '\']').text()
+          }
+
+          if(identifier){
+            var list = accompanimentList
+            if(identifier === 'IDwine'){
+              list = wineList
+            }
+
+            if (id) {
+              value = $('#' + id + ' > td[name=\'' + name + '\']').attr('identifier')
+            }else{
+              value = list[0]._id
+            }
+            content += '<label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
+                <input type="hidden" value="` + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
+                <br />`
+
+            content += `<select onchange="changeSelectValue(this, '` + formId + `', '` + name + `')">`
+
+            for (let index = 0; index < list.length; index++) {
+
+              content += ` <option value="`+ list[index]._id+`" `
+              if(value === list[index]._id){
+                content += ` selected="true" `
+              }
+              if(identifier === 'IDwine'){
+                content += `>`+ list[index].name+` </option>`
+              }else{
+                content += `>`+ list[index].dishType+` </option>`
+              }
+            }
+            content += `</select>`
+
+          }else{
+            content += '<label for="' + name + '"><b>' + capitalizeFirstLetter(name) + `</b></label>
+                <input type="` + type + '" value="' + value + '" placeholder="' + name + '" name="' + name + '" patern="' + patern + '" required="' + required + `" />
+                <br />`
+          }
+        }
+        content += `</div>
+                    <br />
+                    <button type="submit" class="btn" onclick="` + functionName + '(\'' + path + '\', \'' + formId + '\', \'' + referenceId + '\',\'' + id + `')" >Submit</button> </br>
+                    <button type="button" class="btn cancel" onclick="closeForm('` + formId + `')" >Cancel</button>
+                    </form>
+                  </div>`
+
+        document.getElementById(formId).innerHTML = content
+      }
+
+    </script>
+    
+  </body>
+</html>

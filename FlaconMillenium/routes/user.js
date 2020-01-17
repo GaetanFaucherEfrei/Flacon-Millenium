@@ -232,28 +232,113 @@ Router.delete('/unit', async (req, res) => {
     await unit.deleteOne()
     res.send('200')
   } else {
-    req.session.oldUrl = '/storage/unit/' + req.params.identification
+    req.session.oldUrl = '/user/unit/' + req.params.identification
     res.redirect('/user/login')
   }
 })
 
 Router.get('/list', async (req, res) => {
-  if (req.user) {
-    USER.find({}, function (err, result) {
-      if (err) {
-        res.send(err)
-      } else {
-        // console.log('Result: ', result)
+  try {
+    if (req.user) {
+      USER.find({}, function (error, result) {
+        if (error) {
+          // console.log('The unit did not exist.')
+          notFound(req, res, 0)
+        } else {
+          // console.log('Result: ', result)
+          var alert = req.session.alert
+          req.session.alert = ''
 
-        res.render('user/userList', { data: result, name: req.user.username })
-      // res.send(JSON.stringify(result))
-      }
-    }).sort({ _id: -1 }).limit(10)
-  } else {
-    req.session.oldUrl = '/user/list'
-    res.redirect('/user/login')
+          res.format({
+            'text/html': function () {
+              res.status(200).render('user/userList', { data: result, name: req.user.username, alert: alert })
+            },
+
+            'application/json': function () {
+              res.status(200).send(result)
+            },
+
+            default: function () {
+              res.status(200).render('user/userView', { data: result, name: req.user.username })
+            }
+          })
+        }
+      }).sort({ _id: -1 })
+    } else {
+    // console.log('User not identified.')
+      req.session.oldUrl = req.originalUrl
+      res.status(401).redirect('/user/login')
+    }
+  } catch (error) {
+    console.log('There was an error with our server : ' + error)
+    res.status(403).send('There was an error with our server.')
   }
 })
+
+Router.get('/unit', async (req, res) => {
+  try {
+    if (req.user) {
+      if (typeof req.query.id === 'undefined') {
+        // console.log('The unit did not exist.')
+        notFound(req, res, 0)
+      } else {
+        USER.findById({ _id: req.query.id }, function (error, result) {
+          if (error) {
+            // console.log('The unit did not exist.')
+            notFound(req, res, 1)
+          } else {
+            if (result) {
+              res.format({
+                'text/html': function () {
+                  res.status(200).render('user/userView', { data: result, name: req.user.username })
+                },
+
+                'application/json': function () {
+                  res.status(200).send(result)
+                },
+
+                default: function () {
+                  res.status(200).render('user/userView', { data: result, name: req.user.username })
+                }
+              })
+            } else {
+              notFound(req, res, 1)
+            }
+          }
+        })
+      }
+    } else {
+    // console.log('User not identified.')
+      req.session.oldUrl = req.originalUrl
+      res.status(401).redirect('/user/login')
+    }
+  } catch (error) {
+    console.log('There was an error with our server : ' + error)
+    res.status(520).send('There was an error with our server.')
+  }
+})
+
+function notFound (req, res, alert) {
+  res.format({
+    'text/html': function () {
+      if (alert) {
+        req.session.alert = 'Error : The location was not found.'
+      }
+      res.status(404).redirect('/home')
+    },
+
+    'application/json': function () {
+      res.status(404).send('Error : The location was not found.')
+    },
+
+    default: function () {
+      if (alert) {
+        req.session.alert = 'Error : The location was not found.'
+      }
+      res.status(404).redirect('/home')
+    }
+  })
+}
 
 module.exports = {
   Router,
