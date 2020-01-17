@@ -1,5 +1,5 @@
 const EXPRESS = require('express')
-const WINECEPAGE = require('../../models/winecepage.model.js')
+const WINECEPAGE = require('../../models/wineCepage.model.js')
 var Router = EXPRESS.Router()
 
 /* ERROR CODE : https://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
